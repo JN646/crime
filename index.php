@@ -70,12 +70,16 @@
 
                   echo "<p class='outputText'><b>Long:</b> " . $long . " <b>Lat:</b> " . $lat . " <b>Crime Type:</b> " . $crime_type . "</p>";
               }
+              ?>
+              <hr>
+              <!-- Count Results -->
+              <p>Total: <?php echo mysqli_num_rows($result) ?></p>
+              <?php
           } else {
               // No Results
               echo "<p id='noResults'>0 results</p>";
           }
       }
-
        ?>
     </div>
   </body>
