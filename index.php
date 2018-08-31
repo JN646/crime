@@ -53,28 +53,29 @@
           // Fetch Results
           if (mysqli_num_rows($resultCount) > 0) {
               // output data of each row
-              echo "<table>
-				<tr>
-              		<th>Crime</th>
-              		<th>Count</th>
-              		<th>Risk</th>
+              echo "<table class='table-border' width=100%>
+				        <tr>
+              		<th class='text-center text-bold'>Crime</th>
+              		<th class='text-center text-bold'>Count</th>
+              		<th class='text-center text-bold'>Risk</th>
               	</tr>";
               while ($row = mysqli_fetch_assoc($resultCount)) {
                   // Set Variables
                   $crime_type = $row["Crime_Type"];
                   $crime_count = $row["COUNT(id)"];
-                  if ($crime_count >= 5) {
-                  	$crime_risk = "High";
-                  } else {
-                  	$crime_risk = "Low";
-                  }
 
                   // Output Results
-                  echo "<tr><td>" . $crime_type . "</td><td>" . $crime_count . "</td><td>" . $crime_risk . "</td></tr>";
+                  ?>
+                  <tr>
+                    <td><?php echo $crime_type; ?></td>
+                    <td class='text-center'><?php echo $crime_count; ?></td>
+                    <td class='text-center'><?php echo "<span class=risk_" . getRisk($crime_count) .">" . getRisk($crime_count) . "</span>"?></td>
+                  </tr>
+                  <?php
               }
               echo "</table>";
               ?>
-              
+
               <div id='resultStats'>
                 <hr>
                 <!-- Count Results -->
