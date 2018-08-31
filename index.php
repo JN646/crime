@@ -51,9 +51,22 @@
           $resultCount = mysqli_query($mysqli, $sql);
 
           // Fetch Results
-          if (mysqli_num_rows($resultCount) > 0) {
-              // output data of each row
-              ?>
+          if (mysqli_num_rows($resultCount) > 0) { ?>
+            <div id="map" style="width:100%;height:300px"></div>
+
+            <script>
+            function myMap() {
+              var myCenter = new google.maps.LatLng(<?php echo $latVal ?>,<?php echo $longVal ?>);
+              var mapCanvas = document.getElementById("map");
+              var mapOptions = {center: myCenter, zoom: 15};
+              var map = new google.maps.Map(mapCanvas, mapOptions);
+              var marker = new google.maps.Marker({position:myCenter});
+              marker.setMap(map);
+            }
+            </script>
+
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDntrXRGpts74HjwJQbirjHqKW_Cq50lSU&callback=myMap"></script>
+
               <table class='table-border' width=100%>
 				        <tr>
               		<th class='text-center text-bold'>Crime</th>
