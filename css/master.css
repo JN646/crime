@@ -1,0 +1,28 @@
+/* Master CSS */
+* {
+  font-family: sans-serif;
+}
+
+body {
+  background-color: lightgrey;
+}
+
+.container {
+  width: 800px;
+  background-color: white;
+  padding: 20px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.outputText {
+  font-size: 8pt;
+}
+
+.safe {
+  color: green;
+}
+
+.danger {
+  color: red;
+}
