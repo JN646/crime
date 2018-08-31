@@ -25,10 +25,10 @@
 
       <!-- Search Form -->
       <form class="" action="" method="post">
-        <label for="">Longitude</label>
-        <input size='15' type="text" name="long" value="-0.586406">
         <label for="">Latitude</label>
         <input size='15' type="text" name="lat" value="52.122123">
+        <label for="">Longitude</label>
+        <input size='15' type="text" name="long" value="-0.586406">
         <label for="">Radius (degrees)</label>
         <input size='10' type="text" name="rad" value="0.03">
         <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
@@ -75,7 +75,7 @@
                   $crime_type = $row["Crime_Type"];
 
                   // Output Results
-                  echo "<p class='outputText'><b>Long:</b> " . $long . " <b>Lat:</b> " . $lat . " <b>Crime Type:</b> " . $crime_type . "</p>";
+                  echo "<p class='outputText'><b>Lat:</b> " . $lat . " <b> Long:</b> " . $long . " <b>Crime Type:</b> " . $crime_type . "</p>";
               }
               ?>
               <div id='resultStats'>
