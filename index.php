@@ -30,7 +30,7 @@
         <label for="">Longitude</label>
         <input size='15' type="text" name="long" value="-0.586406">
         <label for="">Radius (degrees)</label>
-        <input size='10' type="text" name="rad" value="0.03">
+        <input size='10' type="text" name="rad" value="0.08">
         <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
       </form>
 
@@ -42,58 +42,10 @@
           $radVal = trim($_POST["rad"]);
 
           // Get SQL
-          $sql = "SELECT id, Longitude, Latitude, Crime_Type FROM data
+          $sql = "SELECT COUNT(id), Longitude, Latitude, Crime_Type FROM data
           WHERE SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
-          ORDER BY Crime_Type ASC";
-
-          // Run Result
-          $result = mysqli_query($mysqli, $sql);
-
-          // Fetch Results
-          if (mysqli_num_rows($result) > 0) {
-              // Danger notification
-              $safety = "danger"; ?>
-
-              <!-- Risk Notification -->
-              <?php if ($safety == "safe") {
-                  ?>
-                <p class="safe">You might be safe!</p>
-              <?php
-              } elseif ($safety == "danger") {
-                  ?>
-                <p class="danger">You are at risk!</p>
-              <?php
-              } ?>
-
-              <?php
-              // output data of each row
-              while ($row = mysqli_fetch_assoc($result)) {
-                  // Set Variables
-                  $id = $row["id"];
-                  $long = $row["Longitude"];
-                  $lat = $row["Latitude"];
-                  $crime_type = $row["Crime_Type"];
-
-                  // Output Results
-                  echo "<p class='outputText'><b>Lat:</b> " . $lat . " <b> Long:</b> " . $long . " <b>Crime Type:</b> " . $crime_type . "</p>";
-              }
-              ?>
-              <div id='resultStats'>
-                <hr>
-                <!-- Count Results -->
-                <p>Total: <?php echo mysqli_num_rows($result) ?></p>
-              </div>
-              <?php
-          } else {
-              // No Results
-              echo "<p id='noResults'>0 results</p>";
-          }
-
-          // Get SQL
-          $sql = "SELECT Crime_Type, count(*) AS counter
-          FROM data
           GROUP BY Crime_Type
-          ORDER BY counter DESC";
+          ORDER BY COUNT(id) DESC";
 
           // Run Result
           $resultCount = mysqli_query($mysqli, $sql);
@@ -101,14 +53,22 @@
           // Fetch Results
           if (mysqli_num_rows($resultCount) > 0) {
               // output data of each row
+              echo "<table>
+				<tr>
+              		<th>Crime</th>
+              		<th>Count</th>
+              	</tr>";
               while ($row = mysqli_fetch_assoc($resultCount)) {
                   // Set Variables
                   $crime_type = $row["Crime_Type"];
+                  $crime_count = $row["COUNT(id)"];
 
                   // Output Results
-                  echo "<p><b>Crime Type:</b> " . $crime_type . "</p>";
+                  echo "<tr><td>" . $crime_type . "</td><td>" . $crime_count . "</td></tr>";
               }
+              echo "</table>";
               ?>
+              
               <div id='resultStats'>
                 <hr>
                 <!-- Count Results -->
