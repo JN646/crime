@@ -88,6 +88,37 @@
               // No Results
               echo "<p id='noResults'>0 results</p>";
           }
+
+          // Get SQL
+          $sql = "SELECT Crime_Type, count(*) AS counter
+          FROM data
+          GROUP BY Crime_Type
+          ORDER BY counter DESC";
+
+          // Run Result
+          $resultCount = mysqli_query($mysqli, $sql);
+
+          // Fetch Results
+          if (mysqli_num_rows($resultCount) > 0) {
+              // output data of each row
+              while ($row = mysqli_fetch_assoc($resultCount)) {
+                  // Set Variables
+                  $crime_type = $row["Crime_Type"];
+
+                  // Output Results
+                  echo "<p><b>Crime Type:</b> " . $crime_type . "</p>";
+              }
+              ?>
+              <div id='resultStats'>
+                <hr>
+                <!-- Count Results -->
+                <p>Total: <?php echo mysqli_num_rows($resultCount) ?></p>
+              </div>
+              <?php
+          } else {
+              // No Results
+              echo "<p id='noResults'>0 results</p>";
+          }
       }
        ?>
     </div>
