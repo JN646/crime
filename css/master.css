@@ -1,6 +1,8 @@
 /* Master CSS */
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
 * {
-  font-family: sans-serif;
+  font-family: 'Ubuntu', sans-serif;
 }
 
 body {
@@ -25,4 +27,9 @@ body {
 
 .danger {
   color: red;
+}
+
+#noResults {
+  text-align: center;
+  font-weight: bold;
 }
