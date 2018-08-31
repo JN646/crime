@@ -53,12 +53,14 @@
           // Fetch Results
           if (mysqli_num_rows($resultCount) > 0) {
               // output data of each row
-              echo "<table class='table-border' width=100%>
+              ?>
+              <table class='table-border' width=100%>
 				        <tr>
               		<th class='text-center text-bold'>Crime</th>
               		<th class='text-center text-bold'>Count</th>
               		<th class='text-center text-bold'>Risk</th>
-              	</tr>";
+              	</tr>
+                <?php
               while ($row = mysqli_fetch_assoc($resultCount)) {
                   // Set Variables
                   $crime_type = $row["Crime_Type"];
