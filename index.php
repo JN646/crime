@@ -25,12 +25,7 @@
         <button type="submit" name="btnSearch">Search</button>
       </form>
 
-      <!-- Risk Notification -->
-      <?php if ($safety == "safe") { ?>
-        <p class="safe">You might be safe!</p>
-      <?php } elseif ($safety == "danger") { ?>
-        <p class="danger">You are at risk!</p>
-      <?php } ?>
+
 
       <?php
       if (isset($_POST["btnSearch"])) {
@@ -43,6 +38,21 @@
 
           // Fetch Results
           if (mysqli_num_rows($result) > 0) {
+              // Danger notification
+              $safety = "danger"; ?>
+
+              <!-- Risk Notification -->
+              <?php if ($safety == "safe") {
+                  ?>
+                <p class="safe">You might be safe!</p>
+              <?php
+              } elseif ($safety == "danger") {
+                  ?>
+                <p class="danger">You are at risk!</p>
+              <?php
+              } ?>
+
+              <?php
               // output data of each row
               while ($row = mysqli_fetch_assoc($result)) {
                   // Set Variables
