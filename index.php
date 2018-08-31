@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Crime App</title>
     <link rel="stylesheet" href="css/master.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <?php include 'functions.php' ?>
   </head>
   <body>
@@ -20,12 +21,12 @@
       <!-- Search Form -->
       <form class="" action="" method="post">
         <label for="">Longitude</label>
-        <input size='15' type="text" name="long" value="">
+        <input size='15' type="text" name="long" value="-0.586406">
         <label for="">Latitude</label>
-        <input size='15' type="text" name="lat" value="">
+        <input size='15' type="text" name="lat" value="52.122123">
         <label for="">Radius (degrees)</label>
-        <input size='10' type="text" name="rad" value="">
-        <button type="submit" name="btnSearch">Search</button>
+        <input size='10' type="text" name="rad" value="0.03">
+        <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
       </form>
 
 
