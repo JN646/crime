@@ -32,9 +32,9 @@
 
       <?php
       if (isset($_POST["btnSearch"])) {
-          $longVal = $_POST["long"];
-          $latVal = $_POST["lat"];
-          $radVal = $_POST["rad"];
+          $longVal = trim($_POST["long"]);
+          $latVal = trim($_POST["lat"]);
+          $radVal = trim($_POST["rad"]);
 
           // Get SQL
           $sql = "SELECT id, Longitude, Latitude, Crime_Type FROM data
