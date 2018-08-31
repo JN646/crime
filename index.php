@@ -72,7 +72,7 @@
               }
           } else {
               // No Results
-              echo "0 results";
+              echo "<p class='noResults'>0 results</p>";
           }
       }
 
