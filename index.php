@@ -57,14 +57,20 @@
 				<tr>
               		<th>Crime</th>
               		<th>Count</th>
+              		<th>Risk</th>
               	</tr>";
               while ($row = mysqli_fetch_assoc($resultCount)) {
                   // Set Variables
                   $crime_type = $row["Crime_Type"];
                   $crime_count = $row["COUNT(id)"];
+                  if ($crime_count >= 5) {
+                  	$crime_risk = "High";
+                  } else {
+                  	$crime_risk = "Low";
+                  }
 
                   // Output Results
-                  echo "<tr><td>" . $crime_type . "</td><td>" . $crime_count . "</td></tr>";
+                  echo "<tr><td>" . $crime_type . "</td><td>" . $crime_count . "</td><td>" . $crime_risk . "</td></tr>";
               }
               echo "</table>";
               ?>
