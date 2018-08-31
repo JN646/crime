@@ -10,6 +10,7 @@
     <?php
     // Debug
     $safety = "safe";
+    $rad = 0;
      ?>
     <!-- Container -->
     <div class="container">
