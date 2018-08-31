@@ -2,9 +2,14 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Crime App</title>
+    <!-- Title -->
+    <title>CrimeMap App</title>
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="css/master.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <!-- Function File -->
     <?php include 'functions.php' ?>
   </head>
   <body>
@@ -29,9 +34,8 @@
         <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
       </form>
 
-
-
       <?php
+      // Search Button Press
       if (isset($_POST["btnSearch"])) {
           $longVal = trim($_POST["long"]);
           $latVal = trim($_POST["lat"]);
@@ -42,6 +46,7 @@
           WHERE SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
           ORDER BY Crime_Type ASC";
 
+          // Run Result
           $result = mysqli_query($mysqli, $sql);
 
           // Fetch Results
@@ -69,12 +74,15 @@
                   $lat = $row["Latitude"];
                   $crime_type = $row["Crime_Type"];
 
+                  // Output Results
                   echo "<p class='outputText'><b>Long:</b> " . $long . " <b>Lat:</b> " . $lat . " <b>Crime Type:</b> " . $crime_type . "</p>";
               }
               ?>
-              <hr>
-              <!-- Count Results -->
-              <p>Total: <?php echo mysqli_num_rows($result) ?></p>
+              <div id='resultStats'>
+                <hr>
+                <!-- Count Results -->
+                <p>Total: <?php echo mysqli_num_rows($result) ?></p>
+              </div>
               <?php
           } else {
               // No Results
