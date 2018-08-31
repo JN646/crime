@@ -38,6 +38,7 @@
           // Get SQL
           $sql = "SELECT id, Longitude, Latitude, Crime_Type FROM data WHERE
           SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal' ORDER BY Crime_Type ASC";
+
           $result = mysqli_query($mysqli, $sql);
 
           // Fetch Results
