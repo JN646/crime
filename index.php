@@ -20,11 +20,11 @@
       <!-- Search Form -->
       <form class="" action="" method="post">
         <label for="">Longitude</label>
-        <input type="text" name="long" value="">
+        <input size='15' type="text" name="long" value="">
         <label for="">Latitude</label>
-        <input type="text" name="lat" value="">
+        <input size='15' type="text" name="lat" value="">
         <label for="">Radius (degrees)</label>
-        <input type="text" name="rad" value="">
+        <input size='10' type="text" name="rad" value="">
         <button type="submit" name="btnSearch">Search</button>
       </form>
 
