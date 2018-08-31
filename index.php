@@ -26,11 +26,12 @@
       <!-- Search Form -->
       <form class="form-layout" action="" method="post">
         <label for="">Latitude</label>
-        <input size='15' type="text" name="lat" value="52.122123">
+        <input size='8' type="text" name="lat" value="52.122123">
         <label for="">Longitude</label>
-        <input size='15' type="text" name="long" value="-0.586406">
-        <label for="">Radius (degrees)</label>
-        <input size='10' type="text" name="rad" value="0.08">
+        <input size='8' type="text" name="long" value="-0.586406">
+        <label for="">Radius</label>
+        <input type="range" style="vertical-align: middle;" min="0.01" max="1.00" value="0.05" step="0.01" class="slider" id="myRange">
+        <input id='radius' size='3' type="text" name="rad" value="0.08">
         <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
       </form>
 
@@ -51,7 +52,8 @@
           $resultCount = mysqli_query($mysqli, $sql);
 
           // Fetch Results
-          if (mysqli_num_rows($resultCount) > 0) { ?>
+          if (mysqli_num_rows($resultCount) > 0) {
+              ?>
             <div id="map" style="width:100%;height:300px"></div>
 
             <script>
@@ -65,8 +67,10 @@
             }
             </script>
 
+            <!-- Map API Key -->
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDntrXRGpts74HjwJQbirjHqKW_Cq50lSU&callback=myMap"></script>
 
+              <!-- Result Table -->
               <table class='table-border' width=100%>
 				        <tr>
               		<th class='text-center text-bold'>Crime</th>
@@ -77,10 +81,7 @@
               while ($row = mysqli_fetch_assoc($resultCount)) {
                   // Set Variables
                   $crime_type = $row["Crime_Type"];
-                  $crime_count = $row["COUNT(id)"];
-
-                  // Output Results
-                  ?>
+                  $crime_count = $row["COUNT(id)"]; ?>
                   <tr>
                     <td><?php echo $crime_type; ?></td>
                     <td class='text-center'><?php echo $crime_count; ?></td>
@@ -88,8 +89,7 @@
                   </tr>
                   <?php
               }
-              echo "</table>";
-              ?>
+              echo "</table>"; ?>
 
               <div id='resultStats'>
                 <hr>
@@ -104,5 +104,15 @@
       }
        ?>
     </div>
+    <script type="text/javascript">
+      var slider = document.getElementById("myRange");
+      var output = document.getElementById("radius");
+      output.innerHTML = slider.value; // Display the default slider value
+
+      // Update the current slider value (each time you drag the slider handle)
+      slider.oninput = function() {
+        output.value = this.value;
+      }
+    </script>
   </body>
 </html>
