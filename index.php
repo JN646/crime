@@ -35,9 +35,10 @@
       <?php
       if (isset($_POST["btnSearch"])) {
           $longVal = $_POST["long"];
+          $latVal = $_POST["lat"];
 
           // Get SQL
-          $sql = "SELECT id, Longitude, Latitude, Crime_Type FROM data WHERE Longitude='$longVal' ORDER BY Crime_Type ASC";
+          $sql = "SELECT id, Longitude, Latitude, Crime_Type FROM data WHERE Longitude='$longVal' OR Latitude='$latVal'  ORDER BY Crime_Type ASC";
           $result = mysqli_query($mysqli, $sql);
 
           // Fetch Results
