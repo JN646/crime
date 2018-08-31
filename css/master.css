@@ -6,7 +6,9 @@
 }
 
 body {
-  background-color: lightgrey;
+  background-image: url('../img/wall.jpg');
+  background-repeat: no-repeat;
+  background-size: auto;
 }
 
 .container {
@@ -43,6 +45,13 @@ body {
 
 .bold {
   font-weight: bold;
+}
+
+.form-layout {
+  border: 1px solid black;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 #noResults {

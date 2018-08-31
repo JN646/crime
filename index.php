@@ -24,7 +24,7 @@
       <p>Are you at risk of attack?</p>
 
       <!-- Search Form -->
-      <form class="" action="" method="post">
+      <form class="form-layout" action="" method="post">
         <label for="">Latitude</label>
         <input size='15' type="text" name="lat" value="52.122123">
         <label for="">Longitude</label>
