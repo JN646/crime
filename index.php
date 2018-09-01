@@ -17,6 +17,8 @@
     // Debug
     $safety = "safe";
     $rad = 0;
+    $monthVal = "January";
+    $yearVal = "2018";
      ?>
     <!-- Container -->
     <div class="container">
@@ -32,6 +34,27 @@
         <label for="">Radius</label>
         <input type="range" style="vertical-align: middle;" min="0.01" max="1.00" value="0.05" step="0.01" class="slider" id="myRange">
         <input id='radius' size='3' type="text" name="rad" value="0.08">
+        <label for="">Month</label>
+        <select class="" name="month">
+          <option selected='selected' value='January'>January</option>
+          <option value="Feburary">Feburary</option>
+          <option value="March">March</option>
+          <option value="April">April</option>
+          <option value="May">May</option>
+          <option value="June">June</option>
+          <option value="July">July</option>
+          <option value="August">August</option>
+          <option value="September">September</option>
+          <option value="October">October</option>
+          <option value="November">November</option>
+          <option value="December">December</option>
+        </select>
+        <label for="">Year</label>
+        <select class="" name="year">
+          <option value='2016'>2016</option>
+          <option value="2017">2017</option>
+          <option selected='selected' value="2018">2018</option>
+        </select>
         <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
       </form>
 
@@ -41,10 +64,14 @@
           $longVal = trim($_POST["long"]);
           $latVal = trim($_POST["lat"]);
           $radVal = trim($_POST["rad"]);
+          $monthVal = trim($_POST["month"]);
+          $yearVal = trim($_POST["year"]);
 
           // Get SQL
-          $sql = "SELECT COUNT(id), Longitude, Latitude, Crime_Type FROM data
+          $sql = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
           WHERE SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
+          AND Month='$monthVal'
+          AND Year='$yearVal'
           GROUP BY Crime_Type
           ORDER BY COUNT(id) DESC";
 
