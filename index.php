@@ -55,8 +55,17 @@
           <option value="2017">2017</option>
           <option selected='selected' value="2018">2018</option>
         </select>
+        <label for="">Case</label>
+        <select class="" name="case">
+          <option value='0'>0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+        </select>
+
         <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
       </form>
+
+
 
       <?php
       // Search Button Press
@@ -66,10 +75,18 @@
           $radVal = trim($_POST["rad"]);
           $monthVal = trim($_POST["month"]);
           $yearVal = trim($_POST["year"]);
+          $searchCase = trim($_POST["case"]);
 
           // Get SQL
+          //precalculation of ranges
+          $latLow = $latVal - $radVal;
+          $latHigh = $latVal + $radVal;
+          $longLow = $longVal - $radVal;
+          $longHigh = $longVal + $radVal;
+
+          $starttime = microtime(true);
           $sql = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
-          WHERE SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
+          WHERE Longitude > $longLow AND Longitude < $longHigh and Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
           AND Month='$monthVal'
           AND Year='$yearVal'
           GROUP BY Crime_Type
@@ -77,6 +94,11 @@
 
           // Run Result
           $resultCount = mysqli_query($mysqli, $sql);
+          if (!$resultCount) {
+            die('Could not run query: ' . mysqli_error($mysqli));
+          }
+
+          $duration = microtime(true) - $starttime; //calculates total time taken
 
           // Fetch Results
           if (mysqli_num_rows($resultCount) > 0) {
@@ -122,6 +144,7 @@
                 <hr>
                 <!-- Count Results -->
                 <p>Total: <?php echo mysqli_num_rows($resultCount) ?></p>
+                <p>Exec Time: <?php echo round($duration,4) ?></p>
               </div>
               <?php
           } else {
