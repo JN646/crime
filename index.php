@@ -13,15 +13,6 @@
     <?php include 'functions.php' ?>
   </head>
   <body>
-    <?php
-    // Debug
-    $safety = "safe";
-    $monthVal = "January";
-    $yearVal = "2018";
-    $radVal1 = 0;
-    $radVal2 = 0;
-    $n = 0;
-     ?>
     <!-- Container -->
     <div class="container">
       <h1>The Crimes</h1>
@@ -133,7 +124,7 @@
           getMap($latVal, $longVal);
 
           // Fetch Results
-          if (mysqli_num_rows($resultCount1) > 0 || mysql_num_rows($resultCount2) > 0) {
+          if (mysqli_num_rows($resultCount1) > 0 || mysqli_num_rows($resultCount2) > 0) {
               ?>
 
               <!-- Result Table -->
@@ -150,20 +141,28 @@
                   // Set Variables
                   $crime_type = $row["Crime_Type"];
                   $crime_count = $row["COUNT(id)"]; ?>
+
+                  <!-- Rows -->
                   <tr>
+                    <!-- Crime Type -->
                     <td><?php echo $crime_type; ?></td>
+
+                    <!-- Number of Results -->
                     <td class='text-center'>
-                    <?php $n = 0;
-                    $row1 = mysqli_fetch_assoc($resultCount1);
-                    for ($i=0; $i < count($resultCount1); $i++) {
-                      if ($row1["Crime_Type"] == $crime_type) {
-                        $n = $row1["COUNT(id)"];
-                        echo $row1["Crime_Type"];
+                      <?php $n = 0;
+                      $row1 = mysqli_fetch_assoc($resultCount1);
+                      for ($i=0; $i < count($resultCount1); $i++) {
+                        if ($row1["Crime_Type"] == $crime_type) {
+                          $n = $row1["COUNT(id)"];
+                        }
                       }
-                    }
-                    echo $n; ?>
-                  </td>
-                     <td class='text-center'><?php echo $crime_count; ?></td>
+                      echo $n; ?>
+                    </td>
+
+                    <!-- Crime Count -->
+                    <td class='text-center'><?php echo $crime_count; ?></td>
+
+                    <!-- Crime Risk -->
                     <td class='text-center'><?php echo "<span class=risk_" . getRisk($crime_count) .">" . getRisk($crime_count) . "</span>"?></td>
                   </tr>
                 <?php } ?>
@@ -172,9 +171,9 @@
               <hr>
               <!-- Count Results -->
               <div id='resultStats'>
-                <p>Total1: <?php echo mysqli_num_rows($resultCount1) ?></p>
-                <p>Total2: <?php echo mysqli_num_rows($resultCount2) ?></p>
-                <p>Exec Time: <?php echo round($duration, 4) ?></p>
+                <p class='outputText'><b>Immediate:</b> <?php echo mysqli_num_rows($resultCount1) ?></p>
+                <p class='outputText'><b>Local:</b> <?php echo mysqli_num_rows($resultCount2) ?></p>
+                <p class='outputText'><b>Exec Time:</b> <?php echo round($duration, 4) ?></p>
               </div>
               <?php
           } else {
@@ -182,6 +181,9 @@
               echo "<p id='noResults'>0 results</p>";
           }
       } ?>
+      <div id='footer' class="">
+        <p class='outputText text-center'>Copyright &copy; 2018 Copyright Holder All Rights Reserved. <br> <?php echo 'Version: ' . ApplicationVersion::get(); ?></p>
+      </div>
     </div>
   </body>
 </html>
