@@ -1,6 +1,6 @@
 /* Master CSS */
-@import url('https://fonts.googleapis.com/css?family=Ubuntu');
 
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
 * {
   font-family: 'Ubuntu', sans-serif;
 }
@@ -9,6 +9,7 @@ body {
   background-image: url('../img/wall.jpg');
   background-repeat: no-repeat;
   background-size: auto;
+  background-attachment: fixed;
 }
 
 .container {
@@ -57,4 +58,12 @@ body {
 #noResults {
   text-align: center;
   font-weight: bold;
+}
+
+div#resultStats {
+  background-color: lightgoldenrodyellow;
+  padding: 5px;
+  margin-top: 10px;
+  border: 1px solid palegoldenrod;
+  border-radius: 5px;
 }
