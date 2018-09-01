@@ -60,6 +60,18 @@ body {
   font-weight: bold;
 }
 
+.table-border {
+    border-collapse: collapse;
+}
+
+.table-border table, th, td {
+    border: 1px solid black;
+}
+
+.table-border td {
+  padding: 5px;
+}
+
 div#resultStats {
   background-color: lightgoldenrodyellow;
   padding: 5px;

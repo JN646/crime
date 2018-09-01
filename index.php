@@ -29,29 +29,41 @@
 
       <!-- Search Form -->
       <form class="form-layout" action="" method="post">
+        <!-- Latitude -->
         <label for="">Latitude</label>
         <input size='8' type="text" name="lat" value="52.122123">
+
+        <!-- Longitude -->
         <label for="">Longitude</label>
         <input size='8' type="text" name="long" value="-0.586406">
-        <label for="">immediate area</label>
+
+        <!-- Immediate Area -->
+        <label for="">Immediate Area</label>
         <input id='radius' size='3' type="text" name="rad1" value="0.1">
+
+        <!-- Local Area -->
         <label for="">local area</label>
         <input id='radius2' size='3' type="text" name="rad2" value="0.4">
+
+        <!-- Month -->
         <label for="">Month</label>
         <select class="" name="month">
           <?php $monthVariables = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"];
-            for ($i=0; $i < count($monthVariables) ; $i++) {
-                ?>
+            for ($i=0; $i < count($monthVariables) ; $i++) { ?>
               <option value="<?php echo $monthVariables[$i] ?>"><?php echo $monthVariables[$i] ?></option>
-          <?php
-            } ?>
-         </select>
+          <?php } ?>
+        </select>
+
+        <!-- Year -->
         <label for="">Year</label>
         <select class="" name="year">
-          <option value='2016'>2016</option>
-          <option value="2017">2017</option>
-          <option selected='selected' value="2018">2018</option>
+          <?php $yearVariables = ["2016","2017","2018"];
+            for ($i=0; $i < count($yearVariables) ; $i++) { ?>
+              <option value="<?php echo $yearVariables[$i] ?>"><?php echo $yearVariables[$i] ?></option>
+          <?php } ?>
         </select>
+
+        <!-- Case -->
         <label for="">Case</label>
         <select class="" name="case">
           <?php for ($i=0; $i < 3; $i++) {
@@ -86,7 +98,8 @@
           $longLow2 = $longVal - $radVal2;
           $longHigh2 = $longVal + $radVal2;
 
-          $starttime = microtime(true); // Start Timer
+          // Start Timer
+          $starttime = microtime(true);
 
           //immediate area
           $sql1 = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
@@ -113,7 +126,8 @@
               die('Could not run query: ' . mysqli_error($mysqli));
           }
 
-          $duration = microtime(true) - $starttime; // Calculates total time taken
+          // Calculates total time taken
+          $duration = microtime(true) - $starttime;
 
           // Get Map
           getMap($latVal, $longVal);
@@ -132,7 +146,6 @@
                   <th class='text-center text-bold'>Risk</th>
                 </tr>
                 <?php
-
               while ($row = mysqli_fetch_assoc($resultCount2)) {
                   // Set Variables
                   $crime_type = $row["Crime_Type"];
@@ -140,16 +153,16 @@
                   <tr>
                     <td><?php echo $crime_type; ?></td>
                     <td class='text-center'>
-                    <?php
-                    $n = 0;
+                    <?php $n = 0;
                     $row1 = mysqli_fetch_assoc($resultCount1);
                     for ($i=0; $i < count($resultCount1); $i++) {
                       if ($row1["Crime_Type"] == $crime_type) {
                         $n = $row1["COUNT(id)"];
+                        echo $row1["Crime_Type"];
                       }
                     }
-                    echo $n;
-                     ?></td>
+                    echo $n; ?>
+                  </td>
                      <td class='text-center'><?php echo $crime_count; ?></td>
                     <td class='text-center'><?php echo "<span class=risk_" . getRisk($crime_count) .">" . getRisk($crime_count) . "</span>"?></td>
                   </tr>
