@@ -51,7 +51,7 @@ function getMap($latVal, $longVal) {
   function myMap() {
     var myCenter = new google.maps.LatLng(<?php echo $latVal ?>,<?php echo $longVal ?>);
     var mapCanvas = document.getElementById("map");
-    var mapOptions = {center: myCenter, zoom: 15};
+    var mapOptions = {center: myCenter, zoom: 14, streetViewControl: false, mapTypeControl: false};
     var map = new google.maps.Map(mapCanvas, mapOptions);
     var marker = new google.maps.Marker({position:myCenter});
     marker.setMap(map);
@@ -60,6 +60,23 @@ function getMap($latVal, $longVal) {
       latBoxVal.value =  e.latLng.lat().toFixed(6);
       longBoxVal.value =  e.latLng.lng().toFixed(6);
     });
+
+    // Add circle overlay and bind to marker
+    var circleImmediate = new google.maps.Circle({
+      map: map,
+      radius: 100,
+      fillColor: '#AA0000',
+      strokeWeight: 1
+    });
+    circleImmediate.bindTo('center', marker, 'position');
+
+    var circleLocal = new google.maps.Circle({
+      map: map,
+      radius: 1000,
+      fillColor: '#EE0000',
+      strokeWeight: 1
+    });
+    circleLocal.bindTo('center', marker, 'position');
   }
   </script>
 
@@ -81,7 +98,7 @@ function getRisk($crime_count) {
   }
 
   // Low
-  if ($crime_count < 10) {
+  if ($crime_count <= 10) {
     $crime_risk = "Low";
   }
 
