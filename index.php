@@ -16,49 +16,67 @@
     <!-- Container -->
     <div class="container">
       <h1>The Crimes</h1>
-      <p>Are you at risk of attack?</p>
+      <p>What is happening around you?</p>
 
       <!-- Search Form -->
       <form class="form-layout" action="" method="post">
         <!-- Latitude -->
-        <label for="">Latitude</label>
-        <input id='latBox' size='8' type="text" name="lat" value="52.122123">
+        <div class='form-block'>
+          <label for="lat">Latitude</label>
+          <input id='latBox' size='8' type="text" name="lat" value="52.122123">
+        </div>
 
         <!-- Longitude -->
-        <label for="">Longitude</label>
-        <input id='longBox' size='8' type="text" name="long" value="-0.586406">
+        <div class='form-block'>
+          <label for="long">Longitude</label>
+          <input id='longBox' size='8' type="text" name="long" value="-0.586406">
+        </div>
 
         <!-- Get GPS Locations -->
-        <button type="button" onclick="getLocation()" name="button"><i class="fas fa-location-arrow"></i></button>
+        <div class='form-block'>
+          <label for="gps"></label>
+          <button type="button" onclick="getLocation()" name="gps"><i class="fas fa-location-arrow"></i></button>
+        </div>
 
         <!-- Immediate Area -->
-        <label for="">Immediate Area</label>
-        <input id='radius' size='3' type="text" name="rad1" value="0.02">
+        <div class='form-block'>
+          <label for="rad1">Immediate Area</label>
+          <input id='radius' size='3' type="text" name="rad1" value="0.02">
+        </div>
 
         <!-- Local Area -->
-        <label for="">local area</label>
-        <input id='radius2' size='3' type="text" name="rad2" value="0.05">
+        <div class='form-block'>
+          <label for="rad2">local area</label>
+          <input id='radius2' size='3' type="text" name="rad2" value="0.05">
+        </div>
 
         <!-- Month -->
-        <label for="">Month</label>
-        <select class="" name="month">
-          <?php $monthVariables = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"];
-            for ($i=0; $i < count($monthVariables) ; $i++) { ?>
-              <option value="<?php echo $monthVariables[$i] ?>"><?php echo $monthVariables[$i] ?></option>
-          <?php } ?>
-        </select>
+        <div class='form-block'>
+          <label for="month">Month</label>
+          <select class="" name="month">
+            <?php $monthVariables = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"];
+              for ($i=0; $i < count($monthVariables) ; $i++) { ?>
+                <option value="<?php echo $monthVariables[$i] ?>"><?php echo $monthVariables[$i] ?></option>
+            <?php } ?>
+          </select>
+        </div>
 
         <!-- Year -->
-        <label for="">Year</label>
-        <select class="" name="year">
-          <?php $yearVariables = ["2018","2017","2016"];
-            for ($i=0; $i < count($yearVariables) ; $i++) { ?>
-              <option value="<?php echo $yearVariables[$i] ?>"><?php echo $yearVariables[$i] ?></option>
-          <?php } ?>
-        </select>
+        <div class='form-block'>
+          <label for="year">Year</label>
+          <select class="" name="year">
+            <?php $yearVariables = ["2018","2017","2016"];
+              for ($i=0; $i < count($yearVariables) ; $i++) { ?>
+                <option value="<?php echo $yearVariables[$i] ?>"><?php echo $yearVariables[$i] ?></option>
+            <?php } ?>
+          </select>
+        </div>
 
         <!-- Search Button -->
-        <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
+        <div class='form-block'>
+          <label for="btnSearch"></label>
+          <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
+        </div>
       </form>
 
       <?php

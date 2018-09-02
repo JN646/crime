@@ -61,10 +61,16 @@ body {
 
 /* Form */
 .form-layout {
-  border: 1px solid black;
+  border: 1px solid lightblue;
   padding: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
+  background-color: aliceblue;
+}
+
+.form-block {
+  display: inline-grid;
+  margin: 10px;
 }
 
 /* No Results */
