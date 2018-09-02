@@ -16,7 +16,6 @@
           $monthVal   = trim($_POST["month"]);
           $yearVal    = trim($_POST["year"]);
 
-          // Get SQL
           // Precalculation of ranges
           $latLow1    = $latVal - $radVal1;
           $latHigh1   = $latVal + $radVal1;
@@ -45,8 +44,6 @@
 
           // Generate Table
           tableGen($resultCount_Immediate,$resultCount_Local,$duration);
-
-          // Counters
       } ?>
 
       <hr>

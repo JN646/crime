@@ -1,6 +1,6 @@
 <?php
-//############## FUNCTION FILE #######################################################
-//############## Version Number ######################################################
+//############## FUNCTION FILE #################################################
+//############## Version Number ################################################
 class ApplicationVersion
 {
     // Define version numbering
@@ -24,7 +24,7 @@ class ApplicationVersion
     // Usage: echo 'MyApplication ' . ApplicationVersion::get();
 }
 
-//############## INIT VALUE ##########################################################
+//############## INIT VALUE ####################################################
 // Debug
 $safety = "safe";
 $monthVal = "January";
@@ -36,7 +36,7 @@ $n = 0;
 // Enable/Disable
 $enableMap = 'False';
 
-//############## SQL Connection ######################################################
+//############## SQL Connection ################################################
 //MySQL connection
 $mysqli = new mysqli('localhost', 'root', '', 'crimes');
 
@@ -45,7 +45,7 @@ if ($mysqli->connect_error) {
   die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
 }
 
-//############## RUN MAP #############################################################
+//############## RUN MAP #######################################################
 function getMap($latVal, $longVal) {
   ?>
   <div id="map" style="width:100%;height:300px"></div>
@@ -90,7 +90,7 @@ function getMap($latVal, $longVal) {
   }
 }
 
-//############## RISK MATRIX #########################################################
+//############## RISK MATRIX ###################################################
 function getRisk($crime_count) {
   // High
   if ($crime_count >= 50) {
@@ -110,7 +110,7 @@ function getRisk($crime_count) {
   return $crime_risk;
 }
 
-//############## MAKE TABLE ########################################################
+//############## MAKE TABLE ####################################################
 function tableGen($resultCount_Immediate,$resultCount_Local,$duration) {
   // Fetch Results
   if (mysqli_num_rows($resultCount_Immediate) > 0 || mysqli_num_rows($resultCount_Local) > 0) {
@@ -167,7 +167,7 @@ function tableGen($resultCount_Immediate,$resultCount_Local,$duration) {
   }
 }
 
-//############## RUN SQL #########################################################
+//############## RUN SQL #######################################################
 // SQL Immediate
 function sqlImmediate($mysqli,$longLow1,$longHigh1,$latLow1,$latHigh1,$latVal,$longVal,$radVal1,$monthVal,$yearVal) {
   //immediate area
