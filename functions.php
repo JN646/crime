@@ -190,4 +190,21 @@ function sqlLocal($mysqli,$longLow2,$longHigh2,$latLow2,$latHigh2,$latVal,$longV
 
   return $resultCount_Local;
 }
+
+//############## GET VALUES #####################################################
+// Get Months
+function getMonths() {
+  $monthVariables = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"];
+    for ($i=0; $i < count($monthVariables) ; $i++) { ?>
+      <option value="<?php echo $monthVariables[$i] ?>"><?php echo $monthVariables[$i] ?></option>
+<?php }
+}
+
+// Get Years
+function getYears() {
+  $yearVariables = ["2018","2017","2016"];
+    for ($i=0; $i < count($yearVariables) ; $i++) { ?>
+      <option value="<?php echo $yearVariables[$i] ?>"><?php echo $yearVariables[$i] ?></option>
+<?php }
+}
 ?>

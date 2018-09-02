@@ -56,10 +56,7 @@
         <div class='form-block'>
           <label for="month">Month</label>
           <select class="" name="month">
-            <?php $monthVariables = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"];
-              for ($i=0; $i < count($monthVariables) ; $i++) { ?>
-                <option value="<?php echo $monthVariables[$i] ?>"><?php echo $monthVariables[$i] ?></option>
-            <?php } ?>
+            <?php getMonths() ?>
           </select>
         </div>
 
@@ -67,10 +64,7 @@
         <div class='form-block'>
           <label for="year">Year</label>
           <select class="" name="year">
-            <?php $yearVariables = ["2018","2017","2016"];
-              for ($i=0; $i < count($yearVariables) ; $i++) { ?>
-                <option value="<?php echo $yearVariables[$i] ?>"><?php echo $yearVariables[$i] ?></option>
-            <?php } ?>
+          <?php getYears() ?>
           </select>
         </div>
 
