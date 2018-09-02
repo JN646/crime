@@ -55,6 +55,11 @@ function getMap($latVal, $longVal) {
     var map = new google.maps.Map(mapCanvas, mapOptions);
     var marker = new google.maps.Marker({position:myCenter});
     marker.setMap(map);
+
+    google.maps.event.addListener(map, "click", function (e) {
+      latBoxVal.value =  e.latLng.lat().toFixed(6);
+      longBoxVal.value =  e.latLng.lng().toFixed(6);
+    });
   }
   </script>
 
