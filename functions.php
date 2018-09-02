@@ -71,7 +71,7 @@ function getRisk($crime_count) {
   }
 
   // Medium
-  if ($crime_count > 11 && $crime_count < 49) {
+  if ($crime_count >= 11 && $crime_count <= 49) {
     $crime_risk = "Medium";
   }
 
@@ -81,5 +81,130 @@ function getRisk($crime_count) {
   }
 
   return $crime_risk;
+}
+
+//############## MAKE TABLE ########################################################
+function tableGen($resultCount_Immediate,$resultCount_Local,$duration) {
+  // Fetch Results
+  if (mysqli_num_rows($resultCount_Immediate) > 0 || mysqli_num_rows($resultCount_Local) > 0) {
+      ?>
+
+      <!-- Result Table -->
+      <h2>Crimes Around You</h2>
+      <table class='table-border' width=100%>
+        <tr>
+          <th class='text-center text-bold'>Crime</th>
+          <th class='text-center text-bold'>Immediate</th>
+          <th class='text-center text-bold'>Local</th>
+          <th class='text-center text-bold'>Risk</th>
+        </tr>
+        <?php
+      while ($row = mysqli_fetch_assoc($resultCount_Local)) {
+          // Set Variables
+          $crime_type = $row["Crime_Type"];
+          $crime_count = $row["COUNT(id)"]; ?>
+
+          <!-- Rows -->
+          <tr>
+            <!-- Crime Type -->
+            <td><?php echo $crime_type; ?></td>
+
+            <!-- Number of Results -->
+            <td class='text-center'>
+              <?php $n = 0;
+              $row1 = mysqli_fetch_assoc($resultCount_Immediate);
+              for ($i=0; $i < count($resultCount_Immediate); $i++) {
+                if ($row1["Crime_Type"] == $crime_type) {
+                  $n = $row1["COUNT(id)"];
+                }
+              }
+              if ($n == 0) {
+                echo "-";
+              } else {
+                echo $n;
+              } ?>
+            </td>
+
+            <!-- Crime Count -->
+            <td class='text-center'><?php echo $crime_count; ?></td>
+
+            <!-- Crime Risk -->
+            <td class='text-center'><?php echo "<span class='bold risk_" . getRisk($crime_count) ."'>" . getRisk($crime_count) . "</span>"?></td>
+          </tr>
+        <?php } ?>
+      </table>
+
+      <hr>
+      <!-- Count Results -->
+      <div id='resultStats'>
+        <p class='outputText'><b>Immediate:</b> <?php echo mysqli_num_rows($resultCount_Immediate) ?></p>
+        <p class='outputText'><b>Local:</b> <?php echo mysqli_num_rows($resultCount_Local) ?></p>
+        <p class='outputText'><b>Exec Time:</b> <?php echo round($duration, 4) ?></p>
+      </div>
+      <?php
+  } else {
+      // No Results
+      echo "<p id='noResults'>0 results</p>";
+  }
+}
+
+//############## RUN SQL #########################################################
+// SQL Immediate
+function sqlImmediate($mysqli,$longLow1,$longHigh1,$latLow1,$latHigh1,$latVal,$longVal,$radVal1,$monthVal,$yearVal) {
+  //immediate area
+  $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
+  WHERE Longitude > $longLow1 AND Longitude < $longHigh1 and Latitude > $latLow1 AND Latitude < $latHigh1 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal1'
+  AND Month='$monthVal'
+  AND Year='$yearVal'
+  GROUP BY Crime_Type
+  ORDER BY COUNT(id) DESC";
+
+  // Run Query
+  $resultCount_Immediate = mysqli_query($mysqli, $sql_immediate);
+
+  // If Error
+  if (!$resultCount_Immediate) {
+      die('Could not run query: ' . mysqli_error($mysqli));
+  }
+
+  return $resultCount_Immediate;
+}
+
+// SQL Local
+function sqlLocal($mysqli,$longLow2,$longHigh2,$latLow2,$latHigh2,$latVal,$longVal,$radVal2,$monthVal,$yearVal) {
+  //local area
+  $sq2_local = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
+  WHERE Longitude > $longLow2 AND Longitude < $longHigh2 and Latitude > $latLow2 AND Latitude < $latHigh2 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal2'
+  AND Month='$monthVal'
+  AND Year='$yearVal'
+  GROUP BY Crime_Type
+  ORDER BY COUNT(id) DESC";
+
+  // Run Query
+  $resultCount_Local = mysqli_query($mysqli, $sq2_local);
+
+  // If Error
+  if (!$resultCount_Local) {
+      die('Could not run query: ' . mysqli_error($mysqli));
+  }
+
+  return $resultCount_Local;
+}
+
+//############## GET VALUES #####################################################
+// Get Months
+function getMonths() {
+  $monthVariables = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"];
+    for ($i=0; $i < count($monthVariables) ; $i++) { ?>
+      <option value="<?php echo $monthVariables[$i] ?>"><?php echo $monthVariables[$i] ?></option>
+<?php }
+}
+
+// Get Years
+function getYears() {
+  $yearVariables = ["2018","2017","2016"];
+    for ($i=0; $i < count($yearVariables) ; $i++) { ?>
+      <option value="<?php echo $yearVariables[$i] ?>"><?php echo $yearVariables[$i] ?></option>
+<?php }
 }
 ?>
