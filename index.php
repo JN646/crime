@@ -70,7 +70,6 @@
           $radVal2 = trim($_POST["rad2"]);
           $monthVal = trim($_POST["month"]);
           $yearVal = trim($_POST["year"]);
-          $searchCase = trim($_POST["case"]);
 
           // Get SQL
           //precalculation of ranges
