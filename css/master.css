@@ -20,13 +20,17 @@ body {
   background-color: white;
   padding: 20px;
   margin: 0 auto;
-  margin-top: 20px;
   margin-bottom: 20px;
 }
 
 .header {
+  color: white;
+  width: 1000px;
+  background-color: #374f6b;
+  padding: 20px;
+  margin: 0 auto;
+  margin-top: 20px;
   line-height: 5px;
-  padding: 10px;
 }
 
 /* Text Tweaks */
