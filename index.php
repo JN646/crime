@@ -48,7 +48,7 @@
 
         <!-- Local Area -->
         <div class='form-block'>
-          <label for="rad2">local area</label>
+          <label for="rad2">Local Area</label>
           <input id='radius2' size='3' type="text" name="rad2" value="0.05">
         </div>
 
@@ -92,7 +92,7 @@
           $yearVal = trim($_POST["year"]);
 
           // Get SQL
-          //precalculation of ranges
+          // Precalculation of ranges
           $latLow1 = $latVal - $radVal1;
           $latHigh1 = $latVal + $radVal1;
           $longLow1 = $longVal - $radVal1;
@@ -106,30 +106,9 @@
           // Start Timer
           $starttime = microtime(true);
 
-          //immediate area
-          $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
-          WHERE Longitude > $longLow1 AND Longitude < $longHigh1 and Latitude > $latLow1 AND Latitude < $latHigh1 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal1'
-          AND Month='$monthVal'
-          AND Year='$yearVal'
-          GROUP BY Crime_Type
-          ORDER BY COUNT(id) DESC";
-
-          //local area
-          $sq2_local = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
-          WHERE Longitude > $longLow2 AND Longitude < $longHigh2 and Latitude > $latLow2 AND Latitude < $latHigh2 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal2'
-          AND Month='$monthVal'
-          AND Year='$yearVal'
-          GROUP BY Crime_Type
-          ORDER BY COUNT(id) DESC";
-
-          // Run Results
-          $resultCount_Immediate = mysqli_query($mysqli, $sql_immediate);
-          $resultCount_Local = mysqli_query($mysqli, $sq2_local);
-
-          // If Error
-          if (!$resultCount_Immediate || !$resultCount_Local) {
-              die('Could not run query: ' . mysqli_error($mysqli));
-          }
+          // Run Queries
+          $resultCount_Immediate = sqlImmediate($mysqli,$longLow1,$longHigh1,$latLow1,$latHigh1,$latVal,$longVal,$radVal1,$monthVal,$yearVal);
+          $resultCount_Local = sqlLocal($mysqli,$longLow1,$longHigh1,$latLow1,$latHigh1,$latVal,$longVal,$radVal1,$monthVal,$yearVal);
 
           // Calculates total time taken
           $duration = microtime(true) - $starttime;
@@ -137,69 +116,8 @@
           // Get Map
           getMap($latVal, $longVal);
 
-          // Fetch Results
-          if (mysqli_num_rows($resultCount_Immediate) > 0 || mysqli_num_rows($resultCount_Local) > 0) {
-              ?>
-
-              <!-- Result Table -->
-              <h2>Crimes Around You</h2>
-              <table class='table-border' width=100%>
-                <tr>
-                  <th class='text-center text-bold'>Crime</th>
-                  <th class='text-center text-bold'>Immediate</th>
-                  <th class='text-center text-bold'>Local</th>
-                  <th class='text-center text-bold'>Risk</th>
-                </tr>
-                <?php
-              while ($row = mysqli_fetch_assoc($resultCount_Local)) {
-                  // Set Variables
-                  $crime_type = $row["Crime_Type"];
-                  $crime_count = $row["COUNT(id)"]; ?>
-
-                  <!-- Rows -->
-                  <tr>
-                    <!-- Crime Type -->
-                    <td><?php echo $crime_type; ?></td>
-
-                    <!-- Number of Results -->
-                    <td class='text-center'>
-                      <?php $n = 0;
-                      $row1 = mysqli_fetch_assoc($resultCount_Immediate);
-                      for ($i=0; $i < count($resultCount_Immediate); $i++) {
-                        if ($row1["Crime_Type"] == $crime_type) {
-                          $n = $row1["COUNT(id)"];
-                        }
-                      }
-                      if ($n == 0) {
-                        // If no value.
-                        echo "-";
-                      } else {
-                        // If value.
-                        echo $n;
-                      } ?>
-                    </td>
-
-                    <!-- Crime Count -->
-                    <td class='text-center'><?php echo $crime_count; ?></td>
-
-                    <!-- Crime Risk -->
-                    <td class='text-center'><?php echo "<span class='bold risk_" . getRisk($crime_count) ."'>" . getRisk($crime_count) . "</span>"?></td>
-                  </tr>
-                <?php } ?>
-              </table>
-
-              <hr>
-              <!-- Count Results -->
-              <div id='resultStats'>
-                <p class='outputText'><b>Immediate:</b> <?php echo mysqli_num_rows($resultCount_Immediate) ?></p>
-                <p class='outputText'><b>Local:</b> <?php echo mysqli_num_rows($resultCount_Local) ?></p>
-                <p class='outputText'><b>Exec Time:</b> <?php echo round($duration, 4) ?></p>
-              </div>
-              <?php
-          } else {
-              // No Results
-              echo "<p id='noResults'>0 results</p>";
-          }
+          // Generate Table
+          tableGen($resultCount_Immediate,$resultCount_Local,$duration);
       } ?>
       <div id='footer' class="">
         <p class='outputText text-center'>Copyright &copy; 2018 Copyright Holder All Rights Reserved. <br> <?php echo 'Version: ' . ApplicationVersion::get(); ?></p>
