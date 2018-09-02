@@ -81,7 +81,7 @@ function getMap($latVal, $longVal) {
   </script>
 
   <!-- Map API Key -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDntrXRGpts74HjwJQbirjHqKW_Cq50lSU&callback=myMap"></script>
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDntrXRGpts74HjwJQbirjHqKW_Cq50lSU&callback=myMap"></script> -->
   <?php
 }
 
