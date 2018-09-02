@@ -22,19 +22,22 @@
       <form class="form-layout" action="" method="post">
         <!-- Latitude -->
         <label for="">Latitude</label>
-        <input size='8' type="text" name="lat" value="52.122123">
+        <input id='latBox' size='8' type="text" name="lat" value="52.122123">
 
         <!-- Longitude -->
         <label for="">Longitude</label>
-        <input size='8' type="text" name="long" value="-0.586406">
+        <input id='longBox' size='8' type="text" name="long" value="-0.586406">
+
+        <!-- Get GPS Locations -->
+        <button type="button" onclick="getLocation()" name="button"><i class="fas fa-location-arrow"></i></button>
 
         <!-- Immediate Area -->
         <label for="">Immediate Area</label>
-        <input id='radius' size='3' type="text" name="rad1" value="0.1">
+        <input id='radius' size='3' type="text" name="rad1" value="0.02">
 
         <!-- Local Area -->
         <label for="">local area</label>
-        <input id='radius2' size='3' type="text" name="rad2" value="0.4">
+        <input id='radius2' size='3' type="text" name="rad2" value="0.05">
 
         <!-- Month -->
         <label for="">Month</label>
@@ -48,7 +51,7 @@
         <!-- Year -->
         <label for="">Year</label>
         <select class="" name="year">
-          <?php $yearVariables = ["2016","2017","2018"];
+          <?php $yearVariables = ["2018","2017","2016"];
             for ($i=0; $i < count($yearVariables) ; $i++) { ?>
               <option value="<?php echo $yearVariables[$i] ?>"><?php echo $yearVariables[$i] ?></option>
           <?php } ?>
@@ -185,5 +188,22 @@
         <p class='outputText text-center'>Copyright &copy; 2018 Copyright Holder All Rights Reserved. <br> <?php echo 'Version: ' . ApplicationVersion::get(); ?></p>
       </div>
     </div>
+    <script>
+      var latBoxVal = document.getElementById("latBox");
+      var longBoxVal = document.getElementById("longBox");
+
+      function getLocation() {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(showPosition);
+          } else {
+              console.log("Geolocation is not supported by this browser.");
+          }
+      }
+
+      function showPosition(position) {
+          latBoxVal.value = position.coords.latitude;
+          longBoxVal.value = position.coords.longitude;
+      }
+    </script>
   </body>
 </html>
