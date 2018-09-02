@@ -150,14 +150,20 @@
                           $n = $row1["COUNT(id)"];
                         }
                       }
-                      echo $n; ?>
+                      if ($n == 0) {
+                        // If no value.
+                        echo "-";
+                      } else {
+                        // If value.
+                        echo $n;
+                      } ?>
                     </td>
 
                     <!-- Crime Count -->
                     <td class='text-center'><?php echo $crime_count; ?></td>
 
                     <!-- Crime Risk -->
-                    <td class='text-center'><?php echo "<span class=risk_" . getRisk($crime_count) .">" . getRisk($crime_count) . "</span>"?></td>
+                    <td class='text-center'><?php echo "<span class='bold risk_" . getRisk($crime_count) ."'>" . getRisk($crime_count) . "</span>"?></td>
                   </tr>
                 <?php } ?>
               </table>

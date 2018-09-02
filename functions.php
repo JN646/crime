@@ -71,7 +71,7 @@ function getRisk($crime_count) {
   }
 
   // Medium
-  if ($crime_count > 11 && $crime_count < 49) {
+  if ($crime_count >= 11 && $crime_count <= 49) {
     $crime_risk = "Medium";
   }
 
