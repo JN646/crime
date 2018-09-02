@@ -15,8 +15,10 @@
   <body>
     <!-- Container -->
     <div class="container">
-      <h1>The Crimes</h1>
-      <p>What is happening around you?</p>
+      <div class="header">
+        <h1>The Crimes</h1>
+        <p>What is happening around you?</p>
+      </div>
 
       <!-- Search Form -->
       <form class="form-layout" action="" method="post">
@@ -203,43 +205,7 @@
         <p class='outputText text-center'>Copyright &copy; 2018 Copyright Holder All Rights Reserved. <br> <?php echo 'Version: ' . ApplicationVersion::get(); ?></p>
       </div>
     </div>
-    <script>
-      // Get Boxes to put coordinates in.
-      var latBoxVal = document.getElementById("latBox");
-      var longBoxVal = document.getElementById("longBox");
-
-      // Get location
-      function getLocation() {
-          if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(showPosition,showError);
-          } else {
-              alert("Geolocation is not supported by this browser.");
-          }
-      }
-
-      // Put information in lat/Long boxes.
-      function showPosition(position) {
-          latBoxVal.value = position.coords.latitude;
-          longBoxVal.value = position.coords.longitude;
-      }
-
-      // Handle Errors
-      function showError(error) {
-          switch(error.code) {
-              case error.PERMISSION_DENIED:
-                  alert("User denied the request for Geolocation.")
-                  break;
-              case error.POSITION_UNAVAILABLE:
-                  alert("Location information is unavailable.")
-                  break;
-              case error.TIMEOUT:
-                  alert("The request to get user location timed out.")
-                  break;
-              case error.UNKNOWN_ERROR:
-                  alert("An unknown error occurred.")
-                  break;
-          }
-      }
-    </script>
+    <!-- Global JS File -->
+    <script src="js/global.js" charset="utf-8"></script>
   </body>
 </html>

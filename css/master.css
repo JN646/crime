@@ -24,6 +24,11 @@ body {
   margin-bottom: 20px;
 }
 
+.header {
+  line-height: 5px;
+  padding: 10px;
+}
+
 /* Text Tweaks */
 .text-center {
   text-align: center;
@@ -85,7 +90,7 @@ body {
 }
 
 .table-border table, th, td {
-    border: 1px solid black;
+    border: 1px solid lightgray;
 }
 
 .table-border th, td {
