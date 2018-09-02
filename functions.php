@@ -160,14 +160,6 @@ function tableGen($resultCount_Immediate,$resultCount_Local,$duration) {
           </tr>
         <?php } ?>
       </table>
-
-      <hr>
-      <!-- Count Results -->
-      <div id='resultStats'>
-        <p class='outputText'><b>Immediate:</b> <?php echo mysqli_num_rows($resultCount_Immediate) ?></p>
-        <p class='outputText'><b>Local:</b> <?php echo mysqli_num_rows($resultCount_Local) ?></p>
-        <p class='outputText'><b>Exec Time:</b> <?php echo round($duration, 4) ?></p>
-      </div>
       <?php
   } else {
       // No Results
@@ -218,7 +210,7 @@ function sqlLocal($mysqli,$longLow2,$longHigh2,$latLow2,$latHigh2,$latVal,$longV
   return $resultCount_Local;
 }
 
-//############## GET VALUES #####################################################
+//############## GET VALUES ####################################################
 // Get Months
 function getMonths() {
   $monthVariables = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"];
@@ -233,5 +225,60 @@ function getYears() {
     for ($i=0; $i < count($yearVariables) ; $i++) { ?>
       <option value="<?php echo $yearVariables[$i] ?>"><?php echo $yearVariables[$i] ?></option>
 <?php }
+}
+
+//############## Count Thing ###################################################
+// Count Counties
+function countCounties($mysqli) {
+  //local Area
+  $countCountiesSQL = "SELECT DISTINCT Falls_Within FROM data";
+
+  // Run Query
+  $result_countCountiesSQL = mysqli_query($mysqli, $countCountiesSQL);
+  $num_rows = mysqli_num_rows($result_countCountiesSQL);
+
+  // If Error
+  if (!$result_countCountiesSQL) {
+    die('Could not count counties: ' . mysqli_error($mysqli));
+  }
+
+  // Return Results
+  return $num_rows;
+}
+
+// Count Crimes
+function countCrimes($mysqli) {
+  //local Area
+  $countCrimesSQL = "SELECT * FROM data";
+
+  // Run Query
+  $result_countCrimesSQL = mysqli_query($mysqli, $countCrimesSQL);
+  $num_rows = mysqli_num_rows($result_countCrimesSQL);
+
+  // If Error
+  if (!$result_countCrimesSQL) {
+    die('Could not count crimes: ' . mysqli_error($mysqli));
+  }
+
+  // Return Results
+  return $num_rows;
+}
+
+// Count Crime Types
+function countCrimeTypes($mysqli) {
+  //local Area
+  $countCrimeTypesSQL = "SELECT DISTINCT Crime_Type FROM data";
+
+  // Run Query
+  $result_countCrimeTypesSQL = mysqli_query($mysqli, $countCrimeTypesSQL);
+  $num_rows = mysqli_num_rows($result_countCrimeTypesSQL);
+
+  // If Error
+  if (!$result_countCrimeTypesSQL) {
+    die('Could not count crime types: ' . mysqli_error($mysqli));
+  }
+
+  // Return Results
+  return $num_rows;
 }
 ?>

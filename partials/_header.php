@@ -13,7 +13,7 @@
     <?php include 'functions.php' ?>
   </head>
   <div class="header">
-    <h1>The Crimes</h1>
-    <p>What is happening around you?</p>
+    <h1 class=''>The Crimes</h1>
+    <p class=''>What is happening around you?</p>
   </div>
 <body>

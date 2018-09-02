@@ -32,8 +32,8 @@
           $starttime = microtime(true);
 
           // Run Queries
-          $resultCount_Immediate = sqlImmediate($mysqli,$longLow1,$longHigh1,$latLow1,$latHigh1,$latVal,$longVal,$radVal1,$monthVal,$yearVal);
-          $resultCount_Local = sqlLocal($mysqli,$longLow2,$longHigh2,$latLow2,$latHigh2,$latVal,$longVal,$radVal2,$monthVal,$yearVal);
+          $resultCount_Immediate  = sqlImmediate($mysqli,$longLow1,$longHigh1,$latLow1,$latHigh1,$latVal,$longVal,$radVal1,$monthVal,$yearVal);
+          $resultCount_Local      = sqlLocal($mysqli,$longLow2,$longHigh2,$latLow2,$latHigh2,$latVal,$longVal,$radVal2,$monthVal,$yearVal);
 
           // Calculates total time taken
           $duration = microtime(true) - $starttime;
@@ -45,7 +45,22 @@
 
           // Generate Table
           tableGen($resultCount_Immediate,$resultCount_Local,$duration);
+
+          // Counters
       } ?>
+
+      <hr>
+      <!-- Count Results -->
+      <div id='resultStats'>
+        <p class='outputText'><b>Immediate:</b> <?php echo mysqli_num_rows($resultCount_Immediate) ?></p>
+        <p class='outputText'><b>Local:</b> <?php echo mysqli_num_rows($resultCount_Local) ?></p>
+        <p class='outputText'><b># Counties:</b> <?php countCounties($mysqli) ?></p>
+        <p class='outputText'><b># Reports:</b> <?php countCrimes($mysqli) ?></p>
+        <p class='outputText'><b># Crime Types:</b> <?php countCrimeTypes($mysqli) ?></p>
+        <p class='outputText'><b>Exec Time:</b> <?php echo round($duration, 4) ?></p>
+      </div>
+
+      <!-- Footer -->
       <?php include 'partials/_footer.php' ?>
   </body>
 </html>
