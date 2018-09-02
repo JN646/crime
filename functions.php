@@ -33,6 +33,9 @@ $radVal1 = 0;
 $radVal2 = 0;
 $n = 0;
 
+// Enable/Disable
+$enableMap = 'False';
+
 //############## SQL Connection ######################################################
 //MySQL connection
 $mysqli = new mysqli('localhost', 'root', '', 'crimes');
@@ -81,8 +84,10 @@ function getMap($latVal, $longVal) {
   </script>
 
   <!-- Map API Key -->
-  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDntrXRGpts74HjwJQbirjHqKW_Cq50lSU&callback=myMap"></script> -->
+  <?php if ($enableMap == "True") { ?>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDntrXRGpts74HjwJQbirjHqKW_Cq50lSU&callback=myMap"></script>
   <?php
+  }
 }
 
 //############## RISK MATRIX #########################################################

@@ -39,7 +39,9 @@
           $duration = microtime(true) - $starttime;
 
           // Get Map
-          // getMap($latVal, $longVal);
+          if ($enableMap == "True") {
+            getMap($latVal, $longVal);
+          }
 
           // Generate Table
           tableGen($resultCount_Immediate,$resultCount_Local,$duration);
