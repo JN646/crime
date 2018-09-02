@@ -96,7 +96,7 @@
           $starttime = microtime(true);
 
           //immediate area
-          $sql1 = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
+          $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
           WHERE Longitude > $longLow1 AND Longitude < $longHigh1 and Latitude > $latLow1 AND Latitude < $latHigh1 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal1'
           AND Month='$monthVal'
           AND Year='$yearVal'
@@ -104,7 +104,7 @@
           ORDER BY COUNT(id) DESC";
 
           //local area
-          $sql2 = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
+          $sq2_local = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
           WHERE Longitude > $longLow2 AND Longitude < $longHigh2 and Latitude > $latLow2 AND Latitude < $latHigh2 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal2'
           AND Month='$monthVal'
           AND Year='$yearVal'
@@ -112,11 +112,11 @@
           ORDER BY COUNT(id) DESC";
 
           // Run Results
-          $resultCount1 = mysqli_query($mysqli, $sql1);
-          $resultCount2 = mysqli_query($mysqli, $sql2);
+          $resultCount_Immediate = mysqli_query($mysqli, $sql_immediate);
+          $resultCount_Local = mysqli_query($mysqli, $sq2_local);
 
           // If Error
-          if (!$resultCount1 || !$resultCount2) {
+          if (!$resultCount_Immediate || !$resultCount_Local) {
               die('Could not run query: ' . mysqli_error($mysqli));
           }
 
@@ -127,7 +127,7 @@
           getMap($latVal, $longVal);
 
           // Fetch Results
-          if (mysqli_num_rows($resultCount1) > 0 || mysqli_num_rows($resultCount2) > 0) {
+          if (mysqli_num_rows($resultCount_Immediate) > 0 || mysqli_num_rows($resultCount_Local) > 0) {
               ?>
 
               <!-- Result Table -->
@@ -140,7 +140,7 @@
                   <th class='text-center text-bold'>Risk</th>
                 </tr>
                 <?php
-              while ($row = mysqli_fetch_assoc($resultCount2)) {
+              while ($row = mysqli_fetch_assoc($resultCount_Local)) {
                   // Set Variables
                   $crime_type = $row["Crime_Type"];
                   $crime_count = $row["COUNT(id)"]; ?>
@@ -153,8 +153,8 @@
                     <!-- Number of Results -->
                     <td class='text-center'>
                       <?php $n = 0;
-                      $row1 = mysqli_fetch_assoc($resultCount1);
-                      for ($i=0; $i < count($resultCount1); $i++) {
+                      $row1 = mysqli_fetch_assoc($resultCount_Immediate);
+                      for ($i=0; $i < count($resultCount_Immediate); $i++) {
                         if ($row1["Crime_Type"] == $crime_type) {
                           $n = $row1["COUNT(id)"];
                         }
@@ -174,8 +174,8 @@
               <hr>
               <!-- Count Results -->
               <div id='resultStats'>
-                <p class='outputText'><b>Immediate:</b> <?php echo mysqli_num_rows($resultCount1) ?></p>
-                <p class='outputText'><b>Local:</b> <?php echo mysqli_num_rows($resultCount2) ?></p>
+                <p class='outputText'><b>Immediate:</b> <?php echo mysqli_num_rows($resultCount_Immediate) ?></p>
+                <p class='outputText'><b>Local:</b> <?php echo mysqli_num_rows($resultCount_Local) ?></p>
                 <p class='outputText'><b>Exec Time:</b> <?php echo round($duration, 4) ?></p>
               </div>
               <?php
@@ -196,7 +196,7 @@
           if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(showPosition);
           } else {
-              console.log("Geolocation is not supported by this browser.");
+              alert("Geolocation is not supported by this browser.");
           }
       }
 
