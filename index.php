@@ -57,14 +57,6 @@
           <?php } ?>
         </select>
 
-        <!-- Case -->
-        <label for="">Case</label>
-        <select class="" name="case">
-          <?php for ($i=0; $i < 3; $i++) {
-                echo "<option value='" . $i . "'>" . $i . "</option>";
-            } ?>
-        </select>
-
         <!-- Search Button -->
         <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
       </form>
