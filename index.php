@@ -49,12 +49,12 @@
       <hr>
       <!-- Count Results -->
       <div id='resultStats'>
-        <p class='outputText'><b>Immediate:</b> <?php echo mysqli_num_rows($resultCount_Immediate) ?></p>
-        <p class='outputText'><b>Local:</b> <?php echo mysqli_num_rows($resultCount_Local) ?></p>
-        <p class='outputText'><b># Counties:</b> <?php countCounties($mysqli) ?></p>
-        <p class='outputText'><b># Reports:</b> <?php countCrimes($mysqli) ?></p>
-        <p class='outputText'><b># Crime Types:</b> <?php countCrimeTypes($mysqli) ?></p>
-        <p class='outputText'><b>Exec Time:</b> <?php echo round($duration, 4) ?></p>
+        <p class='outputText'><b>Immediate:</b> <span id='resultsImmediate'><?php echo mysqli_num_rows($resultCount_Immediate) ?></span></p>
+        <p class='outputText'><b>Local:</b> <span id='resultsLocal'><?php echo mysqli_num_rows($resultCount_Local) ?></span></p>
+        <p class='outputText'><b># Counties:</b> <span id='resultsCountCounties'><?php countCounties($mysqli) ?></span></p>
+        <p class='outputText'><b># Reports:</b> <span id='resultsCountCrimes'><?php countCrimes($mysqli) ?></span></p>
+        <p class='outputText'><b># Crime Types:</b> <span id='resultsCountCrimeTypes'><?php countCrimeTypes($mysqli) ?></span></p>
+        <p class='outputText'><b>Exec Time:</b> <span id='resultsExecDuration'><?php echo round($duration, 4) ?></span></p>
       </div>
 
       <!-- Footer -->
