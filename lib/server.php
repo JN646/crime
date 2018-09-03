@@ -6,63 +6,31 @@ include_once '../config/config.php';
 include_once '../lib/functions.php';
 
 // Search Button Press
-if (isset($_POST["btnSearch"])) {
-    $longVal    = trim($_POST["long"]);
-    $latVal     = trim($_POST["lat"]);
-    $radVal1    = trim($_POST["rad1"]);
-    $radVal2    = trim($_POST["rad2"]);
-    $monthVal   = trim($_POST["month"]);
-    $yearVal    = trim($_POST["year"]);
-    $crimeVal   = trim($_POST["crime"]);
+$longVal    = trim($_POST["long"]);
+$latVal     = trim($_POST["lat"]);
+$radVal1    = trim($_POST["rad1"]);
+$radVal2    = trim($_POST["rad2"]);
+$monthVal   = trim($_POST["month"]);
+$yearVal    = trim($_POST["year"]);
+$crimeVal   = trim($_POST["crime"]);
 
-    // Precalculation of ranges
-    $latLow1    = $latVal - $radVal1;
-    $latHigh1   = $latVal + $radVal1;
-    $longLow1   = $longVal - $radVal1;
-    $longHigh1  = $longVal + $radVal1;
+// Precalculation of ranges
+$latLow1    = $latVal - $radVal1;
+$latHigh1   = $latVal + $radVal1;
+$longLow1   = $longVal - $radVal1;
+$longHigh1  = $longVal + $radVal1;
 
-    $latLow2    = $latVal - $radVal2;
-    $latHigh2   = $latVal + $radVal2;
-    $longLow2   = $longVal - $radVal2;
-    $longHigh2  = $longVal + $radVal2;
+$latLow2    = $latVal - $radVal2;
+$latHigh2   = $latVal + $radVal2;
+$longLow2   = $longVal - $radVal2;
+$longHigh2  = $longVal + $radVal2;
 
-    // Run Queries
-    $resultCount_Immediate  = sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal, $crimeVal);
-    $resultCount_Local      = sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal, $crimeVal);
+// Run Queries
+$resultCount_Immediate  = sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal, $crimeVal);
+$resultCount_Local      = sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal, $crimeVal);
 
-    // Generate Table
-    tableGen($resultCount_Immediate, $resultCount_Local);
-}
-
-//############## RISK MATRIX ###################################################
-function getRisk($crime_count)
-{
-    // High
-    if ($crime_count >= 50) {
-        $crime_risk = "High";
-    }
-
-    // Medium
-    if ($crime_count >= 11 && $crime_count <= 49) {
-        $crime_risk = "Medium";
-    }
-
-    // Low
-    if ($crime_count <= 10) {
-        $crime_risk = "Low";
-    }
-
-    return $crime_risk;
-}
-
-//############## IN DANGER? ####################################################
-function inDanger($crime_count) {
-  if ($crime_count > 0) {
-    echo "Crime has happened near by.";
-  } else {
-    echo "Crime has not happened near by.";
-  }
-}
+// Generate Table
+tableGen($resultCount_Immediate, $resultCount_Local);
 
 //############## MAKE TABLE ####################################################
 function tableGen($resultCount_Immediate, $resultCount_Local)
