@@ -1,5 +1,5 @@
 <!-- Search Form -->
-<form class="form-layout" action="" method="post">
+<form class="form-layout" action="lib/server.php" method="post">
   <!-- Latitude -->
   <div class='form-block'>
     <label for="lat">Latitude</label>
@@ -43,6 +43,14 @@
     <label for="year">Year</label>
     <select class="" name="year">
     <?php getYears() ?>
+    </select>
+  </div>
+
+  <!-- Year -->
+  <div class='form-block'>
+    <label for="crime">Crime</label>
+    <select class="" name="crime">
+    <?php getCrimes() ?>
     </select>
   </div>
 
