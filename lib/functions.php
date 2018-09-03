@@ -59,7 +59,7 @@ function getYears()
 // Get Years
 function getCrimes()
 {
-    $crimeVariables = ["Drugs","2017","2016"];
+    $crimeVariables = ["Drugs","Burglary","Criminal damage and arson","Anti-social behaviour","Other theft","Violence and sexual offences","Vehicle crime","Bicycle theft","Shoplifting","Public order","Other crime","Theft from the person","Robbery","Possession of weapons"];
     for ($i=0; $i < count($crimeVariables) ; $i++) {
         ?>
       <option value="<?php echo $crimeVariables[$i] ?>"><?php echo $crimeVariables[$i] ?></option>
@@ -89,11 +89,11 @@ function getRisk($crime_count)
 }
 
 //############## IN DANGER? ####################################################
-function inDanger($crime_count) {
+function inDanger($crime_type,$crime_count,$crime_risk) {
   if ($crime_count > 0) {
-    echo "Crime has happened near by.";
+    echo "<p class='danger'><b>" . $crime_type . "</b> has happened near by and the risk is <b>" . $crime_risk . "</b></p>";
   } else {
-    echo "Crime has not happened near by.";
+    echo "<p class='safe'><b>" . $crime_type . "</b> has not happened near by and the risk is <b>" . $crime_risk . "</b></p>";
   }
 }
 ?>

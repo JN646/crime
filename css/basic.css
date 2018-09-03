@@ -1,0 +1,60 @@
+/* Debug CSS */
+
+/* Fonts */
+
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+* {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+/* Text Tweaks */
+
+.text-center {
+  text-align: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.outputText {
+  font-size: 8pt;
+}
+
+/* Safe and Danger */
+
+.safe {
+  color: green;
+}
+
+.danger {
+  color: red;
+}
+
+/* Risk Factors */
+
+.risk_High {
+  color: red;
+}
+
+.risk_Medium {
+  color: orange;
+}
+
+.risk_Low {
+  color: green;
+}
+
+/* Crime Table */
+
+.table-border {
+  border-collapse: collapse;
+}
+
+.table-border table, th, td {
+  border: 1px solid lightgray;
+}
+
+.table-border th, td {
+  padding: 5px;
+}

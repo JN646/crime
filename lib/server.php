@@ -5,6 +5,10 @@
 include_once '../config/config.php';
 include_once '../lib/functions.php';
 
+?>
+<link rel="stylesheet" href="../css/basic.css">
+<?php
+
 // Search Button Press
 $longVal    = trim($_POST["long"]);
 $latVal     = trim($_POST["lat"]);
@@ -41,7 +45,7 @@ function tableGen($resultCount_Immediate, $resultCount_Local)
 
       <!-- Result Table -->
       <h2>Crimes Around You</h2>
-      <table class='table-border' width=100%>
+      <table class='table-border' width=500px>
         <tr>
           <th class='text-center text-bold'>Crime</th>
           <th class='text-center text-bold'>Immediate</th>
@@ -59,19 +63,32 @@ function tableGen($resultCount_Immediate, $resultCount_Local)
             <!-- Crime Type -->
             <td><?php echo $crime_type; ?></td>
 
-            <!-- Number of Results -->
+            <!-- Number of Crimes -->
             <td class='text-center'>
-              <?php $n = 0;
-          $row1 = mysqli_fetch_assoc($resultCount_Immediate);
-          for ($i=0; $i < count($resultCount_Immediate); $i++) {
-              if ($row1["Crime_Type"] == $crime_type) {
-                  $n = $row1["COUNT(id)"];
-              }
-          }
-          echo $n; ?>
+              <?php
+                // Init Value
+                $n = 0;
+
+                // Get Immediate Count
+                $row1 = mysqli_fetch_assoc($resultCount_Immediate);
+
+                // Loop Crime Type
+                for ($i=0; $i < count($resultCount_Immediate); $i++) {
+
+                    // If they Match
+                    if ($row1["Crime_Type"] == $crime_type) {
+
+                        // Set n as Count
+                        $n = $row1["COUNT(id)"];
+                    }
+                }
+
+                // Print Count
+                echo $n;
+              ?>
             </td>
 
-            <!-- Crime Count -->
+            <!-- Local Crime Count -->
             <td class='text-center'><?php echo $crime_count; ?></td>
 
             <!-- Crime Risk -->
@@ -82,7 +99,7 @@ function tableGen($resultCount_Immediate, $resultCount_Local)
       </table>
       <?php
 
-      inDanger($crime_count);
+      inDanger($crime_type,$crime_count,getRisk($crime_count));
     } else {
         // No Results
         echo "<p id='noResults'>0 results</p>";
