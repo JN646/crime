@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
     <!-- Function File -->
-    <?php include 'functions.php' ?>
+    <?php require_once 'config/config.php' ?>
+    <?php include 'lib/functions.php' ?>
   </head>
   <div class="header">
     <h1 class=''>The Crimes</h1>
