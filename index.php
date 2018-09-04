@@ -6,9 +6,7 @@
       <!-- Form Partial -->
       <?php include 'partials/_form.php' ?>
 
-      <?php
-
-      ?>
+      <p class='outputText'><a href='lib/server.php'>Hack the Mainframe</a></p>
 
       <hr>
       <!-- Count Results -->

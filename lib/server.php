@@ -9,14 +9,67 @@ include_once '../lib/functions.php';
 <link rel="stylesheet" href="../css/basic.css">
 <?php
 
-// Search Button Press
-$longVal    = trim($_POST["long"]);
-$latVal     = trim($_POST["lat"]);
-$radVal1    = trim($_POST["rad1"]);
-$radVal2    = trim($_POST["rad2"]);
-$monthVal   = trim($_POST["month"]);
-$yearVal    = trim($_POST["year"]);
-$crimeVal   = trim($_POST["crime"]);
+// Retrieve Data
+// $longVal    = trim($_POST["long"]);
+// $latVal     = trim($_POST["lat"]);
+// $radVal1    = trim($_POST["rad1"]);
+// $radVal2    = trim($_POST["rad2"]);
+// $monthVal   = trim($_POST["month"]);
+// $yearVal    = trim($_POST["year"]);
+// $crimeVal   = trim($_POST["crime"]);
+
+
+// Retrieve Data
+
+// Check Empty.
+if (!empty($_POST["long"])) {
+  $longVal    = trim($_POST["long"]);;
+} else {
+  echo "<p>Long is missing.</p>";
+  $longVal = 0;
+}
+
+if (!empty($_POST["lat"])) {
+  $latVal     = trim($_POST["lat"]);
+} else {
+  echo "<p>Lat is missing.</p>";
+  $latVal = 0;
+}
+
+if (!empty($_POST["rad1"])) {
+  $radVal1    = trim($_POST["rad1"]);
+} else {
+  echo "<p>Rad1 is missing.</p>";
+  $radVal1 = 0;
+}
+
+if (!empty($_POST["rad2"])) {
+  $radVal2    = trim($_POST["rad2"]);
+} else {
+  echo "<p>Rad2 is missing.</p>";
+  $radVal2 = 0;
+}
+
+if (!empty($_POST["month"])) {
+  $monthVal   = trim($_POST["month"]);
+} else {
+  echo "<p>month is missing.</p>";
+  $monthVal = 0;
+}
+
+if (!empty($_POST["year"])) {
+  $yearVal    = trim($_POST["year"]);
+} else {
+  echo "<p>Year is missing.</p>";
+  $yearVal = 0;
+}
+
+if (!empty($_POST["crime"])) {
+  $crimeVal   = trim($_POST["crime"]);
+} else {
+  echo "<p>Crime Type is missing.</p>";
+  $crimeVal = 0;
+}
 
 // Precalculation of ranges
 $latLow1    = $latVal - $radVal1;
