@@ -71,17 +71,42 @@ if (!empty($_POST["crime"])) {
   $crimeVal = 0;
 }
 
+// Store in array
+$crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthVal,$yearVal,$crimeVal);
+
+// Output Array
+echo "<h3>Debug POST Values</h3>";
+for ($i=0; $i < count($crimeValues); $i++) {
+  echo "<p>" . $crimeValues[$i] . "</p>";
+}
+
 // Precalculation of ranges
 $latLow1    = $latVal - $radVal1;
 $latHigh1   = $latVal + $radVal1;
 $longLow1   = $longVal - $radVal1;
 $longHigh1  = $longVal + $radVal1;
 
+$immediateCal = array($latLow1,$latHigh1,$longLow1,$longHigh1);
+
 $latLow2    = $latVal - $radVal2;
 $latHigh2   = $latVal + $radVal2;
 $longLow2   = $longVal - $radVal2;
 $longHigh2  = $longVal + $radVal2;
 
+$localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
+
+
+// Output Array
+echo "<h3>Immediate Values</h3>";
+for ($i=0; $i < count($immediateCal); $i++) {
+  echo "<p>" . $immediateCal[$i] . "</p>";
+}
+
+// Output Array
+echo "<h3>Local Values</h3>";
+for ($i=0; $i < count($localCal); $i++) {
+  echo "<p>" . $localCal[$i] . "</p>";
+}
 // Run Queries
 $resultCount_Immediate  = sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal, $crimeVal);
 $resultCount_Local      = sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal, $crimeVal);
