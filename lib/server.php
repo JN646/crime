@@ -17,7 +17,7 @@ include_once '../lib/functions.php';
 // $monthVal   = trim($_POST["month"]);
 // $yearVal    = trim($_POST["year"]);
 // $crimeVal   = trim($_POST["crime"]);
-
+  $failFlag = 0;
 
 // Retrieve Data
 
@@ -27,6 +27,7 @@ if (!empty($_POST["long"])) {
 } else {
   echo "<p>Long is missing.</p>";
   $longVal = 0;
+  $failFlag = 1;
 }
 
 if (!empty($_POST["lat"])) {
@@ -34,6 +35,7 @@ if (!empty($_POST["lat"])) {
 } else {
   echo "<p>Lat is missing.</p>";
   $latVal = 0;
+  $failFlag = 1;
 }
 
 if (!empty($_POST["rad1"])) {
@@ -41,6 +43,7 @@ if (!empty($_POST["rad1"])) {
 } else {
   echo "<p>Rad1 is missing.</p>";
   $radVal1 = 0;
+  $failFlag = 1;
 }
 
 if (!empty($_POST["rad2"])) {
@@ -48,6 +51,7 @@ if (!empty($_POST["rad2"])) {
 } else {
   echo "<p>Rad2 is missing.</p>";
   $radVal2 = 0;
+  $failFlag = 1;
 }
 
 if (!empty($_POST["month"])) {
@@ -55,6 +59,7 @@ if (!empty($_POST["month"])) {
 } else {
   echo "<p>month is missing.</p>";
   $monthVal = 0;
+  $failFlag = 1;
 }
 
 if (!empty($_POST["year"])) {
@@ -62,6 +67,7 @@ if (!empty($_POST["year"])) {
 } else {
   echo "<p>Year is missing.</p>";
   $yearVal = 0;
+  $failFlag = 1;
 }
 
 if (!empty($_POST["crime"])) {
@@ -69,51 +75,56 @@ if (!empty($_POST["crime"])) {
 } else {
   echo "<p>Crime Type is missing.</p>";
   $crimeVal = 0;
+  $failFlag = 1;
 }
 
 // Store in array
 $crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthVal,$yearVal,$crimeVal);
 
 // Output Array
-echo "<h3>Debug POST Values</h3>";
-for ($i=0; $i < count($crimeValues); $i++) {
-  echo "<p>" . $crimeValues[$i] . "</p>";
+if ($failFlag != 1) {
+  echo "<h3>Debug POST Values</h3>";
+  for ($i=0; $i < count($crimeValues); $i++) {
+    echo "<p>" . $crimeValues[$i] . "</p>";
+  }
 }
 
 // Precalculation of ranges
-$latLow1    = $latVal - $radVal1;
-$latHigh1   = $latVal + $radVal1;
-$longLow1   = $longVal - $radVal1;
-$longHigh1  = $longVal + $radVal1;
+if ($failFlag != 1) {
+  $latLow1    = $latVal - $radVal1;
+  $latHigh1   = $latVal + $radVal1;
+  $longLow1   = $longVal - $radVal1;
+  $longHigh1  = $longVal + $radVal1;
 
-$immediateCal = array($latLow1,$latHigh1,$longLow1,$longHigh1);
+  $immediateCal = array($latLow1,$latHigh1,$longLow1,$longHigh1);
 
-$latLow2    = $latVal - $radVal2;
-$latHigh2   = $latVal + $radVal2;
-$longLow2   = $longVal - $radVal2;
-$longHigh2  = $longVal + $radVal2;
+  $latLow2    = $latVal - $radVal2;
+  $latHigh2   = $latVal + $radVal2;
+  $longLow2   = $longVal - $radVal2;
+  $longHigh2  = $longVal + $radVal2;
 
-$localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
-
-
-// Output Array
-echo "<h3>Immediate Values</h3>";
-for ($i=0; $i < count($immediateCal); $i++) {
-  echo "<p>" . $immediateCal[$i] . "</p>";
+  $localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
 }
 
 // Output Array
-echo "<h3>Local Values</h3>";
-for ($i=0; $i < count($localCal); $i++) {
-  echo "<p>" . $localCal[$i] . "</p>";
+if ($failFlag != 1) {
+  echo "<h3>Immediate Values</h3>";
+  for ($i=0; $i < count($immediateCal); $i++) {
+    echo "<p>" . $immediateCal[$i] . "</p>";
+  }
+
+  // Output Array
+  echo "<h3>Local Values</h3>";
+  for ($i=0; $i < count($localCal); $i++) {
+    echo "<p>" . $localCal[$i] . "</p>";
+  }
+  // Run Queries
+  $resultCount_Immediate  = sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal, $crimeVal);
+  $resultCount_Local      = sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal, $crimeVal);
+
+  // Generate Table
+  tableGen($resultCount_Immediate, $resultCount_Local);
 }
-// Run Queries
-$resultCount_Immediate  = sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal, $crimeVal);
-$resultCount_Local      = sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal, $crimeVal);
-
-// Generate Table
-tableGen($resultCount_Immediate, $resultCount_Local);
-
 //############## MAKE TABLE ####################################################
 function tableGen($resultCount_Immediate, $resultCount_Local)
 {
