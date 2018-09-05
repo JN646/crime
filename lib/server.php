@@ -4,22 +4,14 @@
 // Get Database Config
 include_once '../config/config.php';
 include_once '../lib/functions.php';
-
 ?>
+
+<!-- Stylesheet -->
 <link rel="stylesheet" href="../css/basic.css">
+
 <?php
-
-// Retrieve Data
-// $longVal    = trim($_POST["long"]);
-// $latVal     = trim($_POST["lat"]);
-// $radVal1    = trim($_POST["rad1"]);
-// $radVal2    = trim($_POST["rad2"]);
-// $monthVal   = trim($_POST["month"]);
-// $yearVal    = trim($_POST["year"]);
-// $crimeVal   = trim($_POST["crime"]);
-  $failFlag = 0;
-
-// Retrieve Data
+// Flags
+$failFlag = 0;
 
 // Check Empty.
 if (!empty($_POST["long"])) {
@@ -55,7 +47,10 @@ if (!empty($_POST["rad2"])) {
 }
 
 if (!empty($_POST["month"])) {
-  $monthVal   = trim($_POST["month"]);
+  $monthVal   = $_POST["month"];
+
+  $monthList = implode(", ",$monthVal);
+  $monthSQL = implode(" and ",$monthVal);
 } else {
   echo "<p>month is missing.</p>";
   $monthVal = 0;
@@ -79,7 +74,7 @@ if (!empty($_POST["crime"])) {
 }
 
 // Store in array
-$crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthVal,$yearVal,$crimeVal);
+$crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthList,$yearVal,$crimeVal);
 
 // Output Array
 if ($failFlag != 1) {
@@ -91,33 +86,39 @@ if ($failFlag != 1) {
 
 // Precalculation of ranges
 if ($failFlag != 1) {
+  // Immediate
   $latLow1    = $latVal - $radVal1;
   $latHigh1   = $latVal + $radVal1;
   $longLow1   = $longVal - $radVal1;
   $longHigh1  = $longVal + $radVal1;
 
+  // Map to array
   $immediateCal = array($latLow1,$latHigh1,$longLow1,$longHigh1);
 
+  // Local
   $latLow2    = $latVal - $radVal2;
   $latHigh2   = $latVal + $radVal2;
   $longLow2   = $longVal - $radVal2;
   $longHigh2  = $longVal + $radVal2;
 
+  // Map to array
   $localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
 }
 
 // Output Array
 if ($failFlag != 1) {
+  // Immediate Array
   echo "<h3>Immediate Values</h3>";
   for ($i=0; $i < count($immediateCal); $i++) {
     echo "<p>" . $immediateCal[$i] . "</p>";
   }
 
-  // Output Array
+  // Local Array
   echo "<h3>Local Values</h3>";
   for ($i=0; $i < count($localCal); $i++) {
     echo "<p>" . $localCal[$i] . "</p>";
   }
+
   // Run Queries
   $resultCount_Immediate  = sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal, $crimeVal);
   $resultCount_Local      = sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal, $crimeVal);
@@ -197,12 +198,12 @@ function tableGen($resultCount_Immediate, $resultCount_Local)
 
 //############## RUN SQL #######################################################
 // SQL Immediate
-function sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal, $crimeVal)
+function sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthList, $yearVal, $crimeVal)
 {
     //immediate area
     $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
   WHERE Longitude > $longLow1 AND Longitude < $longHigh1 AND Latitude > $latLow1 AND Latitude < $latHigh1 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal1'
-  AND Month='$monthVal'
+  AND Month='$monthList'
   AND Year='$yearVal'
   AND Crime_Type='$crimeVal'
   GROUP BY Crime_Type
@@ -216,6 +217,7 @@ function sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latV
         die('Could not run query: ' . mysqli_error($mysqli));
     }
 
+    // Return
     return $resultCount_Immediate;
 }
 
@@ -239,6 +241,7 @@ function sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, 
         die('Could not run query: ' . mysqli_error($mysqli));
     }
 
+    // Return
     return $resultCount_Local;
 }
  ?>

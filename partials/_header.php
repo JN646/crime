@@ -13,6 +13,8 @@
     <?php include 'config/config.php' ?>
     <?php include 'lib/functions.php' ?>
   </head>
+
+  <!-- Header -->
   <div class="header">
     <h1 id='headerTitle' class=''>The Crimes</h1>
     <p id='headerSubtitle' class=''>What is happening around you?</p>
