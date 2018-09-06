@@ -66,34 +66,4 @@ function getCrimes()
 <?php
     }
 }
-
-//############## RISK MATRIX ###################################################
-function getRisk($crime_count)
-{
-    // High
-    if ($crime_count >= 50) {
-        $crime_risk = "High";
-    }
-
-    // Medium
-    if ($crime_count >= 11 && $crime_count <= 49) {
-        $crime_risk = "Medium";
-    }
-
-    // Low
-    if ($crime_count <= 10) {
-        $crime_risk = "Low";
-    }
-
-    return $crime_risk;
-}
-
-//############## IN DANGER? ####################################################
-function inDanger($crime_type,$crime_count,$crime_risk) {
-  if ($crime_count > 0) {
-    echo "<p class='danger'><b>" . $crime_type . "</b> has happened near by and the risk is <b>" . $crime_risk . "</b></p>";
-  } else {
-    echo "<p class='safe'><b>" . $crime_type . "</b> has not happened near by and the risk is <b>" . $crime_risk . "</b></p>";
-  }
-}
 ?>

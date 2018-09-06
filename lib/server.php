@@ -206,7 +206,15 @@ function renderTable($table) {
       ?>
       <tr>
         <td class=''><?php echo $table[$i][0] ?></td>
-        <td class='text-center'><?php echo $table[$i][1] ?></td>
+        <td class='text-center'>
+          <?php
+          if ($table[$i][1] == 0) {
+            echo "-";
+          } else {
+            echo $table[$i][1];
+          }
+          ?>
+       </td>
         <td class='text-center'><?php echo $table[$i][2] ?></td>
         <td class='text-center'><?php echo $table[$i][3] ?></td>
         <td class='text-center'><div class="slidecontainer"><input type="range" min="-1" max="1" step="0.01" disable value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
