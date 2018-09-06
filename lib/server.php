@@ -49,8 +49,8 @@ if (!empty($_POST["rad2"])) {
 if (!empty($_POST["month"])) {
   $monthVal   = $_POST["month"];
 
-  $monthList = implode(", ",$monthVal);
-  $monthSQL = implode(" and ",$monthVal);
+  // $monthList = implode(", ",$monthVal);
+  // $monthSQL = implode(" and ",$monthVal);
 } else {
   echo "<p>month is missing.</p>";
   $monthVal = 0;
@@ -65,24 +65,8 @@ if (!empty($_POST["year"])) {
   $failFlag = 1;
 }
 
-if (!empty($_POST["crime"])) {
-  $crimeVal   = trim($_POST["crime"]);
-} else {
-  echo "<p>Crime Type is missing.</p>";
-  $crimeVal = 0;
-  $failFlag = 1;
-}
-
 // Store in array
-$crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthList,$yearVal,$crimeVal);
-
-// Output Array
-if ($failFlag != 1) {
-  echo "<h3>Debug POST Values</h3>";
-  for ($i=0; $i < count($crimeValues); $i++) {
-    echo "<p>" . $crimeValues[$i] . "</p>";
-  }
-}
+$crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthVal,$yearVal);
 
 // Precalculation of ranges
 if ($failFlag != 1) {
@@ -109,25 +93,102 @@ if ($failFlag != 1) {
 if ($failFlag != 1) {
   // Immediate Array
   echo "<h3>Immediate Values</h3>";
-  for ($i=0; $i < count($immediateCal); $i++) {
-    echo "<p>" . $immediateCal[$i] . "</p>";
-  }
+  // Calculated Values JSON
+  $crimeValObj = new \stdClass();
+  $crimeValObj->LowLatitude = $latLow1;
+  $crimeValObj->HighLatitude = $latHigh1;
+  $crimeValObj->LowLongitude = $longLow1;
+  $crimeValObj->HighLongitude = $longHigh1;
+  $crimeValObj->Radius1 = $radVal1;
+
+  $crimeImmediate = json_encode($crimeValObj);
+
+  echo $crimeImmediate;
 
   // Local Array
   echo "<h3>Local Values</h3>";
-  for ($i=0; $i < count($localCal); $i++) {
-    echo "<p>" . $localCal[$i] . "</p>";
-  }
+  // Calculated Values JSON
+  $crimeValObj2 = new \stdClass();
+  $crimeValObj2->LowLatitude = $latLow2;
+  $crimeValObj2->HighLatitude = $latHigh2;
+  $crimeValObj2->LowLongitude = $longLow2;
+  $crimeValObj2->HighLongitude = $longHigh2;
+  $crimeValObj2->Radius2 = $radVal2;
+
+  $crimeLocal = json_encode($crimeValObj2);
+
+  echo $crimeLocal;
 
   // Run Queries
-  $resultCount_Immediate  = sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal, $crimeVal);
-  $resultCount_Local      = sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal, $crimeVal);
+  $resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal);
+  $resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal);
 
   // Generate Table
-  tableGen($resultCount_Immediate, $resultCount_Local);
+  $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
+  renderTable($table);
 }
 //############## MAKE TABLE ####################################################
-function tableGen($resultCount_Immediate, $resultCount_Local)
+
+function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
+{
+    $nRows = mysqli_num_rows($resultCount_Local);
+    $table = array(array(),array(),array(),array());
+    // Fetch Results
+    if ($nRows) {
+      $j = 0; //table index
+      while ($row = mysqli_fetch_assoc($resultCount_Local)) {
+          // Set Variables
+          $table[$j][0] = $row["Crime_Type"]; //crime type
+          $table[$j][1] = $row["COUNT(id)"]; //local count
+          $table[$j][2] = 0; //immediate count
+          $table[$j][3] = "n/a"; //risk
+
+          // Get Immediate Count
+          $row1 = mysqli_fetch_assoc($resultCount_Immediate);
+          for ($i=0; $i < count($resultCount_Immediate); $i++) {
+              if ($row1["Crime_Type"] == $table[$j][0]) {
+                  $table[$j][2] = $row1["COUNT(id)"];
+                  //calculate risk here...?
+                  $table[$j][3] = calcRisk($table[$j][1], $table[$j][2], $radVal1, $radVal2);
+              }
+          }
+        $j++;
+      }
+    } else {
+        // No Results
+        echo "<p id='noResults'>Something Bad Happened.</p>";
+    }
+
+    return $table;
+}
+
+function renderTable($table) {
+  ?>
+    <h2>Crimes Around You</h2>
+    <table class='table-border' width=500px>
+      <tr>
+        <th class='text-center text-bold'>Crime</th>
+        <th class='text-center text-bold'>Immediate</th>
+        <th class='text-center text-bold'>Local</th>
+        <th class='text-center text-bold'>Risk</th>
+      </tr>
+    <?php
+    for ($i=0; $i < count($table); $i++) {
+      ?>
+      <tr>
+        <td><?php echo $table[$i][0] ?></td>
+        <td><?php echo $table[$i][2] ?></td>
+        <td><?php echo $table[$i][1] ?></td>
+        <td><?php echo $table[$i][3] ?></td>
+      </tr>
+      <?php
+      }
+    ?>
+    </table>
+    <?php
+}
+
+function tableGenOld($resultCount_Immediate, $resultCount_Local)
 {
     // Fetch Results
     if (mysqli_num_rows($resultCount_Immediate) > 0 || mysqli_num_rows($resultCount_Local) > 0) {
@@ -198,14 +259,11 @@ function tableGen($resultCount_Immediate, $resultCount_Local)
 
 //############## RUN SQL #######################################################
 // SQL Immediate
-function sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthList, $yearVal, $crimeVal)
+function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $monthList, $yearVal)
 {
     //immediate area
     $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
-  WHERE Longitude > $longLow1 AND Longitude < $longHigh1 AND Latitude > $latLow1 AND Latitude < $latHigh1 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal1'
-  AND Month='$monthList'
-  AND Year='$yearVal'
-  AND Crime_Type='$crimeVal'
+  WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
   GROUP BY Crime_Type
   ORDER BY COUNT(id) DESC";
 
@@ -222,26 +280,25 @@ function sqlImmediate($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latV
 }
 
 // SQL Local
-function sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal, $crimeVal)
-{
-    //local area
-    $sq2_local = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
-  WHERE Longitude > $longLow2 AND Longitude < $longHigh2 AND Latitude > $latLow2 AND Latitude < $latHigh2 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal2'
-  AND Month='$monthVal'
-  AND Year='$yearVal'
-  AND Crime_Type='$crimeVal'
-  GROUP BY Crime_Type
-  ORDER BY COUNT(id) DESC";
-
-    // Run Query
-    $resultCount_Local = mysqli_query($mysqli, $sq2_local);
-
-    // If Error
-    if (!$resultCount_Local) {
-        die('Could not run query: ' . mysqli_error($mysqli));
-    }
-
-    // Return
-    return $resultCount_Local;
-}
+// function sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal)
+// {
+//     //local area
+//     $sq2_local = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
+//   WHERE Longitude > $longLow2 AND Longitude < $longHigh2 AND Latitude > $latLow2 AND Latitude < $latHigh2 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal2'
+//   -- AND Month='$monthVal'
+//   -- AND Year='$yearVal'
+//   GROUP BY Crime_Type
+//   ORDER BY COUNT(id) DESC";
+//
+//     // Run Query
+//     $resultCount_Local = mysqli_query($mysqli, $sq2_local);
+//
+//     // If Error
+//     if (!$resultCount_Local) {
+//         die('Could not run query: ' . mysqli_error($mysqli));
+//     }
+//
+//     // Return
+//     return $resultCount_Local;
+// }
  ?>

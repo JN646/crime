@@ -33,7 +33,7 @@
   <!-- Month -->
   <div class='form-block'>
     <label for="month">Month</label>
-    <select class="" name="month[]" multiple>
+    <select class="" name="month">
       <?php getMonths() ?>
     </select>
   </div>
@@ -43,14 +43,6 @@
     <label for="year">Year</label>
     <select class="" name="year">
     <?php getYears() ?>
-    </select>
-  </div>
-
-  <!-- Year -->
-  <div class='form-block'>
-    <label for="crime">Crime</label>
-    <select class="" name="crime" multiple>
-    <?php getCrimes() ?>
     </select>
   </div>
 
