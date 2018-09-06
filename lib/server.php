@@ -68,7 +68,7 @@ if (!empty($_POST["year"])) {
 // Store in array
 $crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthVal,$yearVal);
 
-// Precalculation of ranges
+//############## RANGE CALC ####################################################
 if ($failFlag != 1) {
   // Immediate
   $latLow1    = $latVal - $radVal1;
@@ -89,6 +89,7 @@ if ($failFlag != 1) {
   $localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
 }
 
+//############## JSON OUTPUT ###################################################
 // Output Array
 if ($failFlag != 1) {
   // Immediate Array
@@ -126,9 +127,12 @@ if ($failFlag != 1) {
   // Generate Table
   $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
   renderTable($table);
-}
-//############## MAKE TABLE ####################################################
 
+  // Back
+  echo "<p><a href='../index.php'>Back</a></p>";
+}
+
+//############## MAKE ARRAY ####################################################
 function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
 {
     $nRows = mysqli_num_rows($resultCount_Local);
@@ -162,45 +166,60 @@ function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
     return $table;
 }
 
+//############## CALC RISK #####################################################
 function calcRisk($n1, $n2, $r1, $r2) {
+  // Get Area
   $a1 = PI()*$r1*$r1;
   $a2 = PI()*$r2*$r2;
+
+  // Get Radius
   $ra1 = $n1/$a1;
   $ra2 = $n2/$a2;
+
+  // If no data.
   if($n1 == 0) {
+    // N/A
     $c = "n/a";
   } else {
+    // Get Risk
     $c = round(log($ra1/$ra2, 2), 2);
   }
+
+  // Return Calculation
   return $c;
 }
 
+//############## MAKE TABLE ####################################################
 function renderTable($table) {
   ?>
     <h2>Crimes Around You</h2>
-    <table class='table-border' width=500px>
+    <table class='table-border' width=100%>
       <tr>
         <th class='text-center text-bold'>Crime</th>
         <th class='text-center text-bold'>Immediate</th>
         <th class='text-center text-bold'>Local</th>
         <th class='text-center text-bold'>Risk</th>
+        <th class='text-center text-bold'>Risk Graphic</th>
       </tr>
     <?php
     for ($i=0; $i < count($table); $i++) {
       ?>
       <tr>
-        <td><?php echo $table[$i][0] ?></td>
-        <td><?php echo $table[$i][1] ?></td>
-        <td><?php echo $table[$i][2] ?></td>
-        <td><?php echo $table[$i][3] ?></td>
+        <td class=''><?php echo $table[$i][0] ?></td>
+        <td class='text-center'><?php echo $table[$i][1] ?></td>
+        <td class='text-center'><?php echo $table[$i][2] ?></td>
+        <td class='text-center'><?php echo $table[$i][3] ?></td>
+        <td class='text-center'><div class="slidecontainer"><input type="range" min="-1" max="1" step="0.01" disable value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
       </tr>
       <?php
       }
     ?>
     </table>
+    <script type="text/javascript">
+      document.getElementById("myRange").disabled = true;
+    </script>
     <?php
 }
-
 
 //############## RUN SQL #######################################################
 // SQL Immediate
@@ -223,27 +242,4 @@ function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, 
     // Return
     return $resultCount_Immediate;
 }
-
-// SQL Local
-// function sqlLocal($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal)
-// {
-//     //local area
-//     $sq2_local = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
-//   WHERE Longitude > $longLow2 AND Longitude < $longHigh2 AND Latitude > $latLow2 AND Latitude < $latHigh2 AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal2'
-//   -- AND Month='$monthVal'
-//   -- AND Year='$yearVal'
-//   GROUP BY Crime_Type
-//   ORDER BY COUNT(id) DESC";
-//
-//     // Run Query
-//     $resultCount_Local = mysqli_query($mysqli, $sq2_local);
-//
-//     // If Error
-//     if (!$resultCount_Local) {
-//         die('Could not run query: ' . mysqli_error($mysqli));
-//     }
-//
-//     // Return
-//     return $resultCount_Local;
-// }
  ?>
