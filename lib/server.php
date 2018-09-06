@@ -139,19 +139,19 @@ function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
       while ($row = mysqli_fetch_assoc($resultCount_Local)) {
           // Set Variables
           $table[$j][0] = $row["Crime_Type"]; //crime type
-          $table[$j][1] = $row["COUNT(id)"]; //local count
-          $table[$j][2] = 0; //immediate count
+          $table[$j][1] = 0; //immediate count
+          $table[$j][2] = $row["COUNT(id)"]; //local count
           $table[$j][3] = "n/a"; //risk
 
           // Get Immediate Count
           $row1 = mysqli_fetch_assoc($resultCount_Immediate);
           for ($i=0; $i < count($resultCount_Immediate); $i++) {
               if ($row1["Crime_Type"] == $table[$j][0]) {
-                  $table[$j][2] = $row1["COUNT(id)"];
-                  //calculate risk here...?
-                  $table[$j][3] = calcRisk($table[$j][1], $table[$j][2], $radVal1, $radVal2);
+                  $table[$j][1] = $row1["COUNT(id)"];
               }
           }
+          //calculate risk here...?
+          $table[$j][3] = calcRisk($table[$j][1], $table[$j][2], $radVal1, $radVal2);
         $j++;
       }
     } else {
@@ -160,6 +160,19 @@ function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
     }
 
     return $table;
+}
+
+function calcRisk($n1, $n2, $r1, $r2) {
+  $a1 = PI()*$r1*$r1;
+  $a2 = PI()*$r2*$r2;
+  $ra1 = $n1/$a1;
+  $ra2 = $n2/$a2;
+  if($n1 == 0) {
+    $c = "n/a";
+  } else {
+    $c = round(log($ra1/$ra2, 2), 2);
+  }
+  return $c;
 }
 
 function renderTable($table) {
@@ -177,8 +190,8 @@ function renderTable($table) {
       ?>
       <tr>
         <td><?php echo $table[$i][0] ?></td>
-        <td><?php echo $table[$i][2] ?></td>
         <td><?php echo $table[$i][1] ?></td>
+        <td><?php echo $table[$i][2] ?></td>
         <td><?php echo $table[$i][3] ?></td>
       </tr>
       <?php
@@ -188,74 +201,6 @@ function renderTable($table) {
     <?php
 }
 
-function tableGenOld($resultCount_Immediate, $resultCount_Local)
-{
-    // Fetch Results
-    if (mysqli_num_rows($resultCount_Immediate) > 0 || mysqli_num_rows($resultCount_Local) > 0) {
-        ?>
-
-      <!-- Result Table -->
-      <h2>Crimes Around You</h2>
-      <table class='table-border' width=500px>
-        <tr>
-          <th class='text-center text-bold'>Crime</th>
-          <th class='text-center text-bold'>Immediate</th>
-          <th class='text-center text-bold'>Local</th>
-          <th class='text-center text-bold'>Risk</th>
-        </tr>
-        <?php
-      while ($row = mysqli_fetch_assoc($resultCount_Local)) {
-          // Set Variables
-          $crime_type = $row["Crime_Type"];
-          $crime_count = $row["COUNT(id)"]; ?>
-
-          <!-- Rows -->
-          <tr>
-            <!-- Crime Type -->
-            <td><?php echo $crime_type; ?></td>
-
-            <!-- Number of Crimes -->
-            <td class='text-center'>
-              <?php
-                // Init Value
-                $n = 0;
-
-                // Get Immediate Count
-                $row1 = mysqli_fetch_assoc($resultCount_Immediate);
-
-                // Loop Crime Type
-                for ($i=0; $i < count($resultCount_Immediate); $i++) {
-
-                    // If they Match
-                    if ($row1["Crime_Type"] == $crime_type) {
-
-                        // Set n as Count
-                        $n = $row1["COUNT(id)"];
-                    }
-                }
-
-                // Print Count
-                echo $n;
-              ?>
-            </td>
-
-            <!-- Local Crime Count -->
-            <td class='text-center'><?php echo $crime_count; ?></td>
-
-            <!-- Crime Risk -->
-            <td class='text-center'><?php echo "<span class='bold risk_" . getRisk($crime_count) ."'>" . getRisk($crime_count) . "</span>"?></td>
-          </tr>
-        <?php
-      } ?>
-      </table>
-      <?php
-
-      inDanger($crime_type,$crime_count,getRisk($crime_count));
-    } else {
-        // No Results
-        echo "<p id='noResults'>0 results</p>";
-    }
-}
 
 //############## RUN SQL #######################################################
 // SQL Immediate
