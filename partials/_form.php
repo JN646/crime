@@ -3,13 +3,13 @@
   <!-- Latitude -->
   <div class='form-block'>
     <label for="lat">Latitude</label>
-    <input id='latBox' size='8' type="text" name="lat" value="52.122123">
+    <input id='latBox' size='8' type="text" name="lat" value="52.1367078">
   </div>
 
   <!-- Longitude -->
   <div class='form-block'>
     <label for="long">Longitude</label>
-    <input id='longBox' size='8' type="text" name="long" value="-0.586406">
+    <input id='longBox' size='8' type="text" name="long" value="-0.4688611">
   </div>
 
   <!-- Get GPS Locations -->

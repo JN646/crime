@@ -46,25 +46,6 @@ if (!empty($_POST["rad2"])) {
   $failFlag = 1;
 }
 
-if (!empty($_POST["month"])) {
-  $monthVal   = $_POST["month"];
-
-  // $monthList = implode(", ",$monthVal);
-  // $monthSQL = implode(" and ",$monthVal);
-} else {
-  echo "<p>month is missing.</p>";
-  $monthVal = 0;
-  $failFlag = 1;
-}
-
-if (!empty($_POST["year"])) {
-  $yearVal    = trim($_POST["year"]);
-} else {
-  echo "<p>Year is missing.</p>";
-  $yearVal = 0;
-  $failFlag = 1;
-}
-
 // Store in array
 $crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthVal,$yearVal);
 
@@ -231,10 +212,10 @@ function renderTable($table) {
 
 //############## RUN SQL #######################################################
 // SQL Immediate
-function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $monthList, $yearVal)
+function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $monthList)
 {
     //immediate area
-    $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month, Year FROM data
+    $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month FROM data
   WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
   GROUP BY Crime_Type
   ORDER BY COUNT(id) DESC";
