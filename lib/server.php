@@ -160,7 +160,7 @@ function calcRisk($n1, $n2, $r1, $r2) {
   // If no data.
   if($n1 == 0) {
     // N/A
-    $c = "n/a";
+    $c = " - ";
   } else {
     // Get Risk
     $c = round(log($ra1/$ra2, 2), 2);
@@ -198,15 +198,12 @@ function renderTable($table) {
        </td>
         <td class='text-center'><?php echo $table[$i][2] ?></td>
         <td class='text-center'><?php echo $table[$i][3] ?></td>
-        <td class='text-center'><div class="slidecontainer"><input type="range" min="-1" max="1" step="0.01" disable value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
+        <td class='text-center'><div class="slidecontainer"><input type="range" min="-2" max="2" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
       </tr>
       <?php
       }
     ?>
     </table>
-    <script type="text/javascript">
-      document.getElementById("myRange").disabled = true;
-    </script>
     <?php
 }
 
