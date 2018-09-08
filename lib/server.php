@@ -9,7 +9,7 @@ include_once '../lib/functions.php';
 <!-- Head -->
 <head>
   <!-- Title -->
-  <title>Sever Page</title>
+  <title>Server Page</title>
   <!-- Stylesheet -->
   <link rel="stylesheet" href="../css/basic.css">
 </head>
@@ -18,7 +18,8 @@ include_once '../lib/functions.php';
 // Flags
 $failFlag = 0;
 
-// Check Empty.
+//############## CHECK EMPTY ###################################################
+// Longitude
 if (!empty($_POST["long"])) {
     $longVal = trim($_POST["long"]);
 } else {
@@ -27,6 +28,7 @@ if (!empty($_POST["long"])) {
     $failFlag = 1;
 }
 
+// Latitude
 if (!empty($_POST["lat"])) {
     $latVal = trim($_POST["lat"]);
 } else {
@@ -35,6 +37,7 @@ if (!empty($_POST["lat"])) {
     $failFlag = 1;
 }
 
+// Radius 1
 if (!empty($_POST["rad1"])) {
     $radVal1 = trim($_POST["rad1"]);
 } else {
@@ -43,6 +46,7 @@ if (!empty($_POST["rad1"])) {
     $failFlag = 1;
 }
 
+// Radius 2
 if (!empty($_POST["rad2"])) {
     $radVal2 = trim($_POST["rad2"]);
 } else {
@@ -75,37 +79,12 @@ if ($failFlag != 1) {
     $localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
 }
 
-//############## JSON OUTPUT ###################################################
 // Output Array
 if ($failFlag != 1) {
-    // Immediate Array
-    echo "<h2>JSON Output</h2>";
-    echo "<h3>Immediate Values</h3>";
-    // Calculated Values JSON
-    $crimeValObj = new \stdClass();
-    $crimeValObj->LowLatitude = $latLow1;
-    $crimeValObj->HighLatitude = $latHigh1;
-    $crimeValObj->LowLongitude = $longLow1;
-    $crimeValObj->HighLongitude = $longHigh1;
-    $crimeValObj->Radius1 = $radVal1;
 
-    $crimeImmediate = json_encode($crimeValObj);
-
-    echo $crimeImmediate;
-
-    // Local Array
-    echo "<h3>Local Values</h3>";
-    // Calculated Values JSON
-    $crimeValObj2 = new \stdClass();
-    $crimeValObj2->LowLatitude = $latLow2;
-    $crimeValObj2->HighLatitude = $latHigh2;
-    $crimeValObj2->LowLongitude = $longLow2;
-    $crimeValObj2->HighLongitude = $longHigh2;
-    $crimeValObj2->Radius2 = $radVal2;
-
-    $crimeLocal = json_encode($crimeValObj2);
-
-    echo $crimeLocal;
+    // JSON Output
+    echo JSONImmediate($latLow1, $latHigh1, $longLow1, $longHigh1, $radVal1);
+    echo JSONLocal($latLow2, $latHigh2, $longLow2, $longHigh2, $radVal2);
 
     // Run Queries
     $resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal);
@@ -120,21 +99,19 @@ if ($failFlag != 1) {
 }
 
 //############## MAKE ARRAY ####################################################
-function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2) {
+function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
+{
     $nRows = mysqli_num_rows($resultCount_Local);
     $table = array(array(),array(),array(),array());
     // Fetch Results
     if ($nRows) {
         $j = 0; //table index
         while ($row = mysqli_fetch_assoc($resultCount_Local)) {
-          $crimeID = $row["COUNT(id)"];
-          $crimeType = $row["Crime_Type"];
-          $crimeDate = $row["Month"];
+            $crimeID = $row["COUNT(id)"];
+            $crimeType = $row["Crime_Type"];
+            $crimeDate = $row["Month"];
 
-          // Split the Date
-          // splitDate($crimeDate);
-
-          // Set Variables
+            // Set Variables
           $table[$j][0] = $crimeType;   //crime type
           $table[$j][1] = 0;            //immediate count
           $table[$j][2] = $crimeID;     //local count
@@ -161,14 +138,15 @@ function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
 }
 
 //############## CALC RISK #####################################################
-function calcRisk($n1, $n2, $r1, $r2) {
+function calcRisk($n1, $n2, $r1, $r2)
+{
     // Get Area
-    $a1 = PI()*$r1*$r1;
-    $a2 = PI()*$r2*$r2;
+    $area1 = PI()*$r1*$r1;
+    $area2 = PI()*$r2*$r2;
 
     // Get Radius
-    $ra1 = $n1/$a1;
-    $ra2 = $n2/$a2;
+    $calcRad1 = $n1/$area1;
+    $calcRad2 = $n2/$area2;
 
     // If no data.
     if ($n1 == 0) {
@@ -176,7 +154,7 @@ function calcRisk($n1, $n2, $r1, $r2) {
         $c = " - ";
     } else {
         // Get Risk
-        $c = round(log($ra1/$ra2, 2), 2);
+        $c = round(log($calcRad1/$calcRad2, 2), 2);
     }
 
     // Return Calculation
@@ -184,10 +162,10 @@ function calcRisk($n1, $n2, $r1, $r2) {
 }
 
 //############## MAKE TABLE ####################################################
-function renderTable($table) {
-  $runningCountL = 0;
-  $runningCountI = 0;
-    ?>
+function renderTable($table)
+{
+    // Init Running Total Values
+    $runningCountL = $runningCountI = 0; ?>
     <h2>Crimes Around You</h2>
     <table class='table-border' width=50%>
       <tr>
@@ -197,22 +175,24 @@ function renderTable($table) {
         <th class='text-center text-bold'>Risk</th>
         <th class='text-center text-bold'>Risk Graphic</th>
       </tr>
-    <?php
-    for ($i=0; $i < count($table); $i++) {
-        ?>
+    <?php for ($i=0; $i < count($table); $i++) { ?>
       <tr>
         <td class=''><?php echo $table[$i][0] ?></td>
         <td class='text-center'>
           <?php
+          // IMMEDIATE
           // Replace 0 with -
           if ($table[$i][1] == 0) {
               echo "-";
           } else {
-              echo $table[$i][1];
+              // Echo Output
+              echo number_format($table[$i][1]);
+
+              // Running Total
               $runningCountI = $runningCountI + $table[$i][1];
           } ?>
        </td>
-        <td class='text-center'><?php echo $table[$i][2] ?></td>
+        <td class='text-center'><?php echo number_format($table[$i][2]) ?></td>
         <td class='text-center'><?php echo $table[$i][3] ?></td>
         <td class='text-center'><div class="slidecontainer"><input type="range" min="-3" max="3" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
       </tr>
@@ -221,9 +201,8 @@ function renderTable($table) {
     } ?>
     <tr>
       <td class='outputText text-bold'>Total Reported Crimes</td>
-      <td class='outputText text-center text-bold'><?php echo $runningCountI ?></td>
-      <td class='outputText text-center text-bold'><?php echo $runningCountL ?></td>
-      <td colspan="2"></td>
+      <td class='outputText text-center text-bold'><?php echo number_format($runningCountI) ?></td>
+      <td class='outputText text-center text-bold'><?php echo number_format($runningCountL) ?></td>
     </tr>
     </table>
     <?php
@@ -231,7 +210,8 @@ function renderTable($table) {
 
 //############## RUN SQL #######################################################
 // SQL Immediate
-function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $monthList) {
+function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $monthList)
+{
     //immediate area
     $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month FROM data
     WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'

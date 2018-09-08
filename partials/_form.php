@@ -1,5 +1,6 @@
 <!-- Search Form -->
 <form class="form-layout" action="lib/server.php" method="post">
+
   <!-- Latitude -->
   <div class='form-block'>
     <label for="lat">Latitude</label>
@@ -34,15 +35,7 @@
   <div class='form-block'>
     <label for="month">Month</label>
     <select class="" name="month">
-      <?php getMonths() ?>
-    </select>
-  </div>
-
-  <!-- Year -->
-  <div class='form-block'>
-    <label for="year">Year</label>
-    <select class="" name="year">
-    <?php getYears() ?>
+      <?php getMonths($mysqli) ?>
     </select>
   </div>
 

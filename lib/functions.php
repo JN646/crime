@@ -33,19 +33,34 @@ $n = 0;
 
 //############## GET VALUES ####################################################
 //############## Get Months ####################################################
-function getMonths() {
-    $monthVariables = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"];
-    for ($i=0; $i < count($monthVariables) ; $i++) {
+function getMonths($mysqli) {
+  // SELECT All
+  $query = "SELECT DISTINCT Month FROM data";
+  $result = mysqli_query($mysqli, $query);
+
+  // If Error
+  if (!$result) {
+      die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+  }
+
+  if (mysqli_num_rows($result) > 0) {
+      // output data of each row
+      while($row = mysqli_fetch_assoc($result)) {
         ?>
-      <option value="<?php echo $monthVariables[$i] ?>"><?php echo $monthVariables[$i] ?></option>
-<?php
-    }
+          <option><?php echo $row['Month']; ?></option>
+        <?php
+      }
+  } else {
+    ?>
+      <option>Fail</option>
+    <?php
+  }
 }
 
 //############## Get Years #####################################################
 function getYears() {
     $yearVariables = ["2018","2017","2016"];
-    for ($i=0; $i < count($yearVariables) ; $i++) {
+    for ($i=0; $i < count($yearVariables); $i++) {
         ?>
       <option value="<?php echo $yearVariables[$i] ?>"><?php echo $yearVariables[$i] ?></option>
 <?php
@@ -71,7 +86,7 @@ function countAllCrimes($mysqli) {
   $rows = mysqli_fetch_row($result);
 
   // Return Value.
-  return $rows[0];
+  return number_format($rows[0]);
 }
 
 //############## Count All Crime Types #########################################
@@ -104,4 +119,41 @@ function splitDate($crimeDate) {
 
   return $crimeMonthYear;
 }
+
+//############## JSON ##########################################################
+//############## Immediate #####################################################
+function JSONImmediate($latLow1,$latHigh1,$longLow1,$longHigh1,$radVal1) {
+  // Immediate Array
+  echo "<h2>JSON Output</h2>";
+  echo "<h3>Immediate Values</h3>";
+  // Calculated Values JSON
+  $crimeValObj = new \stdClass();
+  $crimeValObj->LowLatitude = $latLow1;
+  $crimeValObj->HighLatitude = $latHigh1;
+  $crimeValObj->LowLongitude = $longLow1;
+  $crimeValObj->HighLongitude = $longHigh1;
+  $crimeValObj->Radius1 = $radVal1;
+
+  $crimeImmediate = json_encode($crimeValObj);
+
+  return $crimeImmediate;
+}
+
+//############## Local #########################################################
+function JSONLocal($latLow2,$latHigh2,$longLow2,$longHigh2,$radVal2) {
+  // Local Array
+  echo "<h3>Local Values</h3>";
+  // Calculated Values JSON
+  $crimeValObj2 = new \stdClass();
+  $crimeValObj2->LowLatitude = $latLow2;
+  $crimeValObj2->HighLatitude = $latHigh2;
+  $crimeValObj2->LowLongitude = $longLow2;
+  $crimeValObj2->HighLongitude = $longHigh2;
+  $crimeValObj2->Radius2 = $radVal2;
+
+  $crimeLocal = json_encode($crimeValObj2);
+
+  return $crimeLocal;
+}
+
 ?>

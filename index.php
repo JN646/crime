@@ -3,6 +3,10 @@
     <!-- Container -->
     <div class="container">
 
+      <!-- Intro -->
+      <h2>Welcome</h2>
+      <p>This application will all you to see what crimes have happened around you and provide you with some risk statistics. This is a work in progress and most elements will change over time.</p>
+
       <!-- Form Partial -->
       <?php include 'partials/_form.php' ?>
 
@@ -12,7 +16,7 @@
       <hr>
       <!-- Count Results -->
       <div id='resultStats'>
-        <p class='outputText'>Debug statistics.</p>
+        <h5 class=''>Statistics.</h5>
         <p class='outputText'><b>All Crimes: </b><?php echo countAllCrimes($mysqli); ?></p>
         <p class='outputText'><b>All Crime Types: </b><?php echo countAllCrimeTypes($mysqli); ?></p>
         <p class='outputText'><b>Months worth of data: </b><?php echo countAllMonth($mysqli); ?></p>
