@@ -1,12 +1,14 @@
 /* Master CSS */
 
 /* Fonts */
+
 @import url('https://fonts.googleapis.com/css?family=Ubuntu');
 * {
   font-family: 'Ubuntu', sans-serif;
 }
 
 /* Body */
+
 body {
   background-image: url('../img/wall.jpg');
   background-repeat: no-repeat;
@@ -15,6 +17,7 @@ body {
 }
 
 /* Container */
+
 .container {
   width: 1000px;
   background-color: white;
@@ -34,6 +37,7 @@ body {
 }
 
 /* Text Tweaks */
+
 .text-center {
   text-align: center;
 }
@@ -47,6 +51,7 @@ body {
 }
 
 /* Safe and Danger */
+
 .safe {
   color: green;
 }
@@ -56,6 +61,7 @@ body {
 }
 
 /* Risk Factors */
+
 .risk_High {
   color: red;
 }
@@ -69,6 +75,7 @@ body {
 }
 
 /* Form */
+
 .form-layout {
   border: 1px solid lightblue;
   padding: 10px;
@@ -83,18 +90,20 @@ body {
 }
 
 /* No Results */
+
 #noResults {
   text-align: center;
   font-weight: bold;
 }
 
 /* Crime Table */
+
 .table-border {
-    border-collapse: collapse;
+  border-collapse: collapse;
 }
 
 .table-border table, th, td {
-    border: 1px solid lightgray;
+  border: 1px solid lightgray;
 }
 
 .table-border th, td {
@@ -102,6 +111,7 @@ body {
 }
 
 /* Result Section */
+
 div#resultStats {
   background-color: lightgoldenrodyellow;
   padding: 5px;
