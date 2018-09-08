@@ -114,19 +114,25 @@ if ($failFlag != 1) {
 }
 
 //############## MAKE ARRAY ####################################################
-function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
-{
+function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2) {
     $nRows = mysqli_num_rows($resultCount_Local);
     $table = array(array(),array(),array(),array());
     // Fetch Results
     if ($nRows) {
         $j = 0; //table index
         while ($row = mysqli_fetch_assoc($resultCount_Local)) {
-            // Set Variables
-          $table[$j][0] = $row["Crime_Type"]; //crime type
-          $table[$j][1] = 0; //immediate count
-          $table[$j][2] = $row["COUNT(id)"]; //local count
-          $table[$j][3] = "n/a"; //risk
+          $crimeID = $row["COUNT(id)"];
+          $crimeType = $row["Crime_Type"];
+          $crimeDate = $row["Month"];
+
+          // Split the Date
+          // splitDate($crimeDate);
+
+          // Set Variables
+          $table[$j][0] = $crimeType;   //crime type
+          $table[$j][1] = 0;            //immediate count
+          $table[$j][2] = $crimeID;     //local count
+          $table[$j][3] = "N/A";        //risk
 
           // Get Immediate Count
             $row1 = mysqli_fetch_assoc($resultCount_Immediate);
@@ -141,15 +147,15 @@ function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
         }
     } else {
         // No Results
-        echo "<p id='noResults'>Something Bad Happened.</p>";
+        echo "<p id='noResults'>preCalcTable: No Results.</p>";
     }
 
+    // Return the table.
     return $table;
 }
 
 //############## CALC RISK #####################################################
-function calcRisk($n1, $n2, $r1, $r2)
-{
+function calcRisk($n1, $n2, $r1, $r2) {
     // Get Area
     $a1 = PI()*$r1*$r1;
     $a2 = PI()*$r2*$r2;
@@ -172,8 +178,7 @@ function calcRisk($n1, $n2, $r1, $r2)
 }
 
 //############## MAKE TABLE ####################################################
-function renderTable($table)
-{
+function renderTable($table) {
     ?>
     <h2>Crimes Around You</h2>
     <table class='table-border' width=100%>
@@ -191,6 +196,7 @@ function renderTable($table)
         <td class=''><?php echo $table[$i][0] ?></td>
         <td class='text-center'>
           <?php
+          // Replace 0 with -
           if ($table[$i][1] == 0) {
               echo "-";
           } else {
@@ -209,20 +215,19 @@ function renderTable($table)
 
 //############## RUN SQL #######################################################
 // SQL Immediate
-function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $monthList)
-{
+function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $monthList) {
     //immediate area
     $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month FROM data
-  WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
-  GROUP BY Crime_Type
-  ORDER BY COUNT(id) DESC";
+    WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
+    GROUP BY Crime_Type
+    ORDER BY COUNT(id) DESC";
 
     // Run Query
     $resultCount_Immediate = mysqli_query($mysqli, $sql_immediate);
 
     // If Error
     if (!$resultCount_Immediate) {
-        die('Could not run query: ' . mysqli_error($mysqli));
+        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
     }
 
     // Return

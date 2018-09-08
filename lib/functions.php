@@ -1,15 +1,13 @@
 <?php
 //############## FUNCTION FILE #################################################
 //############## Version Number ################################################
-class ApplicationVersion
-{
+class ApplicationVersion {
   // Define version numbering
   const MAJOR = 0;
   const MINOR = 0;
   const PATCH = 0;
 
-  public static function get()
-  {
+  public static function get() {
     // Prepare git information to form version number.
     $commitHash = trim(exec('git log --pretty="%h" -n1 HEAD'));
 
@@ -35,8 +33,7 @@ $n = 0;
 
 //############## GET VALUES ####################################################
 // Get Months
-function getMonths()
-{
+function getMonths() {
     $monthVariables = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"];
     for ($i=0; $i < count($monthVariables) ; $i++) {
         ?>
@@ -46,8 +43,7 @@ function getMonths()
 }
 
 // Get Years
-function getYears()
-{
+function getYears() {
     $yearVariables = ["2018","2017","2016"];
     for ($i=0; $i < count($yearVariables) ; $i++) {
         ?>
@@ -56,14 +52,22 @@ function getYears()
     }
 }
 
-// Get Years
-function getCrimes()
-{
+// Get Years(
+function getCrimes() {
     $crimeVariables = ["Drugs","Burglary","Criminal damage and arson","Anti-social behaviour","Other theft","Violence and sexual offences","Vehicle crime","Bicycle theft","Shoplifting","Public order","Other crime","Theft from the person","Robbery","Possession of weapons"];
     for ($i=0; $i < count($crimeVariables) ; $i++) {
         ?>
       <option value="<?php echo $crimeVariables[$i] ?>"><?php echo $crimeVariables[$i] ?></option>
 <?php
     }
+}
+
+//############## SPLIT DATES ###################################################
+function splitDate($crimeDate) {
+  list($crimeYear, $crimeMonth) = explode("-", $crimeDate);
+
+  $crimeMonthYear = array($crimeMonth, $crimeYear);
+
+  return $crimeMonthYear;
 }
 ?>
