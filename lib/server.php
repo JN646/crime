@@ -6,8 +6,13 @@ include_once '../config/config.php';
 include_once '../lib/functions.php';
 ?>
 
-<!-- Stylesheet -->
-<link rel="stylesheet" href="../css/basic.css">
+<!-- Head -->
+<head>
+  <!-- Title -->
+  <title>Sever Page</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../css/basic.css">
+</head>
 
 <?php
 // Flags
@@ -74,6 +79,7 @@ if ($failFlag != 1) {
 // Output Array
 if ($failFlag != 1) {
     // Immediate Array
+    echo "<h2>JSON Output</h2>";
     echo "<h3>Immediate Values</h3>";
     // Calculated Values JSON
     $crimeValObj = new \stdClass();
@@ -181,7 +187,7 @@ function calcRisk($n1, $n2, $r1, $r2) {
 function renderTable($table) {
     ?>
     <h2>Crimes Around You</h2>
-    <table class='table-border' width=100%>
+    <table class='table-border' width=50%>
       <tr>
         <th class='text-center text-bold'>Crime</th>
         <th class='text-center text-bold'>Immediate</th>
@@ -205,7 +211,7 @@ function renderTable($table) {
        </td>
         <td class='text-center'><?php echo $table[$i][2] ?></td>
         <td class='text-center'><?php echo $table[$i][3] ?></td>
-        <td class='text-center'><div class="slidecontainer"><input type="range" min="-2" max="2" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
+        <td class='text-center'><div class="slidecontainer"><input type="range" min="-3" max="3" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
       </tr>
       <?php
     } ?>

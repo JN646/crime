@@ -13,6 +13,9 @@
       <!-- Count Results -->
       <div id='resultStats'>
         <p class='outputText'>Debug statistics.</p>
+        <p class='outputText'><b>All Crimes: </b><?php echo countAllCrimes($mysqli); ?></p>
+        <p class='outputText'><b>All Crime Types: </b><?php echo countAllCrimeTypes($mysqli); ?></p>
+        <p class='outputText'><b>Months worth of data: </b><?php echo countAllMonth($mysqli); ?></p>
       </div>
 
       <!-- Footer -->

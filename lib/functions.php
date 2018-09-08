@@ -32,7 +32,7 @@ $radVal2 = 0;
 $n = 0;
 
 //############## GET VALUES ####################################################
-// Get Months
+//############## Get Months ####################################################
 function getMonths() {
     $monthVariables = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"];
     for ($i=0; $i < count($monthVariables) ; $i++) {
@@ -42,7 +42,7 @@ function getMonths() {
     }
 }
 
-// Get Years
+//############## Get Years #####################################################
 function getYears() {
     $yearVariables = ["2018","2017","2016"];
     for ($i=0; $i < count($yearVariables) ; $i++) {
@@ -52,7 +52,7 @@ function getYears() {
     }
 }
 
-// Get Years(
+//############## Get Crimes ####################################################
 function getCrimes() {
     $crimeVariables = ["Drugs","Burglary","Criminal damage and arson","Anti-social behaviour","Other theft","Violence and sexual offences","Vehicle crime","Bicycle theft","Shoplifting","Public order","Other crime","Theft from the person","Robbery","Possession of weapons"];
     for ($i=0; $i < count($crimeVariables) ; $i++) {
@@ -60,6 +60,40 @@ function getCrimes() {
       <option value="<?php echo $crimeVariables[$i] ?>"><?php echo $crimeVariables[$i] ?></option>
 <?php
     }
+}
+
+//############## COUNT THINGS ##################################################
+//############## Count All Crimes ##############################################
+function countAllCrimes($mysqli) {
+  // SELECT All
+  $query = "SELECT COUNT(*) FROM data";
+  $result = mysqli_query($mysqli, $query);
+  $rows = mysqli_fetch_row($result);
+
+  // Return Value.
+  return $rows[0];
+}
+
+//############## Count All Crime Types #########################################
+function countAllCrimeTypes($mysqli) {
+  // SELECT All
+  $query = "SELECT COUNT(DISTINCT(CRIME_Type)) FROM data";
+  $result = mysqli_query($mysqli, $query);
+  $rows = mysqli_fetch_row($result);
+
+  // Return Value.
+  return $rows[0];
+}
+
+//############## Count All Months ##############################################
+function countAllMonth($mysqli) {
+  // SELECT All
+  $query = "SELECT COUNT(DISTINCT(Month)) FROM data";
+  $result = mysqli_query($mysqli, $query);
+  $rows = mysqli_fetch_row($result);
+
+  // Return Value.
+  return $rows[0];
 }
 
 //############## SPLIT DATES ###################################################
