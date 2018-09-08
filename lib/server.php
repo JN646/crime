@@ -185,6 +185,8 @@ function calcRisk($n1, $n2, $r1, $r2) {
 
 //############## MAKE TABLE ####################################################
 function renderTable($table) {
+  $runningCountL = 0;
+  $runningCountI = 0;
     ?>
     <h2>Crimes Around You</h2>
     <table class='table-border' width=50%>
@@ -207,6 +209,7 @@ function renderTable($table) {
               echo "-";
           } else {
               echo $table[$i][1];
+              $runningCountI = $runningCountI + $table[$i][1];
           } ?>
        </td>
         <td class='text-center'><?php echo $table[$i][2] ?></td>
@@ -214,7 +217,14 @@ function renderTable($table) {
         <td class='text-center'><div class="slidecontainer"><input type="range" min="-3" max="3" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
       </tr>
       <?php
+      $runningCountL = $runningCountL + $table[$i][2];
     } ?>
+    <tr>
+      <td class='outputText text-bold'>Total Reported Crimes</td>
+      <td class='outputText text-center text-bold'><?php echo $runningCountI ?></td>
+      <td class='outputText text-center text-bold'><?php echo $runningCountL ?></td>
+      <td colspan="2"></td>
+    </tr>
     </table>
     <?php
 }

@@ -1,4 +1,5 @@
-// GLOBAL JS FILE
+//############## GLOBAL JS #####################################################
+//############## Location GPS ##################################################
 // Get Boxes to put coordinates in.
 var latBoxVal = document.getElementById("latBox");
 var longBoxVal = document.getElementById("longBox");
