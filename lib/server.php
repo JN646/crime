@@ -21,7 +21,7 @@ $failFlag = 0;
 //############## CHECK EMPTY ###################################################
 // Longitude
 if (!empty($_POST["long"])) {
-    $longVal = trim($_POST["long"]);
+    $longVal = trim((float)$_POST["long"]);
 } else {
     echo "<p>Long is missing.</p>";
     $longVal = 0;
@@ -30,7 +30,7 @@ if (!empty($_POST["long"])) {
 
 // Latitude
 if (!empty($_POST["lat"])) {
-    $latVal = trim($_POST["lat"]);
+    $latVal = trim((float)$_POST["lat"]);
 } else {
     echo "<p>Lat is missing.</p>";
     $latVal = 0;
@@ -39,7 +39,7 @@ if (!empty($_POST["lat"])) {
 
 // Radius 1
 if (!empty($_POST["rad1"])) {
-    $radVal1 = trim($_POST["rad1"]);
+    $radVal1 = trim((float)$_POST["rad1"]);
 } else {
     echo "<p>Rad1 is missing.</p>";
     $radVal1 = 0;
@@ -48,7 +48,7 @@ if (!empty($_POST["rad1"])) {
 
 // Radius 2
 if (!empty($_POST["rad2"])) {
-    $radVal2 = trim($_POST["rad2"]);
+    $radVal2 = trim((float)$_POST["rad2"]);
 } else {
     echo "<p>Rad2 is missing.</p>";
     $radVal2 = 0;
@@ -83,8 +83,12 @@ if ($failFlag != 1) {
 if ($failFlag != 1) {
 
     // JSON Output
-    echo JSONImmediate($latLow1, $latHigh1, $longLow1, $longHigh1, $radVal1);
-    echo JSONLocal($latLow2, $latHigh2, $longLow2, $longHigh2, $radVal2);
+    echo "<h2>JSON Output</h2>";
+    echo "<h3>Immediate Values</h3>";
+    echo JSONOutput($immediateCal, $radVal1);
+
+    echo "<h3>Local Values</h3>";
+    echo JSONOutput($localCal, $radVal1);
 
     // Run Queries
     $resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal);

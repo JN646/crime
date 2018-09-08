@@ -121,39 +121,21 @@ function splitDate($crimeDate) {
 }
 
 //############## JSON ##########################################################
-//############## Immediate #####################################################
-function JSONImmediate($latLow1,$latHigh1,$longLow1,$longHigh1,$radVal1) {
-  // Immediate Array
-  echo "<h2>JSON Output</h2>";
-  echo "<h3>Immediate Values</h3>";
+//############## Immediate & Local #############################################
+function JSONOutput($immediateCal,$radVal1) {
   // Calculated Values JSON
   $crimeValObj = new \stdClass();
-  $crimeValObj->LowLatitude = $latLow1;
-  $crimeValObj->HighLatitude = $latHigh1;
-  $crimeValObj->LowLongitude = $longLow1;
-  $crimeValObj->HighLongitude = $longHigh1;
-  $crimeValObj->Radius1 = $radVal1;
+  $crimeValObj->LowLatitude   = $immediateCal[0];
+  $crimeValObj->HighLatitude  = $immediateCal[1];
+  $crimeValObj->LowLongitude  = $immediateCal[2];
+  $crimeValObj->HighLongitude = $immediateCal[3];
+  $crimeValObj->Radius1       = $radVal1;
 
+  // JSON Encode
   $crimeImmediate = json_encode($crimeValObj);
 
+  // Return Encoded JSON
   return $crimeImmediate;
-}
-
-//############## Local #########################################################
-function JSONLocal($latLow2,$latHigh2,$longLow2,$longHigh2,$radVal2) {
-  // Local Array
-  echo "<h3>Local Values</h3>";
-  // Calculated Values JSON
-  $crimeValObj2 = new \stdClass();
-  $crimeValObj2->LowLatitude = $latLow2;
-  $crimeValObj2->HighLatitude = $latHigh2;
-  $crimeValObj2->LowLongitude = $longLow2;
-  $crimeValObj2->HighLongitude = $longHigh2;
-  $crimeValObj2->Radius2 = $radVal2;
-
-  $crimeLocal = json_encode($crimeValObj2);
-
-  return $crimeLocal;
 }
 
 ?>
