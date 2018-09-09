@@ -1,5 +1,5 @@
 <!-- Search Form -->
-<form class="form-layout" action="lib/data.php" method="post">
+<form class="form-layout" action="lib/server.php" method="post">
 
   <!-- Latitude -->
   <div class='form-block'>
