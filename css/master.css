@@ -89,13 +89,15 @@ body {
   margin: 10px;
 }
 
+/* Stat Page */
 .statBlock {
   display: inline-grid;
-  width: 200px;
+  width: 222px;
   border: solid 1px black;
   padding: 10px;
   text-align: center;
   background-color: white;
+  margin-bottom: 5px;
 }
 
 /* No Results */

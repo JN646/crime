@@ -126,10 +126,42 @@ function countAllMonth($mysqli) {
   return $rows[0];
 }
 
-//############## Count All Months ##############################################
+//############## Count No Locations ############################################
 function countAllNoLocation($mysqli) {
   // SELECT All
   $query = "SELECT COUNT(DISTINCT(ID)) FROM data WHERE Longitude = 0 AND Latitude = 0";
+  $result = mysqli_query($mysqli, $query);
+  $rows = mysqli_fetch_row($result);
+
+  // If Error
+  if (!$result) {
+      die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+  }
+
+  // Return Value.
+  return $rows[0];
+}
+
+//############## Fall Within ###################################################
+function countFallsWithin($mysqli) {
+  // SELECT All
+  $query = "SELECT COUNT(DISTINCT(Falls_Within)) FROM data";
+  $result = mysqli_query($mysqli, $query);
+  $rows = mysqli_fetch_row($result);
+
+  // If Error
+  if (!$result) {
+      die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+  }
+
+  // Return Value.
+  return $rows[0];
+}
+
+//############## Fall Within ###################################################
+function countReportedBy($mysqli) {
+  // SELECT All
+  $query = "SELECT COUNT(DISTINCT(Reported_By)) FROM data";
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
 
