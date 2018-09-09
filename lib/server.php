@@ -262,16 +262,8 @@ function sqlCrimeAreaJSON($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latV
     //free memory associated with result
     $resultCount_Immediate->close();
 
-    //close connection
-    // $mysqli->close();
-
     //now print the data
     $myJSON= json_encode($myObj);
     echo $myJSON;
-
-    // var_dump(json_decode($myJSON));
-
-    // Return
-    // return $resultCount_Immediate;
 }
  ?>

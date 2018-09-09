@@ -13,8 +13,8 @@ define('DB_NAME', 'crimes');
 //get connection
 $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
-if(!$mysqli){
-	die("Connection failed: " . $mysqli->error);
+if (!$mysqli) {
+    die("Connection failed: " . $mysqli->error);
 }
 
 // Longitude
@@ -63,7 +63,7 @@ $result = $mysqli->query($query);
 //loop through the returned data
 $myObj = array();
 foreach ($result as $row) {
-	$myObj[] = $row;
+    $myObj[] = $row;
 }
 
 //free memory associated with result
@@ -78,4 +78,3 @@ $myJSON= json_encode($myObj);
 // echo $myJSON;
 
 var_dump(json_decode($myJSON));
-?>
