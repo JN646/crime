@@ -12,6 +12,7 @@ include_once '../lib/functions.php';
   <title>Server Page</title>
   <!-- Stylesheet -->
   <link rel="stylesheet" href="../css/basic.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 </head>
 
 <?php
@@ -173,11 +174,11 @@ function renderTable($table)
     <h2>Crimes Around You</h2>
     <table class='table-border' width=50%>
       <tr>
-        <th class='text-center text-bold'>Crime</th>
-        <th class='text-center text-bold'>Immediate</th>
-        <th class='text-center text-bold'>Local</th>
-        <th class='text-center text-bold'>Risk</th>
-        <th class='text-center text-bold'>Risk Graphic</th>
+        <th id="headerCrime" class='text-center text-bold'>Crime</th>
+        <th id="headerImmediate" class='text-center text-bold'>Immediate</th>
+        <th id="headerLocal" class='text-center text-bold'>Local</th>
+        <th id="headerRisk" class='text-center text-bold'>Risk</th>
+        <th id="headerRiskGraphic" class='text-center text-bold'>Risk Graphic</th>
       </tr>
     <?php for ($i=0; $i < count($table); $i++) { ?>
       <tr>
@@ -209,6 +210,7 @@ function renderTable($table)
       <td class='outputText text-center text-bold'><?php echo number_format($runningCountL) ?></td>
     </tr>
     </table>
+
     <?php
 }
 
