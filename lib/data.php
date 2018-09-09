@@ -59,9 +59,9 @@ ORDER BY COUNT(id) DESC");
 $result = $mysqli->query($query);
 
 //loop through the returned data
-$data = array();
+$myObj = array();
 foreach ($result as $row) {
-	$data[] = $row;
+	$myObj[] = $row;
 }
 
 //free memory associated with result
@@ -71,5 +71,9 @@ $result->close();
 $mysqli->close();
 
 //now print the data
-print json_encode($data);
+$myJSON= json_encode($myObj);
+
+echo $myJSON;
+
+// var_dump(json_decode($myJSON));
 ?>
