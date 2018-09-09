@@ -180,7 +180,8 @@ function renderTable($table)
         <th id="headerRisk" class='text-center text-bold'>Risk</th>
         <th id="headerRiskGraphic" class='text-center text-bold'>Risk Graphic</th>
       </tr>
-    <?php for ($i=0; $i < count($table); $i++) { ?>
+    <?php for ($i=0; $i < count($table); $i++) {
+        ?>
       <tr>
         <td class=''><?php echo $table[$i][0] ?></td>
         <td class='text-center'>
@@ -256,7 +257,7 @@ function sqlCrimeAreaJSON($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latV
     //loop through the returned data
     $myObj = array();
     foreach ($resultCount_Immediate as $row) {
-    	$myObj[] = $row;
+        $myObj[] = $row;
     }
 
     //free memory associated with result
