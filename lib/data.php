@@ -1,5 +1,7 @@
 <?php
 //setting header to json
+include '../config/config.php';
+
 header('Content-Type: application/json');
 
 //database
@@ -73,7 +75,7 @@ $mysqli->close();
 //now print the data
 $myJSON= json_encode($myObj);
 
-echo $myJSON;
+// echo $myJSON;
 
-// var_dump(json_decode($myJSON));
+var_dump(json_decode($myJSON));
 ?>

@@ -86,10 +86,10 @@ if ($failFlag != 1) {
     // JSON Output
     echo "<h2>JSON Output</h2>";
     echo "<h3>Immediate Values</h3>";
-    echo JSONOutput($immediateCal, $radVal1);
+    echo sqlCrimeAreaJSON($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
 
     echo "<h3>Local Values</h3>";
-    echo JSONOutput($localCal, $radVal1);
+    echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
 
     // Run Queries
     $resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal);
@@ -215,7 +215,7 @@ function renderTable($table)
 }
 
 //############## RUN SQL #######################################################
-// SQL Immediate
+// SQL
 function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $monthList)
 {
     //immediate area
@@ -234,5 +234,44 @@ function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, 
 
     // Return
     return $resultCount_Immediate;
+}
+
+// SQL JSON Output
+function sqlCrimeAreaJSON($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal)
+{
+    //immediate area
+    $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type FROM data
+    WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
+    GROUP BY Crime_Type
+    ORDER BY COUNT(id) DESC";
+
+    // Run Query
+    $resultCount_Immediate = mysqli_query($mysqli, $sql_immediate);
+
+    // If Error
+    if (!$resultCount_Immediate) {
+        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+    }
+
+    //loop through the returned data
+    $myObj = array();
+    foreach ($resultCount_Immediate as $row) {
+    	$myObj[] = $row;
+    }
+
+    //free memory associated with result
+    $resultCount_Immediate->close();
+
+    //close connection
+    // $mysqli->close();
+
+    //now print the data
+    $myJSON= json_encode($myObj);
+    echo $myJSON;
+
+    // var_dump(json_decode($myJSON));
+
+    // Return
+    // return $resultCount_Immediate;
 }
  ?>
