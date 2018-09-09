@@ -85,6 +85,11 @@ function countAllCrimes($mysqli) {
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
 
+  // If Error
+  if (!$result) {
+      die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+  }
+
   // Return Value.
   return number_format($rows[0]);
 }
@@ -96,6 +101,11 @@ function countAllCrimeTypes($mysqli) {
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
 
+  // If Error
+  if (!$result) {
+      die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+  }
+
   // Return Value.
   return $rows[0];
 }
@@ -106,6 +116,27 @@ function countAllMonth($mysqli) {
   $query = "SELECT COUNT(DISTINCT(Month)) FROM data";
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
+
+  // If Error
+  if (!$result) {
+      die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+  }
+
+  // Return Value.
+  return $rows[0];
+}
+
+//############## Count All Months ##############################################
+function countAllNoLocation($mysqli) {
+  // SELECT All
+  $query = "SELECT COUNT(DISTINCT(ID)) FROM data WHERE Longitude = 0 AND Latitude = 0";
+  $result = mysqli_query($mysqli, $query);
+  $rows = mysqli_fetch_row($result);
+
+  // If Error
+  if (!$result) {
+      die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+  }
 
   // Return Value.
   return $rows[0];

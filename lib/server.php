@@ -116,10 +116,10 @@ function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
             $crimeDate = $row["Month"];
 
             // Set Variables
-          $table[$j][0] = $crimeType;   //crime type
-          $table[$j][1] = 0;            //immediate count
-          $table[$j][2] = $crimeID;     //local count
-          $table[$j][3] = "N/A";        //risk
+            $table[$j][0] = $crimeType;   //crime type
+            $table[$j][1] = 0;            //immediate count
+            $table[$j][2] = $crimeID;     //local count
+            $table[$j][3] = "N/A";        //risk
 
           // Get Immediate Count
             $row1 = mysqli_fetch_assoc($resultCount_Immediate);
