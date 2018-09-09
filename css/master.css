@@ -89,6 +89,15 @@ body {
   margin: 10px;
 }
 
+.statBlock {
+  display: inline-grid;
+  width: 200px;
+  border: solid 1px black;
+  padding: 10px;
+  text-align: center;
+  background-color: white;
+}
+
 /* No Results */
 
 #noResults {

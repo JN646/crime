@@ -17,10 +17,24 @@
       <!-- Count Results -->
       <div id='resultStats'>
         <h5 class=''>Statistics.</h5>
-        <p class='outputText'><b>All Crimes: </b><?php echo countAllCrimes($mysqli); ?></p>
-        <p class='outputText'><b>All Crime Types: </b><?php echo countAllCrimeTypes($mysqli); ?></p>
-        <p class='outputText'><b>Months worth of data: </b><?php echo countAllMonth($mysqli); ?></p>
-        <p class='outputText'><b>Crimes with no location: </b><?php echo countAllNoLocation($mysqli); ?></p>
+        <div class="statBox">
+          <div class='statBlock'>
+            <p class='outputText'><b>All Crimes: </b></p>
+            <p><?php echo countAllCrimes($mysqli); ?></p>
+          </div>
+          <div class='statBlock'>
+            <p class='outputText'><b>All Crime Types: </b></p>
+            <p><?php echo countAllCrimeTypes($mysqli); ?></p>
+          </div>
+          <div class='statBlock'>
+            <p class='outputText'><b>Months worth of data: </b></p>
+            <p><?php echo countAllMonth($mysqli); ?></p>
+          </div>
+          <div class='statBlock'>
+            <p class='outputText'><b>Crimes with no location: </b></p>
+            <p><?php echo countAllNoLocation($mysqli); ?></p>
+          </div>
+        </div>
       </div>
 
       <!-- Footer -->
