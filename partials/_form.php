@@ -31,8 +31,17 @@
     <input id='radius2' size='3' type="text" name="rad2" value="0.05">
   </div>
 
-  <!-- Month -->
+  <!-- Month Selector -->
   <div class='form-block'>
+    <label for="month">Mode</label>
+    <select id='monthSel' class="" name="monthSel">
+      <option value="all">All</option>
+      <option value="month">Months</option>
+    </select>
+  </div>
+
+  <!-- Month -->
+  <div id='monthBlock' class='form-block'>
     <label for="month">Month</label>
     <select class="" name="month">
       <?php getMonths($mysqli) ?>
