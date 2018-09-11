@@ -158,7 +158,7 @@ function renderTable($table)
           } ?>
        </td>
         <td class='text-center'><?php echo number_format($table[$i][2]) ?></td>
-        <td class='text-center'><?php echo $table[$i][3] ?></td>
+        <td class='text-center' style='background-color:<?php echo colourRisk($table[$i][3]) ?>'><?php echo $table[$i][3] ?></td>
         <td class='text-center'><div class="slidecontainer"><input type="range" min="-3" max="3" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
       </tr>
       <?php
