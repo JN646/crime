@@ -96,6 +96,9 @@ function countAllCrimes($mysqli)
         die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
     }
 
+    // Free Query
+    mysqli_free_result($result);
+
     // Return Value.
     return number_format($rows[0]);
 }
@@ -112,6 +115,9 @@ function countAllCrimeTypes($mysqli)
     if (!$result) {
         die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
     }
+
+    // Free Query
+    mysqli_free_result($result);
 
     // Return Value.
     return $rows[0];
@@ -130,6 +136,9 @@ function countAllMonth($mysqli)
         die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
     }
 
+    // Free Query
+    mysqli_free_result($result);
+
     // Return Value.
     return $rows[0];
 }
@@ -146,6 +155,9 @@ function countAllNoLocation($mysqli)
     if (!$result) {
         die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
     }
+
+    // Free Query
+    mysqli_free_result($result);
 
     // Return Value.
     return $rows[0];
@@ -164,6 +176,9 @@ function countFallsWithin($mysqli)
         die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
     }
 
+    // Free Query
+    mysqli_free_result($result);
+
     // Return Value.
     return $rows[0];
 }
@@ -180,6 +195,9 @@ function countReportedBy($mysqli)
     if (!$result) {
         die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
     }
+
+    // Free Query
+    mysqli_free_result($result);
 
     // Return Value.
     return $rows[0];

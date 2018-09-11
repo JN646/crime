@@ -16,92 +16,54 @@ include_once '../lib/functions.php';
 </head>
 
 <?php
-// Flags
-$failFlag = 0;
-
 //############## CHECK EMPTY ###################################################
-// Longitude
-if (!empty($_POST["long"])) {
+// Missing Value Check
+if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"])) {
     $longVal = trim((float)$_POST["long"]);
-} else {
-    echo "<p>Long is missing.</p>";
-    $longVal = 0;
-    $failFlag = 1;
-}
-
-// Latitude
-if (!empty($_POST["lat"])) {
     $latVal = trim((float)$_POST["lat"]);
-} else {
-    echo "<p>Lat is missing.</p>";
-    $latVal = 0;
-    $failFlag = 1;
-}
-
-// Radius 1
-if (!empty($_POST["rad1"])) {
     $radVal1 = trim((float)$_POST["rad1"]);
-} else {
-    echo "<p>Rad1 is missing.</p>";
-    $radVal1 = 0;
-    $failFlag = 1;
-}
-
-// Radius 2
-if (!empty($_POST["rad2"])) {
     $radVal2 = trim((float)$_POST["rad2"]);
 } else {
-    echo "<p>Rad2 is missing.</p>";
-    $radVal2 = 0;
-    $failFlag = 1;
+    die("Error Missing Values Found.");
 }
 
 // Store in array
 $crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthVal,$yearVal);
 
 //############## RANGE CALC ####################################################
-if ($failFlag != 1) {
-    // Immediate
-    $latLow1    = $latVal - $radVal1;
-    $latHigh1   = $latVal + $radVal1;
-    $longLow1   = $longVal - $radVal1;
-    $longHigh1  = $longVal + $radVal1;
+// Immediate
+$latLow1    = $latVal - $radVal1;
+$latHigh1   = $latVal + $radVal1;
+$longLow1   = $longVal - $radVal1;
+$longHigh1  = $longVal + $radVal1;
 
-    // Map to array
-    $immediateCal = array($latLow1,$latHigh1,$longLow1,$longHigh1);
+// Local
+$latLow2    = $latVal - $radVal2;
+$latHigh2   = $latVal + $radVal2;
+$longLow2   = $longVal - $radVal2;
+$longHigh2  = $longVal + $radVal2;
 
-    // Local
-    $latLow2    = $latVal - $radVal2;
-    $latHigh2   = $latVal + $radVal2;
-    $longLow2   = $longVal - $radVal2;
-    $longHigh2  = $longVal + $radVal2;
+// Map to array
+$immediateCal = array($latLow1,$latHigh1,$longLow1,$longHigh1);
+$localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
 
-    // Map to array
-    $localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
-}
+// Run Queries
+$resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal);
+$resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal);
 
-// Output Array
-if ($failFlag != 1) {
+// Generate Table
+$table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
+renderTable($table);
 
-    // JSON Output
-    echo "<h2>JSON Output</h2>";
-    echo "<h3>Immediate Values</h3>";
-    echo sqlCrimeAreaJSON($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
+// JSON Output
+echo "<h2>JSON Output</h2><h3>Immediate Values</h3>";
+echo sqlCrimeAreaJSON($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
 
-    echo "<h3>Local Values</h3>";
-    echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
+echo "<h3>Local Values</h3>";
+echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
 
-    // Run Queries
-    $resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal);
-    $resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal);
-
-    // Generate Table
-    $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
-    renderTable($table);
-
-    // Back
-    echo "<p><a href='../index.php'>Back</a></p>";
-}
+// Back
+echo "<p><a href='../index.php'>Back</a></p>";
 
 //############## MAKE ARRAY ####################################################
 function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
@@ -155,15 +117,12 @@ function calcRisk($n1, $n2, $r1, $r2)
 
     // If no data.
     if ($n1 == 0) {
-        // N/A
-        $c = " - ";
+        $c = "<span class='naSign'> - </span>"; // N/A
     } else {
-        // Get Risk
-        $c = round(log($calcRad1/$calcRad2, 2), 2);
+        $c = round(log($calcRad1/$calcRad2, 2), 2); // Get Risk
     }
 
-    // Return Calculation
-    return $c;
+    return $c; // Return Calculation
 }
 
 //############## MAKE TABLE ####################################################
@@ -237,7 +196,7 @@ function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, 
     return $resultCount_Immediate;
 }
 
-// SQL JSON Output
+//############## JSON OUTPUT ###################################################
 function sqlCrimeAreaJSON($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal)
 {
     //immediate area
@@ -259,9 +218,6 @@ function sqlCrimeAreaJSON($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latV
     foreach ($resultCount_Immediate as $row) {
         $myObj[] = $row;
     }
-
-    //free memory associated with result
-    $resultCount_Immediate->close();
 
     //now print the data
     $myJSON= json_encode($myObj);
