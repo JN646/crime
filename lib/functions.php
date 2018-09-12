@@ -29,9 +29,7 @@ class ApplicationVersion
 $safety = "safe";
 $monthVal = "January";
 $yearVal = "2018";
-$radVal1 = 0;
-$radVal2 = 0;
-$n = 0;
+$radVal1 = $radVal2 = $n = 0;
 
 //############## GET VALUES ####################################################
 //############## Get Months ####################################################
@@ -43,7 +41,7 @@ function getMonths($mysqli)
 
     // If Error
     if (!$result) {
-        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+        die('<p class="SQLError">Could not get month list: ' . mysqli_error($mysqli) . '</p>');
     }
 
     if (mysqli_num_rows($result) > 0) {
@@ -55,30 +53,8 @@ function getMonths($mysqli)
         }
     } else {
         ?>
-      <option>Fail</option>
+      <option disabled>Fail</option>
     <?php
-    }
-}
-
-//############## Get Years #####################################################
-function getYears()
-{
-    $yearVariables = ["2018","2017","2016"];
-    for ($i=0; $i < count($yearVariables); $i++) {
-        ?>
-      <option value="<?php echo $yearVariables[$i] ?>"><?php echo $yearVariables[$i] ?></option>
-<?php
-    }
-}
-
-//############## Get Crimes ####################################################
-function getCrimes()
-{
-    $crimeVariables = ["Drugs","Burglary","Criminal damage and arson","Anti-social behaviour","Other theft","Violence and sexual offences","Vehicle crime","Bicycle theft","Shoplifting","Public order","Other crime","Theft from the person","Robbery","Possession of weapons"];
-    for ($i=0; $i < count($crimeVariables) ; $i++) {
-        ?>
-      <option value="<?php echo $crimeVariables[$i] ?>"><?php echo $crimeVariables[$i] ?></option>
-<?php
     }
 }
 
@@ -234,7 +210,7 @@ function JSONOutput($immediateCal, $radVal1)
 
 //############## COLOUR RISK ###################################################
 function colourRisk($risk) {
-  $riskVal = 255 - (($risk - 1)*255);
+  $riskVal = $risk;
 
   return "rgb(" . GreenYellowRed($riskVal) . ")";
 }

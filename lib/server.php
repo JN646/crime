@@ -18,9 +18,10 @@ include_once '../lib/functions.php';
 <?php
 //############## CHECK EMPTY ###################################################
 // Missing Value Check
-if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"])) {
+if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"]) || !empty($_POST["month"])) {
     $longVal = trim((float)$_POST["long"]);
     $latVal = trim((float)$_POST["lat"]);
+    $month = trim((float)$_POST["month"]);
     $radVal1 = trim((float)$_POST["rad1"]);
     $radVal2 = trim((float)$_POST["rad2"]);
 } else {
@@ -48,8 +49,8 @@ $immediateCal = array($latLow1,$latHigh1,$longLow1,$longHigh1);
 $localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
 
 // Run Queries
-$resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $monthVal, $yearVal);
-$resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $monthVal, $yearVal);
+$resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $month);
+$resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $month);
 
 // Generate Table
 $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
@@ -176,11 +177,11 @@ function renderTable($table)
 
 //############## RUN SQL #######################################################
 // SQL
-function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $monthList)
+function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $month)
 {
     //immediate area
     $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month FROM data
-    WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
+    WHERE Month = $month AND Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
     GROUP BY Crime_Type
     ORDER BY COUNT(id) DESC";
 
