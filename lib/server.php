@@ -28,6 +28,25 @@ if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) ||
     die("Error Missing Values Found.");
 }
 
+// Check that Lat/Long values are in the right range.
+if ((-90.00 <= $latVal) && ($latVal <= 90.00)) {
+    // Needs Condensing
+} else {
+  die("Latitude needs to be between -90 and 90 degrees.");
+}
+
+// Check that Lat/Long values are in the right range.
+if ((-180.00 <= $longVal) && ($longVal <= 180.00)) {
+    // Needs Condensing
+} else {
+  die("Longitude needs to be between -180 and 180 degrees.");
+}
+
+// Check that Radius values are in the right range.
+if ($radVal2 <= $radVal1) {
+    die("Local area is smaller than your Immediate area.");
+}
+
 // Store in array
 $crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthVal,$yearVal);
 
@@ -132,13 +151,13 @@ function renderTable($table)
     // Init Running Total Values
     $runningCountL = $runningCountI = 0; ?>
     <h2>Crimes Around You</h2>
-    <table class='table-border' width=50%>
+    <table id="myTable2" class='table-border' width=50%>
       <tr>
-        <th id="headerCrime" class='text-center text-bold'>Crime</th>
-        <th id="headerImmediate" class='text-center text-bold'>Immediate</th>
-        <th id="headerLocal" class='text-center text-bold'>Local</th>
-        <th id="headerRisk" class='text-center text-bold'>Risk</th>
-        <th id="headerRiskGraphic" class='text-center text-bold'>Risk Graphic</th>
+        <th id="headerCrime" class='text-center text-bold' onclick="sortTable(0)">Crime</th>
+        <th id="headerImmediate" class='text-center text-bold' onclick="sortTable(1)">Immediate</th>
+        <th id="headerLocal" class='text-center text-bold' onclick="sortTable(2)">Local</th>
+        <th id="headerRisk" class='text-center text-bold' onclick="sortTable(3)">Risk</th>
+        <th id="headerRiskGraphic" class='text-center text-bold' onclick="sortTable(4)">Risk Graphic</th>
       </tr>
     <?php for ($i=0; $i < count($table); $i++) {
         ?>
@@ -172,11 +191,11 @@ function renderTable($table)
     </tr>
     </table>
 
+    <script src='../js/global.js'></script>
     <?php
 }
 
 //############## RUN SQL #######################################################
-// SQL
 function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $month)
 {
     //immediate area
