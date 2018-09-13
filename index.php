@@ -13,6 +13,9 @@
       <!-- Link to Server page -->
       <p class='outputText'><a href='lib/server.php'>Hack the Mainframe</a></p>
 
+      <!-- Manual Cron Jobs -->
+      <p class='outputText'><a href='cron/cron_count.php'>Cron Count</a></p>
+
       <hr>
 
       <!-- Stats Partial -->

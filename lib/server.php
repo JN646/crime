@@ -16,7 +16,7 @@ include_once '../lib/functions.php';
 </head>
 
 <?php
-//############## CHECK EMPTY ###################################################
+//############## CHECK VALUES ##################################################
 // Missing Value Check
 if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"]) || !empty($_POST["month"])) {
     $longVal = trim((float)$_POST["long"]);

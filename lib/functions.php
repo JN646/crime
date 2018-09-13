@@ -63,7 +63,7 @@ function getMonths($mysqli)
 function countAllCrimes($mysqli)
 {
     // SELECT All
-    $query = "SELECT COUNT(*) FROM data";
+    $query = "SELECT count FROM stats WHERE stat = 'Crime Count'";
     $result = mysqli_query($mysqli, $query);
     $rows = mysqli_fetch_row($result);
 
@@ -83,7 +83,7 @@ function countAllCrimes($mysqli)
 function countAllCrimeTypes($mysqli)
 {
     // SELECT All
-    $query = "SELECT COUNT(DISTINCT(CRIME_Type)) FROM data";
+    $query = "SELECT count FROM stats WHERE stat = 'All Crime Types'";
     $result = mysqli_query($mysqli, $query);
     $rows = mysqli_fetch_row($result);
 
@@ -103,7 +103,7 @@ function countAllCrimeTypes($mysqli)
 function countAllMonth($mysqli)
 {
     // SELECT All
-    $query = "SELECT COUNT(DISTINCT(Month)) FROM data";
+    $query = "SELECT count FROM stats WHERE stat = 'Months worth of data'";
     $result = mysqli_query($mysqli, $query);
     $rows = mysqli_fetch_row($result);
 
