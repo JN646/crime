@@ -228,6 +228,7 @@ function colourRisk($risk)
 //############## Colour Gradient ###############################################
 function GreenYellowRed($number)
 {
+    $number = $number * (255/100);
     $number--; // working with 0-99 will be easier.
 
     // Check if colour is less than half the range.
