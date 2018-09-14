@@ -48,7 +48,7 @@ if ($radVal2 <= $radVal1) {
 }
 
 // Store in array
-$crimeValues = array($longVal,$latVal,$radVal1,$radVal2,$monthVal,$yearVal);
+$crimeValues = array($longVal,$latVal,$radVal1,$radVal2);
 
 //############## RANGE CALC ####################################################
 // Immediate
@@ -76,11 +76,13 @@ $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
 renderTable($table);
 
 // JSON Output
-echo "<h2>JSON Output</h2><h3>Immediate Values</h3>";
-echo sqlCrimeAreaJSON($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
+if ($JSONEnable == "TRUE") {
+  echo "<h2>JSON Output</h2><h3>Immediate Values</h3>";
+  echo sqlCrimeAreaJSON($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
 
-echo "<h3>Local Values</h3>";
-echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
+  echo "<h3>Local Values</h3>";
+  echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
+}
 
 // Back
 echo "<p><a href='../index.php'>Back</a></p>";
@@ -190,7 +192,6 @@ function renderTable($table)
       <td class='outputText text-center text-bold'><?php echo number_format($runningCountL) ?></td>
     </tr>
     </table>
-
     <script src='../js/global.js'></script>
     <?php
 }
@@ -199,7 +200,8 @@ function renderTable($table)
 function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $month)
 {
     //immediate area
-    $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month FROM data
+    $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month
+    FROM data
     WHERE Month = $month AND Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
     GROUP BY Crime_Type
     ORDER BY COUNT(id) DESC";

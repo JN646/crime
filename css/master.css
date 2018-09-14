@@ -1,9 +1,9 @@
 /* Master CSS */
 /* Fonts */
-@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans');
 
 * {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 
 /* Body */
