@@ -24,23 +24,21 @@ function cronCreateStatTable($mysqli) {
       `stat` varchar(100) DEFAULT NULL COMMENT 'Statistic Name',
       `count` int(11) DEFAULT '0' COMMENT 'Statistic Count',
       `last_run` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated',
-      PRIMARY KEY (`id`)
-    ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1";
+      PRIMARY KEY (`id`)) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1";
     $result = mysqli_query($mysqli, $query);
 
     // Insert Data.
     $query = "INSERT INTO `stats` (`id`, `stat`, `count`, `last_run`) VALUES
     (1, 'Crime Count', 0, '2018-09-13 22:44:57'),
     (2, 'All Crime Types', 0, '2018-09-13 22:48:15'),
-    (3, 'Months worth of data', 36, '2018-09-13 23:01:54'),
+    (3, 'Months worth of data', 0, '2018-09-13 23:01:54'),
     (4, 'Crimes with no location', 0, '2018-09-14 15:52:26'),
     (5, 'Falls Within', 0, '2018-09-14 15:52:27'),
     (6, 'Reported By', 0, '2018-09-14 15:45:42')";
     $result = mysqli_query($mysqli, $query);
   }
 
-  // Free Query
-  mysqli_free_result($result);
+  mysqli_free_result($result); // Free Query
 }
 
 //############## Count All Crimes ##############################################
@@ -50,8 +48,7 @@ function cronCountCrimes($mysqli) {
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
 
-  // Free Query
-  mysqli_free_result($result);
+  mysqli_free_result($result); // Free Query
 
   // Return Value.
   $count = $rows[0];
@@ -62,8 +59,7 @@ function cronCountCrimes($mysqli) {
   $writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
   $sqlCrimeCountOutput = mysqli_fetch_row($writeCrimeCount);
 
-  // Free Query
-  mysqli_free_result($writeCrimeCount);
+  mysqli_free_result($writeCrimeCount); // Free Query
 }
 
 //############## Count All Crime Types #########################################
@@ -72,9 +68,7 @@ function cronCountCrimeTypes($mysqli) {
   $query = "SELECT COUNT(DISTINCT(CRIME_Type)) FROM data";
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
-
-  // Free Query
-  mysqli_free_result($result);
+  mysqli_free_result($result); // Free Query
 
   // Return Value.
   $count = $rows[0];
@@ -85,8 +79,7 @@ function cronCountCrimeTypes($mysqli) {
   $writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
   $sqlCrimeCountOutput = mysqli_fetch_row($writeCrimeCount);
 
-  // Free Query
-  mysqli_free_result($writeCrimeCount);
+  mysqli_free_result($writeCrimeCount); // Free Query
 }
 
 //############## Count Months ##################################################
@@ -95,9 +88,7 @@ function cronCountMonths($mysqli) {
   $query = "SELECT COUNT(DISTINCT(Month)) FROM data";
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
-
-  // Free Query
-  mysqli_free_result($result);
+  mysqli_free_result($result); // Free Query
 
   // Return Value.
   $count = $rows[0];
@@ -108,8 +99,7 @@ function cronCountMonths($mysqli) {
   $writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
   $sqlCrimeCountOutput = mysqli_fetch_row($writeCrimeCount);
 
-  // Free Query
-  mysqli_free_result($writeCrimeCount);
+  mysqli_free_result($writeCrimeCount); // Free Query
 }
 
 // Header and Return
@@ -122,11 +112,7 @@ function cronCountNoLocation($mysqli) {
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
 
-  // Free Query
-  mysqli_free_result($result);
-
-  // Return Value.
-  $count = $rows[0];
+  mysqli_free_result($result); // Free Query
 
   // Run Query
   $sqlCrimeCount = "UPDATE stats SET count = $count WHERE stat = 'Crimes with no location'";
@@ -134,8 +120,7 @@ function cronCountNoLocation($mysqli) {
   $writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
   $sqlCrimeCountOutput = mysqli_fetch_row($writeCrimeCount);
 
-  // Free Query
-  mysqli_free_result($writeCrimeCount);
+  mysqli_free_result($writeCrimeCount); // Free Query
 }
 
 //############## Count Falls Within ############################################
@@ -144,9 +129,7 @@ function cronCountFallsWithin($mysqli) {
   $query = "SELECT COUNT(DISTINCT(Falls_Within)) FROM data";
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
-
-  // Free Query
-  mysqli_free_result($result);
+  mysqli_free_result($result); // Free Query
 
   // Return Value.
   $count = $rows[0];
@@ -157,8 +140,7 @@ function cronCountFallsWithin($mysqli) {
   $writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
   $sqlCrimeCountOutput = mysqli_fetch_row($writeCrimeCount);
 
-  // Free Query
-  mysqli_free_result($writeCrimeCount);
+  mysqli_free_result($writeCrimeCount); // Free Query
 }
 
 //############## Count Reported By #############################################
@@ -167,9 +149,7 @@ function cronCountReportedBy($mysqli) {
   $query = "SELECT COUNT(DISTINCT(Falls_Within)) FROM data";
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
-
-  // Free Query
-  mysqli_free_result($result);
+  mysqli_free_result($result); // Free Query
 
   // Return Value.
   $count = $rows[0];
@@ -180,8 +160,7 @@ function cronCountReportedBy($mysqli) {
   $writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
   $sqlCrimeCountOutput = mysqli_fetch_row($writeCrimeCount);
 
-  // Free Query
-  mysqli_free_result($writeCrimeCount);
+  mysqli_free_result($writeCrimeCount); // Free Query
 }
 
 // Header and Return

@@ -26,9 +26,6 @@ class ApplicationVersion
 
 //############## INIT VALUE ####################################################
 // Debug
-$safety = "safe";
-$monthVal = "January";
-$yearVal = "2018";
 $radVal1 = $radVal2 = $n = 0;
 
 //############## GET VALUES ####################################################
@@ -47,14 +44,10 @@ function getMonths($mysqli)
     if (mysqli_num_rows($result) > 0) {
         // output data of each row
         while ($row = mysqli_fetch_assoc($result)) {
-            ?>
-          <option><?php echo $row['Month']; ?></option>
-        <?php
+          echo "<option>" . $row['Month'] . "</option>";
         }
     } else {
-        ?>
-      <option disabled>Fail</option>
-    <?php
+      echo "<option disabled>No Data</option>";
     }
 }
 
