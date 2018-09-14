@@ -123,7 +123,7 @@ function countAllMonth($mysqli)
 function countAllNoLocation($mysqli)
 {
     // SELECT All
-    $query = "SELECT COUNT(DISTINCT(ID)) FROM data WHERE Longitude = 0 AND Latitude = 0";
+    $query = "SELECT count FROM stats WHERE stat = 'Crimes with no location'";
     $result = mysqli_query($mysqli, $query);
     $rows = mysqli_fetch_row($result);
 
@@ -143,7 +143,7 @@ function countAllNoLocation($mysqli)
 function countFallsWithin($mysqli)
 {
     // SELECT All
-    $query = "SELECT COUNT(DISTINCT(Falls_Within)) FROM data";
+    $query = "SELECT count FROM stats WHERE stat = 'Falls Within'";
     $result = mysqli_query($mysqli, $query);
     $rows = mysqli_fetch_row($result);
 
@@ -163,7 +163,7 @@ function countFallsWithin($mysqli)
 function countReportedBy($mysqli)
 {
     // SELECT All
-    $query = "SELECT COUNT(DISTINCT(Reported_By)) FROM data";
+    $query = "SELECT count FROM stats WHERE stat = 'Reported By'";
     $result = mysqli_query($mysqli, $query);
     $rows = mysqli_fetch_row($result);
 
