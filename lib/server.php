@@ -78,10 +78,10 @@ renderTable($table);
 // JSON Output
 if ($JSONEnable == "TRUE") {
   echo "<h2>JSON Output</h2><h3>Immediate Values</h3>";
-  echo sqlCrimeAreaJSON($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
+  echo sqlCrimeAreaJSON($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $month);
 
   echo "<h3>Local Values</h3>";
-  echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
+  echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $month);
 }
 
 // Back
@@ -219,11 +219,11 @@ function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, 
 }
 
 //############## JSON OUTPUT ###################################################
-function sqlCrimeAreaJSON($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal)
+function sqlCrimeAreaJSON($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $month)
 {
     //immediate area
     $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type FROM data
-    WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
+    WHERE Month = $month AND Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
     GROUP BY Crime_Type
     ORDER BY COUNT(id) DESC";
 
