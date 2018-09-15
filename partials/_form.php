@@ -1,5 +1,6 @@
 <!-- Search Form -->
 <form class="form-layout" action="lib/server.php" method="post">
+
   <!-- Latitude -->
   <div class='form-block'>
     <label for="lat">Latitude</label>
@@ -21,28 +22,29 @@
   <!-- Immediate Area -->
   <div class='form-block'>
     <label for="rad1">Immediate Area</label>
-    <input id='radius' size='3' type="text" name="rad1" value="0.02">
+    <input id='radius' size='3' type="text" name="rad1" value="0.005">
   </div>
 
   <!-- Local Area -->
   <div class='form-block'>
     <label for="rad2">Local Area</label>
-    <input id='radius2' size='3' type="text" name="rad2" value="0.05">
+    <input id='radius2' size='3' type="text" name="rad2" value="0.02">
   </div>
 
-  <!-- Month -->
+  <!-- Month Selector -->
   <div class='form-block'>
-    <label for="month">Month</label>
-    <select class="" name="month">
-      <?php getMonths() ?>
+    <label for="month">Mode</label>
+    <select id='monthSel' class="" name="monthSel">
+      <option value="all">All</option>
+      <option value="month">Months</option>
     </select>
   </div>
 
-  <!-- Year -->
-  <div class='form-block'>
-    <label for="year">Year</label>
-    <select class="" name="year">
-    <?php getYears() ?>
+  <!-- Month -->
+  <div id='monthBlock' class='form-block'>
+    <label for="month">Month</label>
+    <select class="" name="month">
+      <?php getMonths($mysqli) ?>
     </select>
   </div>
 
