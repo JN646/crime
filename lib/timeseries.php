@@ -7,35 +7,42 @@ function timeSeries($mysqli)
 {
     $lat = 52.1367078;
     $long = -0.4688611;
-    $size = 0.55; //in degrees
+    $size = 0.05; //in degrees
 
     $latMin = $lat-$size;
     $latMax = $lat+$size;
     $longMin = $long-$size;
     $longMax = $long+$size;
 
+
+    $monthTerm = "SELECT DISTINCT Month FROM data";
+    $crimeTypeTerm = "SELECT DISTINCT Crime_Type FROM data";
+
+    $monthQuery = mysqli_query($mysqli, $monthTerm);
+    $crimeTypeQuery = mysqli_query($mysqli, $crimeTypeTerm);
+
+    $monthArray = array();
+    $crimeTypeArray = array();
+
+    $i = 0;
+    while($row = mysqli_fetch_assoc($monthQuery)){
+      $monthArray[$i] = $row["Month"];
+      $i++;
+    }
+
+    $i = 0;
+    while($row = mysqli_fetch_assoc($crimeTypeQuery)){
+      $crimeTypeArray[$i] = $row["Crime_Type"];
+      $i++;
+    }
+
+
     $table = array(); //of time series data. crimetype x timeseries
-
-        $monthTerm = "SELECT DISTINCT Month FROM data";
-        $crimeTypeTerm = "SELECT DISTINCT Crime_Type FROM data";
-
-        $monthQuery = mysqli_query($mysqli, $monthTerm);
-        $crimeTypeQuery = mysqli_query($mysqli, $crimeTypeTerm);
-
-        $monthArray = array();
-        $crimeTypeArray = array();
-
-        $i = 0;
-        while($row = mysqli_fetch_assoc($monthQuery)){
-          $monthArray[$i] = $row["Month"];
-          $i++;
-        }
-
-        $i = 0;
-        while($row = mysqli_fetch_assoc($crimeTypeQuery)){
-          $crimeTypeArray[$i] = $row["Crime_Type"];
-          $i++;
-        }
+    for ($i=0; $i < count($crimeTypeArray); $i++) {
+      for ($j=0; $j < count($monthArray); $j++) {
+        $table[$i][$j] = "";
+      }
+    }
 
         //var_dump($crimeTypeArray);
 
@@ -70,7 +77,6 @@ function timeSeries($mysqli)
             while($row = mysqli_fetch_assoc($resultCount_Month)) {
             //  echo $row["Crime_Type"] . "<br>";
               for ($i=0; $i < count($crimeTypeArray);  $i++) {
-                $table[$i][$m] = 0; //default to 0
                 if($row["Crime_Type"] == $crimeTypeArray[$i]){
                   $table[$i][$m] = $row["COUNT(id)"];
                   //echo "(" . $i . ", " . $m . "): " . $table[$i][$m] . "<br>";
