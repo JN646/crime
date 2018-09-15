@@ -1,5 +1,5 @@
 <!-- Search Form -->
-<form class="form dataForm alert-primary" action="lib/server.php" method="post">
+<form class="form dataForm alert-primary" action="output.php" method="post">
 <div class='row'>
   <!-- Latitude -->
   <div class='col form-group'>

@@ -12,7 +12,7 @@
 
       <ul class="nav">
         <li class="nav-item">
-          <a class="nav-link active" href="lib/server.php">Hack the Mainframe</a>
+          <a class="nav-link active" href="lib/crimecount.php">Hack the Mainframe</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="cron/cron_count.php">Cron Count</a>

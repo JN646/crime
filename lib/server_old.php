@@ -1,21 +1,11 @@
 <?php
+// DO NOT USE - BEING REMODELLED.
 //############## SERVER FILE ###################################################
 
 // Get Database Config
 include_once '../config/config.php';
 include_once '../lib/functions.php';
-?>
 
-<!-- Head -->
-<head>
-  <!-- Title -->
-  <title>Server Page</title>
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="../css/basic.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
-</head>
-
-<?php
 //############## CHECK VALUES ##################################################
 // Missing Value Check
 if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"]) || !empty($_POST["month"])) {
@@ -83,7 +73,7 @@ $resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2,
 
 // Generate Table
 $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
-renderTable($table);
+echo renderTable($table);
 
 // JSON Output
 if ($JSONEnable == "TRUE") {
@@ -93,9 +83,10 @@ if ($JSONEnable == "TRUE") {
   echo "<h3>Local Values</h3>";
   echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
 }
-
-echo "<p><a href='../index.php'>Back</a></p>"; // Back
-
+?>
+<p><a href='../index.php'>Back</a></p>
+</div>
+<?php
 //############## MAKE ARRAY ####################################################
 function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
 {
