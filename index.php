@@ -17,6 +17,9 @@
         <li class="nav-item">
           <a class="nav-link" href="cron/cron_count.php">Cron Count</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="cron/cron_createTables.php">Cron Create Tables</a>
+        </li>
       </ul>
 
       <hr>

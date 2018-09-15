@@ -1,10 +1,8 @@
 <?php
 // Add Database Connection
 require_once '../config/config.php';
-include_once 'cron_createTables'; // Create missing tables
 
 //############## MAIN ##########################################################
-cronCreateStatTable($mysqli);
 cronCountCrimes($mysqli);
 cronCountCrimeTypes($mysqli);
 cronCountMonths($mysqli);
