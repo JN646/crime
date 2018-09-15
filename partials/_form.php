@@ -1,56 +1,48 @@
 <!-- Search Form -->
-<form class="form-layout" action="lib/server.php" method="post">
-
+<form class="form dataForm alert-primary" action="lib/server.php" method="post">
+<div class='row'>
   <!-- Latitude -->
-  <div class='form-block'>
+  <div class='col form-group'>
     <label for="lat">Latitude</label>
-    <input id='latBox' size='8' type="text" name="lat" value="52.1367078">
+    <input id='latBox' class="form-control" size='8' type="text" name="lat" value="52.1367078">
   </div>
 
   <!-- Longitude -->
-  <div class='form-block'>
+  <div class='col form-group'>
     <label for="long">Longitude</label>
-    <input id='longBox' size='8' type="text" name="long" value="-0.4688611">
+    <input id='longBox' class="form-control" size='8' type="text" name="long" value="-0.4688611">
   </div>
 
   <!-- Get GPS Locations -->
-  <div class='form-block'>
-    <label for="gps"></label>
-    <button type="button" onclick="getLocation()" name="gps"><i class="fas fa-location-arrow"></i></button>
+  <div class='col form-group'>
+    <label for="gps">&nbsp</label>
+    <button class="form-control btn btn-primary" type="button" onclick="getLocation()" name="gps"><i class="fas fa-location-arrow"></i> GPS</button>
   </div>
 
   <!-- Immediate Area -->
-  <div class='form-block'>
-    <label for="rad1">Immediate Area</label>
-    <input id='radius' size='3' type="text" name="rad1" value="0.005">
+  <div class='col form-group'>
+    <label for="rad1">Immediate</label>
+    <input id='radius' class="form-control" size='3' type="text" name="rad1" value="0.005">
   </div>
 
   <!-- Local Area -->
-  <div class='form-block'>
-    <label for="rad2">Local Area</label>
-    <input id='radius2' size='3' type="text" name="rad2" value="0.02">
-  </div>
-
-  <!-- Month Selector -->
-  <div class='form-block'>
-    <label for="month">Mode</label>
-    <select id='monthSel' class="" name="monthSel">
-      <option value="all">All</option>
-      <option value="month">Months</option>
-    </select>
+  <div class='col form-group'>
+    <label for="rad2">Local</label>
+    <input id='radius2' class="form-control" size='3' type="text" name="rad2" value="0.02">
   </div>
 
   <!-- Month -->
-  <div id='monthBlock' class='form-block'>
+  <div id='monthBlock' class='col form-group'>
     <label for="month">Month</label>
-    <select class="" name="month">
+    <select class="form-control" name="month">
       <?php getMonths($mysqli) ?>
     </select>
   </div>
 
   <!-- Search Button -->
-  <div class='form-block'>
-    <label for="btnSearch"></label>
-    <button type="submit" name="btnSearch"><i class="fas fa-search"></i></button>
+  <div class='col form-group'>
+    <label>&nbsp</label>
+    <button class="form-control btn btn-primary" type="submit" name="btnSearch"><i class="fas fa-search"></i> Search</button>
   </div>
+</div>
 </form>

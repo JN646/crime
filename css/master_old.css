@@ -1,0 +1,134 @@
+/* Master CSS */
+/* Fonts */
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans');
+
+* {
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+/* Body */
+body {
+  background-image: url('../img/wall.jpg');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-attachment: fixed;
+}
+
+/* Container */
+.container {
+  width: 1000px;
+  background-color: white;
+  padding: 20px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.header {
+  color: white;
+  width: 1000px;
+  background-color: #374f6b;
+  padding: 20px;
+  margin: 0 auto;
+  margin-top: 20px;
+  line-height: 5px;
+}
+
+/* Text Tweaks */
+.text-center {
+  text-align: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.outputText {
+  font-size: 8pt;
+}
+
+/* Safe and Danger */
+.safe {
+  color: green;
+}
+
+.danger {
+  color: red;
+}
+
+/* Risk Factors */
+.risk_High {
+  color: red;
+}
+
+.risk_Medium {
+  color: orange;
+}
+
+.risk_Low {
+  color: green;
+}
+
+/* Form */
+.form-layout {
+  border: 1px solid lightblue;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: aliceblue;
+}
+
+.form-block {
+  display: inline-grid;
+  margin: 10px;
+}
+
+/* Stat Page */
+.statBlock {
+  display: inline-grid;
+  width: 232px;
+  border: solid 1px black;
+  padding: 5px;
+  text-align: center;
+  background-color: #FFFFFF55;
+  margin-bottom: 5px;
+}
+
+.statBlock:hover {
+  background-color: white;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+p.statBody {
+    font-size: 24px;
+    margin-top: -5px;
+}
+
+/* No Results */
+#noResults {
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Crime Table */
+.table-border {
+  border-collapse: collapse;
+}
+
+.table-border table, th, td {
+  border: 1px solid lightgray;
+}
+
+.table-border th, td {
+  padding: 5px;
+}
+
+/* Result Section */
+div#resultStats {
+  background-color: lightgoldenrodyellow;
+  padding: 5px;
+  margin-top: 10px;
+  border: 1px solid palegoldenrod;
+  border-radius: 5px;
+}

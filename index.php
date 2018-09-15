@@ -1,7 +1,7 @@
   <!-- Header Form -->
 <?php include 'partials/_header.php' ?>
     <!-- Container -->
-    <div class="container">
+    <div id='bodyContainer' class="container">
 
       <!-- Intro -->
       <h2>Welcome</h2>
@@ -10,11 +10,14 @@
       <!-- Form Partial -->
       <?php include 'partials/_form.php' ?>
 
-      <!-- Link to Server page -->
-      <p class='outputText'><a href='lib/server.php'>Hack the Mainframe</a></p>
-
-      <!-- Manual Cron Jobs -->
-      <p class='outputText'><a href='cron/cron_count.php'>Cron Count</a></p>
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link active" href="lib/server.php">Hack the Mainframe</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="cron/cron_count.php">Cron Count</a>
+        </li>
+      </ul>
 
       <hr>
 
