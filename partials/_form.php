@@ -22,13 +22,13 @@
   <!-- Immediate Area -->
   <div class='form-block'>
     <label for="rad1">Immediate Area</label>
-    <input id='radius' size='3' type="text" name="rad1" value="0.02">
+    <input id='radius' size='3' type="text" name="rad1" value="0.005">
   </div>
 
   <!-- Local Area -->
   <div class='form-block'>
     <label for="rad2">Local Area</label>
-    <input id='radius2' size='3' type="text" name="rad2" value="0.05">
+    <input id='radius2' size='3' type="text" name="rad2" value="0.02">
   </div>
 
   <!-- Month Selector -->

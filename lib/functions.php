@@ -206,17 +206,19 @@ function JSONOutput($immediateCal, $radVal1)
 //############## Risk to Colour ################################################
 function colourRisk($risk)
 {
-    // Set risk to riskval
-    $riskVal = $risk;
+    $thresh = .6;
+    $colour = "rgb(255,255,0)"; //defailt to yellow
 
-    // Check for zero value.
-    if ($riskVal == 0) {
-        // Return Grey.
-        return "rgb(220,220,220)";
-    } else {
-        // Return colour combination.
-        return "rgb(" . GreenYellowRed($riskVal) . ")";
+    if($risk > $thresh) {
+      $colour = "rgb(255,0,0)"; //red
     }
+
+    if($risk < -$thresh) {
+      $colour = "rgb(0,255,0)"; //green
+    }
+
+
+    return $colour;
 }
 
 //############## Colour Gradient ###############################################

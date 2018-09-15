@@ -31,6 +31,11 @@ if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) ||
 // Check that Lat/Long values are in the right range.
 if ((-90.00 <= $latVal) && ($latVal <= 90.00)) {
     // Needs Condensing
+    if ((-49.00 <= $latVal) && ($latVal <= 60.00)) {
+        // Needs Condensing
+    } else {
+      die("Only UK Supported.");
+    }
 } else {
   die("Latitude needs to be between -90 and 90 degrees.");
 }
@@ -38,6 +43,11 @@ if ((-90.00 <= $latVal) && ($latVal <= 90.00)) {
 // Check that Lat/Long values are in the right range.
 if ((-180.00 <= $longVal) && ($longVal <= 180.00)) {
     // Needs Condensing
+    if ((-11.00 <= $longVal) && ($longVal <= 1.00)) {
+        // Needs Condensing
+        } else {
+      die("Longitude needs to be between -180 and 180 degrees.");
+    }
 } else {
   die("Longitude needs to be between -180 and 180 degrees.");
 }
@@ -68,8 +78,8 @@ $immediateCal = array($latLow1,$latHigh1,$longLow1,$longHigh1);
 $localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
 
 // Run Queries
-$resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $month);
-$resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $month);
+$resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
+$resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
 
 // Generate Table
 $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
@@ -78,10 +88,10 @@ renderTable($table);
 // JSON Output
 if ($JSONEnable == "TRUE") {
   echo "<h2>JSON Output</h2><h3>Immediate Values</h3>";
-  echo sqlCrimeAreaJSON($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1, $month);
+  echo sqlCrimeAreaJSON($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
 
   echo "<h3>Local Values</h3>";
-  echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2, $month);
+  echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
 }
 
 // Back
@@ -122,8 +132,7 @@ function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
         echo "<p id='noResults'>preCalcTable: No Results.</p>";
     }
 
-    // Return the table.
-    return $table;
+    return $table; // Return the table.
 }
 
 //############## CALC RISK #####################################################
@@ -197,12 +206,12 @@ function renderTable($table)
 }
 
 //############## RUN SQL #######################################################
-function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $month)
+function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal)
 {
     //immediate area
     $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month
     FROM data
-    WHERE Month = $month AND Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
+    WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
     GROUP BY Crime_Type
     ORDER BY COUNT(id) DESC";
 
@@ -219,11 +228,11 @@ function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, 
 }
 
 //############## JSON OUTPUT ###################################################
-function sqlCrimeAreaJSON($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal, $month)
+function sqlCrimeAreaJSON($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal)
 {
     //immediate area
     $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type FROM data
-    WHERE Month = $month AND Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
+    WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
     GROUP BY Crime_Type
     ORDER BY COUNT(id) DESC";
 
