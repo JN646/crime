@@ -201,46 +201,4 @@ function JSONOutput($immediateCal, $radVal1)
     // Return Encoded JSON
     return $crimeImmediate;
 }
-
-//############## COLOUR RISK ###################################################
-//############## Risk to Colour ################################################
-function colourRisk($risk)
-{
-    $thresh = .6;
-    $colour = "rgb(255,255,0)"; //defailt to yellow
-
-    if($risk > $thresh) {
-      $colour = "rgb(255,0,0)"; //red
-    }
-
-    if($risk < -$thresh) {
-      $colour = "rgb(0,255,0)"; //green
-    }
-
-
-    return $colour;
-}
-
-//############## Colour Gradient ###############################################
-function GreenYellowRed($number)
-{
-    $number = $number * (255/100);
-    $number--; // working with 0-99 will be easier.
-
-    // Check if colour is less than half the range.
-    if ($number < 50) {
-        // green to yellow
-        $r = floor(255 * ($number / 50));
-        $g = 255;
-    } else {
-        // yellow to red.
-        $r = 255;
-        $g = floor(255 * ((50-$number%50) / 50));
-    }
-    $b = 0;
-
-    // Return colour value.
-    return "$r,$g,$b";
-}
-
 ?>
