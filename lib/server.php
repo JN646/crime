@@ -94,8 +94,7 @@ if ($JSONEnable == "TRUE") {
   echo sqlCrimeAreaJSON($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
 }
 
-// Back
-echo "<p><a href='../index.php'>Back</a></p>";
+echo "<p><a href='../index.php'>Back</a></p>"; // Back
 
 //############## MAKE ARRAY ####################################################
 function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)

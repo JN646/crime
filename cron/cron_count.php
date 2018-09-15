@@ -1,8 +1,9 @@
 <?php
 // Add Database Connection
-include_once '../config/config.php';
+require_once '../config/config.php';
+include_once 'cron_createTables'; // Create missing tables
 
-//############## COUNT THINGS ##################################################
+//############## MAIN ##########################################################
 cronCreateStatTable($mysqli);
 cronCountCrimes($mysqli);
 cronCountCrimeTypes($mysqli);
@@ -10,36 +11,6 @@ cronCountMonths($mysqli);
 cronCountNoLocation($mysqli);
 cronCountFallsWithin($mysqli);
 cronCountReportedBy($mysqli);
-
-//############## Count All Crimes ##############################################
-function cronCreateStatTable($mysqli) {
-  // SELECT All
-  $query = "SELECT id FROM stats";
-  $result = mysqli_query($mysqli, $query);
-
-  if(empty($result)) {
-    // Create table if doesn't exist.
-    $query = "CREATE TABLE IF NOT EXISTS `stats` (
-      `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Statistic ID',
-      `stat` varchar(100) DEFAULT NULL COMMENT 'Statistic Name',
-      `count` int(11) DEFAULT '0' COMMENT 'Statistic Count',
-      `last_run` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated',
-      PRIMARY KEY (`id`)) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1";
-    $result = mysqli_query($mysqli, $query);
-
-    // Insert Data.
-    $query = "INSERT INTO `stats` (`id`, `stat`, `count`, `last_run`) VALUES
-    (1, 'Crime Count', 0, '2018-09-13 22:44:57'),
-    (2, 'All Crime Types', 0, '2018-09-13 22:48:15'),
-    (3, 'Months worth of data', 0, '2018-09-13 23:01:54'),
-    (4, 'Crimes with no location', 0, '2018-09-14 15:52:26'),
-    (5, 'Falls Within', 0, '2018-09-14 15:52:27'),
-    (6, 'Reported By', 0, '2018-09-14 15:45:42')";
-    $result = mysqli_query($mysqli, $query);
-  }
-
-  mysqli_free_result($result); // Free Query
-}
 
 //############## Count All Crimes ##############################################
 function cronCountCrimes($mysqli) {
@@ -50,8 +21,7 @@ function cronCountCrimes($mysqli) {
 
   mysqli_free_result($result); // Free Query
 
-  // Return Value.
-  $count = $rows[0];
+  $count = $rows[0]; // Return Value.
 
   // Run Query
   $sqlCrimeCount = "UPDATE stats SET count = $count WHERE stat = 'Crime Count'";
@@ -70,8 +40,7 @@ function cronCountCrimeTypes($mysqli) {
   $rows = mysqli_fetch_row($result);
   mysqli_free_result($result); // Free Query
 
-  // Return Value.
-  $count = $rows[0];
+  $count = $rows[0]; // Return Value.
 
   // Run Query
   $sqlCrimeCount = "UPDATE stats SET count = $count WHERE stat = 'All Crime Types'";
@@ -90,8 +59,7 @@ function cronCountMonths($mysqli) {
   $rows = mysqli_fetch_row($result);
   mysqli_free_result($result); // Free Query
 
-  // Return Value.
-  $count = $rows[0];
+  $count = $rows[0]; // Return Value.
 
   // Run Query
   $sqlCrimeCount = "UPDATE stats SET count = $count WHERE stat = 'Months worth of data'";

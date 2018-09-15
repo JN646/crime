@@ -1,11 +1,14 @@
 <?php
 // Includes
 include_once '../config/config.php';?>
+<!-- Header Block -->
 <title>Time Series</title>
 <link rel="stylesheet" href="../css/basic.css">
 <?php
-// Run Function
-timeSeries($mysqli);
+
+timeSeries($mysqli); // Run Function
+
+echo "<p><a href='../index.php'>Back</a></p>"; // Back
 
 // Function
 function timeSeries($mysqli)
@@ -13,14 +16,14 @@ function timeSeries($mysqli)
     // Hardcoded Values
     $lat = 52.1367078;
     $long = -0.4688611;
-    $size = 0.05; //in degrees
+    $radius = 0.05; //in degrees
     $monthArray = $crimeTypeArray = array();
 
     // Calculate
-    $latMin   = $lat - $size;
-    $latMax   = $lat + $size;
-    $longMin  = $long - $size;
-    $longMax  = $long + $size;
+    $latMin   = $lat - $radius;
+    $latMax   = $lat + $radius;
+    $longMin  = $long - $radius;
+    $longMax  = $long + $radius;
 
     // SQL Terms
     $monthTerm = "SELECT DISTINCT Month FROM data";
@@ -94,10 +97,10 @@ function timeSeries($mysqli)
     echo "</tr>";
 
     for ($i=0; $i < count($monthArray); $i++) {
-        echo "<tr style='font-style:bold;'>";
-        echo "<th>" . $monthArray[$i] . "</th>";
+        echo "<tr>";
+        echo "<th class='text-center text-bold'>" . $monthArray[$i] . "</th>";
         for ($j=0; $j < count($crimeTypeArray); $j++) {
-            echo "<td style='text-align:center;'>" . $table[$j][$i] . "</td>";
+            echo "<td class='text-center'>" . $table[$j][$i] . "</td>";
         }
         echo "</tr>";
     }

@@ -1,6 +1,6 @@
 <!-- Count Results -->
 <div id='resultStats'>
-  <h5 class=''>Statistics.</h5>
+  <h3 class=''>Statistics</h3>
 
   <!-- Stat Container -->
   <div class="statBox">
