@@ -1,15 +1,4 @@
 <?php
-// Includes
-include_once '../config/config.php';?>
-<!-- Header Block -->
-<title>Time Series</title>
-<link rel="stylesheet" href="../css/basic.css">
-<?php
-
-timeSeries($mysqli); // Run Function
-
-echo "<p><a href='../index.php'>Back</a></p>"; // Back
-
 // Function
 function timeSeries($mysqli)
 {
@@ -87,22 +76,28 @@ function timeSeries($mysqli)
         }
     }
 
-    // Draw Table
-    echo "<table style='width:100%;'>";
-    //X header
-    echo "<tr><th>Crime Type Over Time</th>";
-    for ($i=0; $i < count($crimeTypeArray); $i++) {
-        echo "<th>" . $crimeTypeArray[$i] . "</th>";
-    }
-    echo "</tr>";
-
-    for ($i=0; $i < count($monthArray); $i++) {
-        echo "<tr>";
-        echo "<th class='text-center text-bold'>" . $monthArray[$i] . "</th>";
-        for ($j=0; $j < count($crimeTypeArray); $j++) {
-            echo "<td class='text-center'>" . $table[$j][$i] . "</td>";
+    function renderTimeSeriesTable($mysqli, $crimeTypeArray, $monthArray, $table)
+    {
+        // Draw Table
+        echo "<table class='table table-bordered'>";
+        //X header
+        echo "<tr><th id='cornerTableHeader'>Crime Type Over Time</th>";
+        for ($i=0; $i < count($crimeTypeArray); $i++) {
+            echo "<th><span class='verticalTH'>" . $crimeTypeArray[$i] . "</span></th>";
         }
         echo "</tr>";
+
+        for ($i=0; $i < count($monthArray); $i++) {
+            echo "<tr>";
+            echo "<th class='text-center text-bold'>" . $monthArray[$i] . "</th>";
+            for ($j=0; $j < count($crimeTypeArray); $j++) {
+                echo "<td class='text-center'>" . $table[$j][$i] . "</td>";
+            }
+            echo "</tr>";
+        }
+        echo "</table>";
     }
-    echo "</table>";
+
+    renderTimeSeriesTable($mysqli, $crimeTypeArray, $monthArray, $table);
 }
+?>

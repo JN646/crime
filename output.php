@@ -64,8 +64,6 @@ $resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1,
 $resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
 // Generate Table
 $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
-
-
  ?>
   <!-- Container -->
   <div id='bodyContainer' class="container">

@@ -42,3 +42,16 @@ body {
 .footerText {
   font-size: 80%;
 }
+
+/* Table */
+/* Vertical Headers */
+.verticalTH {
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+#cornerTableHeader {
+  vertical-align: middle;
+  text-align: center;
+}
