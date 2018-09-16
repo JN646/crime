@@ -38,3 +38,7 @@ body {
 .statBox {
   margin-bottom: 10px;
 }
+
+.footerText {
+  font-size: 80%;
+}
