@@ -26,7 +26,7 @@ class ApplicationVersion
 
 //############## INIT VALUE ####################################################
 // Debug
-$radVal1 = $radVal2 = $n = 0;
+$radVal1 = $radVal2 = $n = $mode = 0;
 $JSONEnable = "TRUE";
 
 //############## GET VALUES ####################################################

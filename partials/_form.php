@@ -40,6 +40,15 @@
     </select>
   </div>
 
+  <!-- Mode -->
+  <div id='modeBlock' class='col form-group'>
+    <label for="mode">Mode</label>
+    <select class="form-control" name="mode">
+      <option value="0">Crime Counter</option>
+      <option value="1">Time Series</option>
+    </select>
+  </div>
+
   <!-- Search Button -->
   <div class='col form-group'>
     <label>&nbsp</label>

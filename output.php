@@ -1,6 +1,7 @@
 <!-- Header Form -->
 <?php include 'partials/_header.php' ?>
 <?php include 'lib/crimecount.php' ?>
+<?php include 'lib/timeseries.php' ?>
 
 <?php
 //############## SERVER FILE ###################################################
@@ -12,6 +13,7 @@ if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) ||
     $month = trim((float)$_POST["month"]);
     $radVal1 = trim((float)$_POST["rad1"]);
     $radVal2 = trim((float)$_POST["rad2"]);
+    $mode = $_POST["mode"];
 } else {
     die("Error Missing Values Found.");
 }
@@ -70,7 +72,17 @@ $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
 
     <!-- Render Table -->
     <h2>Crimes Around You</h2>
-    <?php echo renderTable($table); ?>
+    <?php
+    if ($mode == 0) {
+      // Crime Count
+      echo renderTable($table);
+    }
+
+    if ($mode == 1) {
+      // Time Series
+      echo timeSeries($mysqli);
+    }
+    ?>
 
     <!-- Footer -->
     <?php include 'partials/_footer.php' ?>
