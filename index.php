@@ -12,9 +12,6 @@
 
       <ul class="nav">
         <li class="nav-item">
-          <a class="nav-link active" href="lib/crimecount.php">Hack the Mainframe</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="cron/cron_count.php">Cron Count</a>
         </li>
         <li class="nav-item">

@@ -5,13 +5,13 @@
   <!-- Latitude -->
   <div class='col form-group'>
     <label for="lat">Latitude</label>
-    <input id='latBox' class="form-control" onkeydown="checkEmpty()" size='8' type="text" name="lat" value="52.1367078">
+    <input id='latBox' class="form-control" onkeydown="checkEmpty()" size='8' type="number" name="lat" value="52.1367078">
   </div>
 
   <!-- Longitude -->
   <div class='col form-group'>
     <label for="long">Longitude</label>
-    <input id='longBox' class="form-control" onkeydown="checkEmpty()" size='8' type="text" name="long" value="-0.4688611">
+    <input id='longBox' class="form-control" onkeydown="checkEmpty()" size='8' type="number" name="long" value="-0.4688611">
   </div>
 
   <!-- Get GPS Locations -->
@@ -23,13 +23,13 @@
   <!-- Immediate Area -->
   <div class='col form-group'>
     <label for="rad1">Immediate</label>
-    <input id='radius' class="form-control" onkeydown="checkEmpty()" size='3' type="text" name="rad1" value="0.005">
+    <input id='radius' class="form-control" onkeydown="checkEmpty()" size='3' type="number" name="rad1" value="0.005">
   </div>
 
   <!-- Local Area -->
   <div class='col form-group'>
     <label for="rad2">Local</label>
-    <input id='radius2' class="form-control" onkeydown="checkEmpty()" size='3' type="text" name="rad2" value="0.02">
+    <input id='radius2' class="form-control" onkeydown="checkEmpty()" size='3' type="number" name="rad2" value="0.02">
   </div>
 
   <!-- Month -->

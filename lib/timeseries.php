@@ -1,11 +1,11 @@
 <?php
 // Function
-function timeSeries($mysqli)
+function timeSeries($mysqli,$lat,$long,$radius)
 {
     // Hardcoded Values
-    $lat = 52.1367078;
-    $long = -0.4688611;
-    $radius = 0.05; //in degrees
+    // $lat = 52.1367078;
+    // $long = -0.4688611;
+    // $radius = 0.05; //in degrees
     $monthArray = $crimeTypeArray = array();
 
     // Calculate

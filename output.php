@@ -1,5 +1,7 @@
 <!-- Header Form -->
 <?php include 'partials/_header.php' ?>
+
+<!-- Include Reporting Options -->
 <?php include 'lib/crimecount.php' ?>
 <?php include 'lib/timeseries.php' ?>
 
@@ -8,8 +10,8 @@
 //############## CHECK VALUES ##################################################
 // Missing Value Check
 if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"]) || !empty($_POST["month"])) {
-    $longVal = trim((float)$_POST["long"]);
     $latVal = trim((float)$_POST["lat"]);
+    $longVal = trim((float)$_POST["long"]);
     $month = trim((float)$_POST["month"]);
     $radVal1 = trim((float)$_POST["rad1"]);
     $radVal2 = trim((float)$_POST["rad2"]);
@@ -74,13 +76,11 @@ $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
     <h2>Crimes Around You</h2>
     <?php
     if ($mode == 0) {
-      // Crime Count
-      echo renderTable($table);
+      echo renderTable($table); // Crime Count
     }
 
     if ($mode == 1) {
-      // Time Series
-      echo timeSeries($mysqli);
+      echo timeSeries($mysqli,$latVal,$longVal,$radVal1); // Time Series
     }
     ?>
 
