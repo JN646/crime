@@ -20,6 +20,7 @@ function timeSeries($mysqli,$lat,$long,$radius)
     $monthQuery = mysqli_query($mysqli, $monthTerm);
     $crimeTypeQuery = mysqli_query($mysqli, $crimeTypeTerm);
 
+    // Assign to array index.
     $i = 0;
     while ($row = mysqli_fetch_assoc($monthQuery)) {
         $monthArray[$i] = $row["Month"];
@@ -40,13 +41,8 @@ function timeSeries($mysqli,$lat,$long,$radius)
     }
 
     // If Error
-    if (!$monthQuery) {
-        die('<p class="SQLError">Could not get month list: ' . mysqli_error($mysqli) . '</p>');
-    }
-
-    // If Error
-    if (!$crimeTypeQuery) {
-        die('<p class="SQLError">Could not get crime type list: ' . mysqli_error($mysqli) . '</p>');
+    if (!$monthQuery || !$crimeTypeQuery) {
+        die('<p class="SQLError">Could not get run query: ' . mysqli_error($mysqli) . '</p>');
     }
 
     // For each month

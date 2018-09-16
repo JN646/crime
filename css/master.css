@@ -34,6 +34,16 @@ body {
   border-radius: 5px;
 }
 
+/* Spin Box */
+#inputForm input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+#inputForm input::-webkit-outer-spin-button,
+#inputForm input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
 /* Stats */
 .statBox {
   margin-bottom: 10px;
