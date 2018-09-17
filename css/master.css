@@ -99,3 +99,16 @@ body {
   float: left;
   padding: 5px;
 }
+
+/* Time Series Change */
+.CrimeDown {
+  background-color: green;
+}
+
+.CrimeSame {
+  background-color: gray;
+}
+
+.CrimeUp {
+  background-color: red;
+}

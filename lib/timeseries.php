@@ -87,7 +87,7 @@ function timeSeries($mysqli,$lat,$long,$radius)
             echo "<tr>";
             echo "<th class='text-center text-bold'>" . $monthArray[$i] . "</th>";
             for ($j=0; $j < count($crimeTypeArray); $j++) {
-                echo "<td class='text-center'>" . changeDirection($table,$j,$i) . "</td>";
+                echo "<td class='text-center " . changeDirectionCSS($table,$j,$i) . "'>" . changeDirection($table,$j,$i) . "</td>";
             }
             echo "</tr>";
         }
@@ -105,6 +105,11 @@ function timeSeries($mysqli,$lat,$long,$radius)
           return $table[$j][$i] . " <i style='color: green' class='fas fa-arrow-down'></i>";
         }
 
+        // If crime is zero.
+        if ($table[$j][$i] == 0) {
+          return "";
+        }
+
         // If crime is the same.
         if ($table[$j][$i] == $table[$j][$n]) {
           return $table[$j][$i] . " <i style='color: grey' class='fas fa-equals'></i>";
@@ -113,6 +118,37 @@ function timeSeries($mysqli,$lat,$long,$radius)
         // If crime going up.
         if ($table[$j][$i] > $table[$j][$n]) {
           return $table[$j][$i] . " <i style='color: red' class='fas fa-arrow-up'></i>";
+        }
+      }
+
+      // Return value anyways.
+      return $table[$j][$i];
+    }
+
+    function changeDirectionCSS($table,$j,$i) {
+      // Get the index of the value before.
+      $n = $i - 1;
+
+      // Ensure that the value is positive.
+      if ($n >= 0) {
+        // If crime going down.
+        if ($table[$j][$i] < $table[$j][$n]) {
+          return "alert-success";
+        }
+
+        // If crime is zero.
+        if ($table[$j][$i] == 0) {
+          return "alert-active";
+        }
+
+        // If crime is the same.
+        if ($table[$j][$i] == $table[$j][$n]) {
+          return "alert-warning";
+        }
+
+        // If crime going up.
+        if ($table[$j][$i] > $table[$j][$n]) {
+          return "alert-danger";
         }
       }
 
