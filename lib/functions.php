@@ -130,7 +130,7 @@ function countAllNoLocation($mysqli)
     mysqli_free_result($result);
 
     // Return Value.
-    return $rows[0];
+    return number_format($rows[0]);
 }
 
 //############## Fall Within ###################################################
