@@ -1,6 +1,6 @@
 <?php
 // Function
-function timeSeries($mysqli,$lat,$long,$radius)
+function timeSeries($mysqli, $lat, $long, $radius)
 {
     // Hardcoded Values
     // $lat = 52.1367078;
@@ -16,7 +16,7 @@ function timeSeries($mysqli,$lat,$long,$radius)
 
     // SQL Terms
     $monthTerm = "SELECT DISTINCT Month FROM data WHERE Month <> 0";
-    $crimeTypeTerm = "SELECT DISTINCT Crime_Type FROM data WHERE Crime_Type <> 0";
+    $crimeTypeTerm = "SELECT DISTINCT Crime_Type FROM data";
     $monthQuery = mysqli_query($mysqli, $monthTerm);
     $crimeTypeQuery = mysqli_query($mysqli, $crimeTypeTerm);
 
@@ -85,77 +85,115 @@ function timeSeries($mysqli,$lat,$long,$radius)
 
         for ($i=0; $i < count($monthArray); $i++) {
             echo "<tr>";
-            echo "<th class='text-center text-bold'>" . $monthArray[$i] . "</th>";
+            echo "<th class='text-left text-bold'>" . splitDate($monthArray[$i]) . "</th>";
             for ($j=0; $j < count($crimeTypeArray); $j++) {
-                echo "<td class='text-center " . changeDirectionCSS($table,$j,$i) . "'>" . changeDirection($table,$j,$i) . "</td>";
+                echo "<td class='text-center " . changeDirectionCSS($table, $j, $i) . "'>" . changeDirection($table, $j, $i) . "</td>";
             }
             echo "</tr>";
         }
         echo "</table>";
     }
 
-    function changeDirection($table,$j,$i) {
-      // Get the index of the value before.
-      $n = $i - 1;
+    function changeDirection($table, $j, $i)
+    {
+        // Get the index of the value before.
+        $n = $i - 1;
 
-      // Ensure that the value is positive.
-      if ($n >= 0) {
-        // If crime going down.
-        if ($table[$j][$i] < $table[$j][$n]) {
-          return $table[$j][$i] . " <i style='color: green' class='fas fa-arrow-down'></i>";
+        // Ensure that the value is positive.
+        if ($n >= 0) {
+            // If crime going down.
+            if ($table[$j][$i] < $table[$j][$n]) {
+                return $table[$j][$i] . " <i style='color: green' class='fas fa-arrow-down'></i>";
+            }
+
+            // If crime is zero.
+            if ($table[$j][$i] == 0) {
+                return "";
+            }
+
+            // If crime is the same.
+            if ($table[$j][$i] == $table[$j][$n]) {
+                return $table[$j][$i] . " <i style='color: grey' class='fas fa-equals'></i>";
+            }
+
+            // If crime going up.
+            if ($table[$j][$i] > $table[$j][$n]) {
+                return $table[$j][$i] . " <i style='color: red' class='fas fa-arrow-up'></i>";
+            }
         }
 
-        // If crime is zero.
-        if ($table[$j][$i] == 0) {
-          return "";
-        }
-
-        // If crime is the same.
-        if ($table[$j][$i] == $table[$j][$n]) {
-          return $table[$j][$i] . " <i style='color: grey' class='fas fa-equals'></i>";
-        }
-
-        // If crime going up.
-        if ($table[$j][$i] > $table[$j][$n]) {
-          return $table[$j][$i] . " <i style='color: red' class='fas fa-arrow-up'></i>";
-        }
-      }
-
-      // Return value anyways.
-      return $table[$j][$i];
+        // Return value anyways.
+        return $table[$j][$i];
     }
 
-    function changeDirectionCSS($table,$j,$i) {
-      // Get the index of the value before.
-      $n = $i - 1;
+    function changeDirectionCSS($table, $j, $i)
+    {
+        // Get the index of the value before.
+        $n = $i - 1;
 
-      // Ensure that the value is positive.
-      if ($n >= 0) {
-        // If crime going down.
-        if ($table[$j][$i] < $table[$j][$n]) {
-          return "alert-success";
+        // Ensure that the value is positive.
+        if ($n >= 0) {
+            // If crime going down.
+            if ($table[$j][$i] < $table[$j][$n]) {
+                return "alert-success";
+            }
+
+            // If crime is zero.
+            if ($table[$j][$i] == 0) {
+                return "alert-active";
+            }
+
+            // If crime is the same.
+            if ($table[$j][$i] == $table[$j][$n]) {
+                return "alert-warning";
+            }
+
+            // If crime going up.
+            if ($table[$j][$i] > $table[$j][$n]) {
+                return "alert-danger";
+            }
         }
 
-        // If crime is zero.
-        if ($table[$j][$i] == 0) {
-          return "alert-active";
-        }
-
-        // If crime is the same.
-        if ($table[$j][$i] == $table[$j][$n]) {
-          return "alert-warning";
-        }
-
-        // If crime going up.
-        if ($table[$j][$i] > $table[$j][$n]) {
-          return "alert-danger";
-        }
-      }
-
-      // Return value anyways.
-      return $table[$j][$i];
+        // Return value anyways.
+        return $table[$j][$i];
     }
 
+    function splitDate($crimeDate)
+    {
+        // Split date into variables.
+        list($crimeYear, $crimeMonth) = explode("-", $crimeDate);
+
+        // Assign variables to new array.
+        $crimeMonthYear = array($crimeMonth, $crimeYear);
+
+        // Array of months.
+        $monthOfYear = array(["01","January"],
+        ["02","February"],
+        ["03","March"],
+        ["04","April"],
+        ["05","May"],
+        ["06","June"],
+        ["07","July"],
+        ["08","August"],
+        ["09","September"],
+        ["10","October"],
+        ["11","November"],
+        ["12","December"]);
+
+        // For each month look for a match.
+        if (count($monthOfYear) <= 12) {
+            for ($i=0; $i < count($monthOfYear); $i++) {
+                if ($crimeMonth == $monthOfYear[$i][0]) {
+
+                  // Return month and year.
+                    return $monthOfYear[$i][1] . " " . $crimeMonthYear[1];
+                }
+            }
+        } else {
+            die("Fatal Error: Incorrect Month Count");
+        }
+    }
+
+    // Draw table.
     renderTimeSeriesTable($mysqli, $crimeTypeArray, $monthArray, $table);
 }
-?>

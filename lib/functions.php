@@ -173,16 +173,6 @@ function countReportedBy($mysqli)
     return $rows[0];
 }
 
-//############## SPLIT DATES ###################################################
-function splitDate($crimeDate)
-{
-    list($crimeYear, $crimeMonth) = explode("-", $crimeDate);
-
-    $crimeMonthYear = array($crimeMonth, $crimeYear);
-
-    return $crimeMonthYear;
-}
-
 //############## JSON ##########################################################
 //############## Immediate & Local #############################################
 function JSONOutput($immediateCal, $radVal1)
