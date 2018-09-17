@@ -75,7 +75,7 @@ function timeSeries($mysqli,$lat,$long,$radius)
     function renderTimeSeriesTable($mysqli, $crimeTypeArray, $monthArray, $table)
     {
         // Draw Table
-        echo "<table class='table table-bordered'>";
+        echo "<table id='timeSeriesTable' class='table table-bordered'>";
         //X header
         echo "<tr><th id='cornerTableHeader'>Crime Type Over Time</th>";
         for ($i=0; $i < count($crimeTypeArray); $i++) {

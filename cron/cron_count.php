@@ -77,11 +77,13 @@ function cronCountNoLocation($mysqli) {
   $query = "SELECT COUNT(DISTINCT(ID)) FROM data WHERE Longitude = 0 AND Latitude = 0";
   $result = mysqli_query($mysqli, $query);
   $rows = mysqli_fetch_row($result);
-
   mysqli_free_result($result); // Free Query
+
+  $count = $rows[0]; // Return Value.
 
   // Run Query
   $sqlCrimeCount = "UPDATE stats SET count = $count WHERE stat = 'Crimes with no location'";
+
 
   $writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
   $sqlCrimeCountOutput = mysqli_fetch_row($writeCrimeCount);
