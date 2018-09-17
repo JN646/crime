@@ -75,7 +75,7 @@ function timeSeries($mysqli,$lat,$long,$radius)
     function renderTimeSeriesTable($mysqli, $crimeTypeArray, $monthArray, $table)
     {
         // Draw Table
-        echo "<table id='timeSeriesTable' class='table table-bordered'>";
+        echo "<table id='timeSeriesTable' class='table table-bordered table-hover'>";
         //X header
         echo "<tr><th id='cornerTableHeader'>Crime Type Over Time</th>";
         for ($i=0; $i < count($crimeTypeArray); $i++) {
@@ -87,11 +87,37 @@ function timeSeries($mysqli,$lat,$long,$radius)
             echo "<tr>";
             echo "<th class='text-center text-bold'>" . $monthArray[$i] . "</th>";
             for ($j=0; $j < count($crimeTypeArray); $j++) {
-                echo "<td class='text-center'>" . $table[$j][$i] . "</td>";
+                echo "<td class='text-center'>" . changeDirection($table,$j,$i) . "</td>";
             }
             echo "</tr>";
         }
         echo "</table>";
+    }
+
+    function changeDirection($table,$j,$i) {
+      // Get the index of the value before.
+      $n = $i - 1;
+
+      // Ensure that the value is positive.
+      if ($n >= 0) {
+        // If crime going down.
+        if ($table[$j][$i] < $table[$j][$n]) {
+          return $table[$j][$i] . " <i style='color: green' class='fas fa-arrow-down'></i>";
+        }
+
+        // If crime is the same.
+        if ($table[$j][$i] == $table[$j][$n]) {
+          return $table[$j][$i] . " <i style='color: grey' class='fas fa-equals'></i>";
+        }
+
+        // If crime going up.
+        if ($table[$j][$i] > $table[$j][$n]) {
+          return $table[$j][$i] . " <i style='color: red' class='fas fa-arrow-up'></i>";
+        }
+      }
+
+      // Return value anyways.
+      return $table[$j][$i];
     }
 
     renderTimeSeriesTable($mysqli, $crimeTypeArray, $monthArray, $table);
