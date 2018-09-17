@@ -24,6 +24,8 @@
       <!-- Stats Partial -->
       <?php include 'partials/_stats.php' ?>
 
+    </div>
+
       <!-- Footer -->
       <?php include 'partials/_footer.php' ?>
   </body>

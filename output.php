@@ -83,7 +83,7 @@ $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
       echo timeSeries($mysqli,$latVal,$longVal,$radVal1); // Time Series
     }
     ?>
-
+</div>
     <!-- Footer -->
     <?php include 'partials/_footer.php' ?>
 </body>
