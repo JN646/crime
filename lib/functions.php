@@ -34,7 +34,7 @@ $JSONEnable = "TRUE";
 function getMonths($mysqli)
 {
     // SELECT All
-    $query = "SELECT DISTINCT Month FROM data";
+    $query = "SELECT DISTINCT Month FROM data WHERE Month <> 0";
     $result = mysqli_query($mysqli, $query);
 
     // If Error

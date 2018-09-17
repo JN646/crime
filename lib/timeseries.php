@@ -15,8 +15,8 @@ function timeSeries($mysqli,$lat,$long,$radius)
     $longMax  = $long + $radius;
 
     // SQL Terms
-    $monthTerm = "SELECT DISTINCT Month FROM data";
-    $crimeTypeTerm = "SELECT DISTINCT Crime_Type FROM data";
+    $monthTerm = "SELECT DISTINCT Month FROM data WHERE Month <> 0";
+    $crimeTypeTerm = "SELECT DISTINCT Crime_Type FROM data WHERE Crime_Type <> 0";
     $monthQuery = mysqli_query($mysqli, $monthTerm);
     $crimeTypeQuery = mysqli_query($mysqli, $crimeTypeTerm);
 
