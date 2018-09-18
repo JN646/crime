@@ -32,14 +32,6 @@
     <input id='radius2' class="form-control" onkeydown="checkEmpty()" size='3' type="number" step="0.0000001" name="rad2" value="0.02">
   </div>
 
-  <!-- Month -->
-  <div id='monthBlock' class='col form-group'>
-    <label for="month">Month</label>
-    <select class="form-control" name="month">
-      <?php getMonths($mysqli) ?>
-    </select>
-  </div>
-
   <!-- Mode -->
   <div id='modeBlock' class='col form-group'>
     <label for="mode">Mode</label>

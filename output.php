@@ -73,7 +73,7 @@ $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $rad
   <div id='bodyContainer' class="container">
 
     <!-- Render Table -->
-    <h2>Crimes Around You</h2>
+    <h2>Time Series</h2>
     <?php
     if ($mode == 0) {
       echo renderTable($table); // Crime Count

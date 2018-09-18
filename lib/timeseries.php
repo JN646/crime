@@ -2,6 +2,7 @@
 // Function
 function timeSeries($mysqli, $lat, $long, $radius)
 {
+    $time_start = microtime(true);
     // Hardcoded Values
     // $lat = 52.1367078;
     // $long = -0.4688611;
@@ -20,6 +21,11 @@ function timeSeries($mysqli, $lat, $long, $radius)
     $monthQuery = mysqli_query($mysqli, $monthTerm);
     $crimeTypeQuery = mysqli_query($mysqli, $crimeTypeTerm);
 
+    // If Error
+    if (!$monthQuery || !$crimeTypeQuery) {
+        die('<p class="SQLError">Could not get run query: ' . mysqli_error($mysqli) . '</p>');
+    }
+
     // Assign to array index.
     $i = 0;
     while ($row = mysqli_fetch_assoc($monthQuery)) {
@@ -33,6 +39,10 @@ function timeSeries($mysqli, $lat, $long, $radius)
         $i++;
     }
 
+    // Free Query
+    mysqli_free_result($monthQuery);
+    mysqli_free_result($crimeTypeQuery);
+
     $table = array(); //of time series data. crimetype x timeseries
     for ($i=0; $i < count($crimeTypeArray); $i++) {
         for ($j=0; $j < count($monthArray); $j++) {
@@ -40,14 +50,9 @@ function timeSeries($mysqli, $lat, $long, $radius)
         }
     }
 
-    // If Error
-    if (!$monthQuery || !$crimeTypeQuery) {
-        die('<p class="SQLError">Could not get run query: ' . mysqli_error($mysqli) . '</p>');
-    }
-
     // For each month
     for ($m=0; $m < count($monthArray); $m++) {
-        //immediate area
+        // Get Month Data
         $sql_Month = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month
             FROM data
             WHERE Longitude > $longMin AND Longitude < $longMax AND Latitude > $latMin AND Latitude < $latMax AND Month = '$monthArray[$m]'
@@ -63,13 +68,15 @@ function timeSeries($mysqli, $lat, $long, $radius)
         }
 
         while ($row = mysqli_fetch_assoc($resultCount_Month)) {
-            //  echo $row["Crime_Type"] . "<br>";
             for ($i=0; $i < count($crimeTypeArray);  $i++) {
                 if ($row["Crime_Type"] == $crimeTypeArray[$i]) {
                     $table[$i][$m] = $row["COUNT(id)"];
                 }
             }
         }
+
+        // Free Query
+        mysqli_free_result($resultCount_Month);
     }
 
     function renderTimeSeriesTable($mysqli, $crimeTypeArray, $monthArray, $table)
@@ -186,7 +193,7 @@ function timeSeries($mysqli, $lat, $long, $radius)
                 if ($crimeMonth == $monthOfYear[$i][0]) {
 
                   // Return month and year.
-                    return $monthOfYear[$i][1] . " " . $crimeMonthYear[1];
+                  return $monthOfYear[$i][1] . " " . $crimeMonthYear[1];
                 }
             }
         } else {
@@ -196,4 +203,13 @@ function timeSeries($mysqli, $lat, $long, $radius)
 
     // Draw table.
     renderTimeSeriesTable($mysqli, $crimeTypeArray, $monthArray, $table);
+
+    // Display Script End time
+    $time_end = microtime(true);
+
+    //dividing with 60 will give the execution time in minutes other wise seconds
+    $execution_time = ($time_end - $time_start);
+
+    //execution time of the script
+    echo '<b>Total Execution Time:</b> ' . number_format($execution_time,4) . ' Seconds';
 }
