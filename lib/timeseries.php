@@ -193,7 +193,7 @@ function timeSeries($mysqli, $lat, $long, $radius)
                 if ($crimeMonth == $monthOfYear[$i][0]) {
 
                   // Return month and year.
-                  return $monthOfYear[$i][1] . " " . $crimeMonthYear[1];
+                    return $monthOfYear[$i][1] . " " . $crimeMonthYear[1];
                 }
             }
         } else {
@@ -211,5 +211,5 @@ function timeSeries($mysqli, $lat, $long, $radius)
     $execution_time = ($time_end - $time_start);
 
     //execution time of the script
-    echo '<b>Total Execution Time:</b> ' . number_format($execution_time,4) . ' Seconds';
+    echo '<b>Total Execution Time:</b> ' . number_format($execution_time, 4) . ' Seconds';
 }

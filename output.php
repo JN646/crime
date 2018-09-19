@@ -54,13 +54,13 @@ if ($radVal2 <= $radVal1) {
     <!-- Render Table -->
     <?php
     if ($mode == 0) {
-      echo "<h2>Crime Counter</h2>";
-      echo crimeCounter($mysqli,$latVal,$longVal,$radVal1,$radVal2); // Crime Count
+        echo "<h2>Crime Counter</h2>";
+        echo crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2); // Crime Count
     }
 
     if ($mode == 1) {
-      echo "<h2>Time Series</h2>";
-      echo timeSeries($mysqli,$latVal,$longVal,$radVal1); // Time Series
+        echo "<h2>Time Series</h2>";
+        echo timeSeries($mysqli, $latVal, $longVal, $radVal1); // Time Series
     }
     ?>
 </div>

@@ -45,10 +45,10 @@ function getMonths($mysqli)
     if (mysqli_num_rows($result) > 0) {
         // output data of each row
         while ($row = mysqli_fetch_assoc($result)) {
-          echo "<option>" . $row['Month'] . "</option>";
+            echo "<option>" . $row['Month'] . "</option>";
         }
     } else {
-      echo "<option disabled>No Data</option>";
+        echo "<option disabled>No Data</option>";
     }
 }
 
@@ -191,4 +191,3 @@ function JSONOutput($immediateCal, $radVal1)
     // Return Encoded JSON
     return $crimeImmediate;
 }
-?>
