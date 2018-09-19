@@ -12,7 +12,6 @@
 if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"]) || !empty($_POST["month"])) {
     $latVal = trim((float)$_POST["lat"]);
     $longVal = trim((float)$_POST["long"]);
-    $month = trim((float)$_POST["month"]);
     $radVal1 = trim((float)$_POST["rad1"]);
     $radVal2 = trim((float)$_POST["rad2"]);
     $mode = $_POST["mode"];
@@ -48,38 +47,19 @@ if ((-180.00 <= $longVal) && ($longVal <= 180.00)) {
 if ($radVal2 <= $radVal1) {
     die("Local area is smaller than your Immediate area.");
 }
-
-//############## RANGE CALC ####################################################
-// Immediate
-$latLow1    = $latVal - $radVal1;
-$latHigh1   = $latVal + $radVal1;
-$longLow1   = $longVal - $radVal1;
-$longHigh1  = $longVal + $radVal1;
-// Local
-$latLow2    = $latVal - $radVal2;
-$latHigh2   = $latVal + $radVal2;
-$longLow2   = $longVal - $radVal2;
-$longHigh2  = $longVal + $radVal2;
-// Map to array
-$immediateCal = array($latLow1,$latHigh1,$longLow1,$longHigh1);
-$localCal = array($latLow2,$latHigh2,$longLow2,$longHigh2);
-// Run Queries
-$resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
-$resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
-// Generate Table
-$table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
  ?>
   <!-- Container -->
   <div id='bodyContainer' class="container">
 
     <!-- Render Table -->
-    <h2>Time Series</h2>
     <?php
     if ($mode == 0) {
-      echo renderTable($table); // Crime Count
+      echo "<h2>Crime Counter</h2>";
+      echo crimeCounter($mysqli,$latVal,$longVal,$radVal1,$radVal2); // Crime Count
     }
 
     if ($mode == 1) {
+      echo "<h2>Time Series</h2>";
       echo timeSeries($mysqli,$latVal,$longVal,$radVal1); // Time Series
     }
     ?>
