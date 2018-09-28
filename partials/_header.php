@@ -5,19 +5,19 @@
     <!-- Title -->
     <title>Crime Application</title>
 
-    <!-- Stylesheets -->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/master.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
     <!-- Function File -->
-    <?php require_once 'config/config.php' ?>
-    <?php require_once 'lib/functions.php' ?>
+    <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/crime/config/config.php");?>
+    <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/crime/lib/functions.php");?>
+
+    <!-- Stylesheets -->
+	  <link rel="stylesheet" href="<?php echo $environment; ?>css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo $environment; ?>css/master.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   </head>
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="index.php">Crime</a>
+  <a class="navbar-brand" href="<?php echo $environment; ?>index.php">Crime</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -25,6 +25,9 @@
     <ul class="navbar-nav">
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="<?php echo $environment; ?>admin/admin.php">Admin</a>
       </li>
     </ul>
   </div>
