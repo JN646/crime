@@ -37,7 +37,7 @@ if ((-180.00 <= $longVal) && ($longVal <= 180.00)) {
     if ((-11.00 <= $longVal) && ($longVal <= 1.00)) {
         // Needs Condensing
     } else {
-        die("Longitude needs to be between -180 and 180 degrees.");
+        die("Only Supperted in the UK.");
     }
 } else {
     die("Longitude needs to be between -180 and 180 degrees.");
