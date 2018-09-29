@@ -5,19 +5,10 @@
 
       <!-- Intro -->
       <h2>Welcome</h2>
-      <p>This application will all you to see what crimes have happened around you and provide you with some risk statistics. This is a work in progress and most elements will change over time.</p>
+      <p>This application will all you to see what crimes have happened around you and provide you with some risk statistics. This is a work in progress and most elements will change over time. This is currently only supported in the UK.</p>
 
       <!-- Form Partial -->
       <?php include 'partials/_form.php' ?>
-
-      <ul class="nav">
-        <li class="nav-item">
-          <a class="nav-link" href="cron/cron_count.php">Cron Count</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="cron/cron_createTables.php">Cron Create Tables</a>
-        </li>
-      </ul>
 
       <hr>
 
