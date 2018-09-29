@@ -23,6 +23,11 @@ function cronCreateStatTable($mysqli)
       PRIMARY KEY (`id`)) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1";
         $result = mysqli_query($mysqli, $query);
 
+        // If Error
+        if (!$result) {
+            die('<p class="SQLError">Could not get month list: ' . mysqli_error($mysqli) . '</p>');
+        }
+
         // Insert Data.
         $query = "INSERT INTO `stats` (`id`, `stat`, `count`, `last_run`) VALUES
     (1, 'Crime Count', 0, '2018-09-13 22:44:57'),
@@ -33,8 +38,6 @@ function cronCreateStatTable($mysqli)
     (6, 'Reported By', 0, '2018-09-14 15:45:42')";
         $result = mysqli_query($mysqli, $query);
     }
-
-    mysqli_free_result($result); // Free Query
 }
 
 //############## Create Box ####################################################
@@ -53,9 +56,12 @@ function cronCreateBox($mysqli)
       PRIMARY KEY (`box_id`)
     ) ENGINE=MyISAM DEFAULT CHARSET=latin1";
         $result = mysqli_query($mysqli, $query);
-    }
 
-    mysqli_free_result($result); // Free Query
+        // If Error
+        if (!$result) {
+            die('<p class="SQLError">SQL ERROR: Create box ' . mysqli_error($mysqli) . '</p>');
+        }
+    }
 }
 
 //############## Create Box Month ##############################################
@@ -88,7 +94,13 @@ function cronCreateBoxMonth($mysqli)
       PRIMARY KEY (`bm_id`)
     ) ENGINE=MyISAM DEFAULT CHARSET=latin1";
         $result = mysqli_query($mysqli, $query);
-    }
 
-    mysqli_free_result($result); // Free Query
+        // If Error
+        if (!$result) {
+            die('<p class="SQLError">SQL ERROR: Create box_month ' . mysqli_error($mysqli) . '</p>');
+        }
+    }
 }
+
+// Header and Return
+header('Location: ' . $_SERVER['HTTP_REFERER']);
