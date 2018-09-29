@@ -16,11 +16,16 @@
       <!-- Main Block -->
       <div class="col-md-9">
         <h2>Server Information</h2>
-        <p>This page contains sensative server information and config. Do not distribute.</p>
+        <p>This page contains sensitive server information and config. Do not distribute.</p>
         <?php
+        // set default timezone
+        date_default_timezone_set('Europe/London'); // GMT
+        $current_date = date('d/m/Y == H:i:s');
+
         $dd=array(
             'Server Address'=>$_SERVER['SERVER_ADDR'],
             'Server Name'=>$_SERVER['SERVER_NAME'],
+            'Server Time'=>$current_date,
             'Server Software'=>$_SERVER['SERVER_SOFTWARE'],
             'Document Root'=>$_SERVER['DOCUMENT_ROOT'],
             'HTTP Host'=>$_SERVER['HTTP_HOST'],
