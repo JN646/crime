@@ -31,6 +31,9 @@
   <ul class="nav flex-column">
     <li class="nav-item"><a class="nav-link" href="../cron/cron_createTables.php"><i class="fas fa-table"></i> Cron Tables</a></li>
   </ul>
+  <ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link" href="../cron/cron_genboxes.php"><i class="fas fa-box"></i> Cron Generate Boxes</a></li>
+  </ul>
 </div>
 <br>
 
