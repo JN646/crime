@@ -38,19 +38,45 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
           <thead>
             <th class='text-center'>Location</th>
             <th class='text-center'>Date</th>
-            <th class='text-center'>Open</th>
+            <th class='text-center'>View</th>
+            <th class='text-center'>Export</th>
           </thead>
           <tbody>
 
             <!-- Test Cells -->
             <td>Location</td>
             <td>30/09/2018</td>
-            <td class='text-center'><button class='btn btn-primary'>Open Report</button></td>
-
+            <td class='text-center'>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="far fa-eye"></i></button>
+            </td>
+            <td class='text-center'>
+              <button type="button" class="btn btn-primary"><i class="fas fa-file-pdf"></i></button>
+            </td>
           </tbody>
         </table>
     </div>
   </div>
+
+  <!-- Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Report Name</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Recall report content here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 <!-- Footer -->
 <?php include '../partials/_footer.php' ?>

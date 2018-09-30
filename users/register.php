@@ -2,7 +2,7 @@
 // Include config file
 require_once "../config/config.php";
 
-// Define variables and initialize with empty values
+// Define variables and initialise with empty values
 $username = $email = $password = $confirm_password = "";
 $username_err = $email_err = $password_err = $confirm_password_err = "";
 

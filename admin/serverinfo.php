@@ -6,7 +6,6 @@
     <div class="row">
       <div class="col-md-3">
         <div class='col-md-12'>
-          <h4>Nav Bar</h4>
 
           <!-- Side Bar -->
           <?php include '../partials/_admin_sidebar.php' ?>
