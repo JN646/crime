@@ -11,10 +11,10 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         //immediate area
         $sql_immediate = "SELECT COUNT(id), COUNT(Longitude), COUNT(Latitude), Crime_Type, COUNT(Month)
         FROM data
-        WHERE Longitude > $longLow 
-        	AND Longitude < $longHigh 
-        	AND Latitude > $latLow 
-        	AND Latitude < $latHigh 
+        WHERE Longitude > $longLow
+        	AND Longitude < $longHigh
+        	AND Latitude > $latLow
+        	AND Latitude < $latHigh
         	AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
         GROUP BY Crime_Type
         ORDER BY COUNT(id) DESC";
@@ -42,7 +42,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
                 // Set Variables to Rows.
                 $crimeID = $row["COUNT(id)"];
                 $crimeType = $row["Crime_Type"];
-                $crimeDate = $row["Month"];
+                // $crimeDate = $row["Month"];
 
                 // Set Variables
               $table[$j][0] = $crimeType;   //crime type
@@ -77,8 +77,8 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     	$limit = True;
     	//number of decimal points (0 for no round)
     	$round = 2;
-        
-        
+
+
         // Get Area
         $area1 = PI()*$radius1*$radius1;
         $area2 = PI()*$radius2*$radius2;
@@ -173,6 +173,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     {
         // Threshold Value
         $thresh = 1.0;
+        $colour = "";
 
         // Red
         if ($risk > $thresh) {
@@ -185,7 +186,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         }
 
         // Green
-        if ($risk < -$thresh) {
+        if ($risk < $thresh) {
             $colour = "alert-success"; // Green
         }
 
