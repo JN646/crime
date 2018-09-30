@@ -76,19 +76,19 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         $area2 = PI()*$radius2*$radius2;
 
         // Get Radius
-        $calcRad1 = $n1/$area1;
-        $calcRad2 = $n2/$area2;
+        $crimeP1 = $n1/$area1; //p (rho) is used to notate density in physics; crimeP means crime density.
+        $crimeP2 = $n2/$area2;
 
         // If no data.
         if ($n1 == 0) {
             // N/A
-            $calculation = "<span class='naSign'> - </span>";
+            $result = "<span class='naSign'> - </span>";
         } else {
             // Get Risk
-            $calculation = round(log($calcRad1/$calcRad2, 2), 2);
+            $result = round(log($crimeP1/$crimeP2, 2), 2);
         }
 
-        return $calculation; // Return Calculation
+        return $result; // Return Calculation
     }
 
     // Render Table
