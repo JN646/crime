@@ -9,9 +9,13 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal)
     {
         //immediate area
-        $sql_immediate = "SELECT COUNT(id), Longitude, Latitude, Crime_Type, Month
+        $sql_immediate = "SELECT COUNT(id), COUNT(Longitude), COUNT(Latitude), Crime_Type, COUNT(Month)
         FROM data
-        WHERE Longitude > $longLow AND Longitude < $longHigh AND Latitude > $latLow AND Latitude < $latHigh AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
+        WHERE Longitude > $longLow 
+        	AND Longitude < $longHigh 
+        	AND Latitude > $latLow 
+        	AND Latitude < $latHigh 
+        	AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
         GROUP BY Crime_Type
         ORDER BY COUNT(id) DESC";
 
