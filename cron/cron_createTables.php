@@ -5,6 +5,7 @@ require_once '../config/config.php';
 //############## MAIN ##########################################################
 cronCreateStatTable($mysqli);
 cronCreateBox($mysqli);
+cronCreateUsers($mysqli);
 
 //############## Create Stat Table #############################################
 function cronCreateStatTable($mysqli)
@@ -98,6 +99,30 @@ function cronCreateBoxMonth($mysqli)
         // If Error
         if (!$result) {
             die('<p class="SQLError">SQL ERROR: Create box_month ' . mysqli_error($mysqli) . '</p>');
+        }
+    }
+}
+
+//############## Create Users ##################################################
+function cronCreateUsers($mysqli)
+{
+    // SELECT All
+    $query = "SELECT id FROM 'users'";
+    $result = mysqli_query($mysqli, $query);
+
+    if (empty($result)) {
+        // Create table if doesn't exist.
+        $query = "CREATE TABLE IF NOT EXISTS 'users' (
+        'id' INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        'username' VARCHAR(50) NOT NULL UNIQUE,
+        'password' VARCHAR(255) NOT NULL,
+        'created_at' DATETIME DEFAULT CURRENT_TIMESTAMP
+        )";
+        $result = mysqli_query($mysqli, $query);
+
+        // If Error
+        if (!$result) {
+            die('<p class="SQLError">SQL ERROR: Create users ' . mysqli_error($mysqli) . '</p>');
         }
     }
 }

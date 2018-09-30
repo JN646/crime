@@ -3,10 +3,6 @@
 function timeSeries($mysqli, $lat, $long, $radius)
 {
     $time_start = microtime(true);
-    // Hardcoded Values
-    // $lat = 52.1367078;
-    // $long = -0.4688611;
-    // $radius = 0.05; //in degrees
     $monthArray = $crimeTypeArray = array();
 
     // Calculate

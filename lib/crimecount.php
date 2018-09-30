@@ -26,6 +26,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         return $resultCount_Immediate;
     }
 
+    // Pre Calc Table
     function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
     {
         $nRows = mysqli_num_rows($resultCount_Local);
@@ -63,6 +64,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         return $table; // Return the table.
     }
 
+    // Calc Risk
     function calcRisk($n1, $n2, $radius1, $radius2)
     {
         // Get Area
@@ -85,6 +87,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         return $calculation; // Return Calculation
     }
 
+    // Render Table
     function renderTable($table)
     {
         // Init Running Total Values
@@ -147,6 +150,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
       <?php
     }
 
+    // Colour Risk
     function colourRisk($risk)
     {
         // Threshold Value
