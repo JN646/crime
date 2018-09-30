@@ -1,5 +1,79 @@
 <?php
 // Function
+
+function genBoxes()
+{
+	/*
+	** WARNING:
+	** This function is intended to only ever be used once.
+	** It will generate the centrepoints of boxes with a defined 
+	** spacing; and write these points to the db.
+	** This spacing is designed to be a constant (along with
+	** box size) over the lifetime of the product.
+	** If these constants were to be changed, an entire recalculation
+	** of boxes and the data they relate to must be performed.
+	**
+	** However, this list of boxes does not need to be static;
+	** New boxes can be created or detoryed procedurally or manually.
+	*/
+	
+	$ukLatMin = -10.8544921875; //truncate these numbers? just to beautify?
+	$ukLatMax = 2.021484375;
+	$ukLongMin = 49.82380908513249;
+	$ukLongMax = 59.478568831926395;
+	
+	$hop = 0.5; //in radians - size to be confirmed
+	
+	$x = $ukLatMin;
+	$y = $ukLongMin;
+	while($x < $ukLatMax) {
+		while($y < $ukLongMax) {
+			//SQL INSERT
+			//can there be a way to avoid creating boxes that are probably out at sea? maybe try find if there's a crime within 10 miles or similar?
+			if(True) {
+				$sql = "INSERT INTO box (latitude, longitude) VALUES ($x, $y)";
+			}
+			$y += $hop;
+		}
+		$x += $hop;
+	}
+	
+}
+
+
+function prioritiseBoxes()
+{
+	/*
+	** Given factors about the boxes, decide on a way to prioritise a processing order for boxes.
+	** This will involve data like the last_update, and may include data like the number of crimes
+	** or number of user requests for the timeSeries information for a box.
+	**
+	** The priority produced by this funciton will be a numeric floating point rating, and not a
+	** discrete integer order.
+	**
+	** This function should be called every time before analying data for box_month, but only needs
+	** to be called once for processing a list of box_month's; as to keep the priority list in
+	** correct order after updates are made.
+	*/
+	
+	/*
+	//PSEUDOCODE: interate though whole 'box' database and calulate a priority.
+	$sql = "SELECT * in box"; //is this too big for an array? need to query one by one (or some by some)?
+	foreach(){
+		if(last_update == NULL) {
+			$p = 999999; //high priority
+		} else {
+			$p = now() - last_update; //priority based solely on time since last update. $_SERVER['REQUEST_TIME']?
+		}
+	}
+	*/
+	
+}
+
+
+
+
+
 function timeSeries($mysqli, $lat, $long, $radius)
 {
     $time_start = microtime(true);
