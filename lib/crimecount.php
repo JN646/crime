@@ -71,6 +71,14 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     // Calc Risk
     function calcRisk($n1, $n2, $radius1, $radius2)
     {
+    	//Scale coefficient (before limiting)
+    	$scale = 0.5;
+    	//soft limit between -1 & 1
+    	$limit = True;
+    	//number of decimal points (0 for no round)
+    	$round = 2;
+        
+        
         // Get Area
         $area1 = PI()*$radius1*$radius1;
         $area2 = PI()*$radius2*$radius2;
@@ -80,12 +88,18 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         $crimeP2 = $n2/$area2;
 
         // If no data.
-        if ($n1 == 0) {
+        if (!$n1) {
             // N/A
             $result = "<span class='naSign'> - </span>";
         } else {
             // Get Risk
-            $result = round(log($crimeP1/$crimeP2, 2), 2);
+            $result = log($crimeP1/$crimeP2, 2) * $scale;
+            if($limit) {
+            	$result = tanh($result); //tanh() oft-limits between -1. & 1.
+            }
+            if($round != 0) {
+            	$result = round($result, $round);
+            }
         }
 
         return $result; // Return Calculation
@@ -127,7 +141,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
          </td>
           <td class='text-center'><?php echo number_format($table[$i][2]) ?></td>
           <td class='text-center <?php echo colourRisk($table[$i][3]) ?>'><?php echo $table[$i][3] ?></td>
-          <td class='text-center'><div><input class="form-control-range" type="range" min="-3" max="3" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
+          <td class='text-center'><div><input class="form-control-range" type="range" min="-1" max="1" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
         </tr>
         <?php
         // Contribute to running count.
