@@ -26,8 +26,15 @@
       <li class="nav-item active">
         <a class="nav-link" href="<?php echo $environment; ?>index.php">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="<?php echo $environment; ?>admin/admin.php">Admin</a>
+    </ul>
+    <ul class="navbar-nav navbar-right">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="<?php echo $environment; ?>users/login.php">Login</a>
+          <a class="dropdown-item" href="<?php echo $environment; ?>users/welcome.php">Welcome</a>
+          <a class="dropdown-item" href="<?php echo $environment; ?>admin/admin.php">Admin</a>
+        </div>
       </li>
     </ul>
   </div>

@@ -33,3 +33,14 @@
   </ul>
 </div>
 <br>
+
+<!-- Accounts -->
+<div class="card">
+  <div class="card-header">
+    <h5>Account</h5>
+  </div>
+  <ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link" href="../users/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+  </ul>
+</div>
+<br>
