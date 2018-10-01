@@ -54,12 +54,40 @@ if ($radVal2 <= $radVal1) {
     <!-- Render Table -->
     <?php
     if ($mode == 0) {
-        echo "<h2>Crime Counter</h2>";
+      ?>
+      <h2>Crime Counter</h2>
+        <table class='table col-md-6'>
+          <tbody>
+            <tr>
+              <td><b>Location:</b></td>
+              <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
+            </tr>
+            <tr>
+              <td><b>Generated:</b></td>
+              <td>01/10/2018</td>
+            </tr>
+          </tbody>
+        </table>
+        <?php
         echo crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2); // Crime Count
     }
 
     if ($mode == 1) {
-        echo "<h2>Time Series</h2>";
+      ?>
+        <h2>Time Series</h2>
+        <table class='table col-md-6'>
+          <tbody>
+            <tr>
+              <td><b>Location:</b></td>
+              <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
+            </tr>
+            <tr>
+              <td><b>Generated:</b></td>
+              <td>01/10/2018</td>
+            </tr>
+          </tbody>
+        </table>
+        <?php
         echo timeSeries($mysqli, $latVal, $longVal, $radVal1); // Time Series
     }
     ?>

@@ -78,7 +78,6 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     	//number of decimal points (0 for no round)
     	$round = 2;
 
-
         // Get Area
         $area1 = PI()*$radius1*$radius1;
         $area2 = PI()*$radius2*$radius2;
@@ -106,8 +105,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     }
 
     // Render Table
-    function renderTable($table)
-    {
+    function renderTable($table) {
         // Init Running Total Values
         $runningCountL = $runningCountI = 0; ?>
       <table id="myTable2" class='table table-bordered'>
@@ -121,8 +119,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
           </tr>
         </thead>
         <tbody>
-      <?php for ($i=0; $i < count($table); $i++) {
-            ?>
+      <?php for ($i=0; $i < count($table); $i++) { ?>
         <tr>
           <td class=''><?php echo $table[$i][0] ?></td>
           <td class='text-center'>
@@ -149,7 +146,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         } ?>
         </tbody>
       </table>
-      <table class='table table-bordered'>
+      <table class='table'>
         <thead>
           <tr>
             <th class='outputText text-center text-bold'></th>
@@ -169,8 +166,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     }
 
     // Colour Risk
-    function colourRisk($risk)
-    {
+    function colourRisk($risk) {
         // Threshold Value
         $thresh = 1.0;
         $colour = "";
