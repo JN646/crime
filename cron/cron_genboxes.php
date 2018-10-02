@@ -1,14 +1,22 @@
 <?php
+// Add Database Connection
+require_once '../config/config.php';
+
 // SELECT All
-$query = "SELECT `box_id` FROM `box`";
-$result = mysqli_query($mysqli, $query);
+// $query = "SELECT `box_id` FROM `box`";
+// $result = mysqli_query($mysqli, $query);
+
+// If Error
+// if (!$result) {
+// 		die('<p class="SQLError">Could not create boxes: ' . mysqli_error($mysqli) . '</p>');
+// }
 
 // Generate boxes if table is empty.
-if (empty($result)) {
-	genBoxes();
-}
+// if (empty($result)) {
+	genBoxes($mysqli);
+// }
 
-function genBoxes()
+function genBoxes($mysqli)
 {
 	/*
 	** This function is intended to only ever be used once.
@@ -28,7 +36,7 @@ function genBoxes()
 	$ukLongMin = 49.82380908513249;
 	$ukLongMax = 59.478568831926395;
 
-	$hop = 0.5; //in radians - size to be confirmed
+	$hop = 1.0; //in radians - size to be confirmed
 
 	$x = $ukLatMin;
 	$y = $ukLongMin;
@@ -36,8 +44,17 @@ function genBoxes()
 		while($y < $ukLongMax) {
 			//SQL INSERT
 			//can there be a way to avoid creating boxes that are probably out at sea? maybe try find if there's a crime within 10 miles or similar?
+			echo "before True";
 			if(True) {
+				echo "after True";
 				$sql = "INSERT INTO box (latitude, longitude) VALUES ($x, $y)";
+
+				$result = mysqli_query($mysqli, $sql);
+
+				// If Error
+				if (!$result) {
+						die('<p class="SQLError">Could not create boxes: ' . mysqli_error($mysqli) . '</p>');
+				}
 			}
 			$y += $hop;
 		}

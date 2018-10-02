@@ -72,7 +72,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     function calcRisk($n1, $n2, $radius1, $radius2)
     {
     	//Scale coefficient (before limiting)
-    	$scale = 0.5;
+    	$scale = 0.2;
     	//soft limit between -1 & 1
     	$limit = True;
     	//number of decimal points (0 for no round)
