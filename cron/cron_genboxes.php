@@ -1,23 +1,18 @@
 <?php
 // Add Database Connection
 require_once '../config/config.php';
+require_once '../lib/functions.php';
 
-// SELECT All
-// $query = "SELECT `box_id` FROM `box`";
-// $result = mysqli_query($mysqli, $query);
-
-// If Error
-// if (!$result) {
-// 		die('<p class="SQLError">Could not create boxes: ' . mysqli_error($mysqli) . '</p>');
-// }
-
-// Generate boxes if table is empty.
-// if (empty($result)) {
-	genBoxes($mysqli);
-// }
+genBoxes($mysqli);
+prioritiseBoxes($mysqli);
+//calcPriority($mysqli, 1);
 
 function genBoxes($mysqli)
 {
+	// $sql = "INSERT INTO `box` (latitude, longitude) VALUES ($x, $y)";
+	$sql = "TRUNCATE TABLE `box`";
+
+	$result = mysqli_query($mysqli, $sql);
 	/*
 	** This function is intended to only ever be used once.
 	** It will generate the centrepoints of boxes with a defined
@@ -36,30 +31,57 @@ function genBoxes($mysqli)
 	$ukLongMin = 49.82380908513249;
 	$ukLongMax = 59.478568831926395;
 
-	$hop = 1.0; //in radians - size to be confirmed
+	$hop = 0.5; //in radians - size to be confirmed
 
 	$x = $ukLatMin;
-	$y = $ukLongMin;
 	while($x < $ukLatMax) {
+		$y = $ukLongMin;
 		while($y < $ukLongMax) {
-			//SQL INSERT
-			//can there be a way to avoid creating boxes that are probably out at sea? maybe try find if there's a crime within 10 miles or similar?
-			echo "before True";
-			if(True) {
-				echo "after True";
-				$sql = "INSERT INTO box (latitude, longitude) VALUES ($x, $y)";
+			$sql = "INSERT INTO box (latitude, longitude) VALUES ($x, $y)";
+			$result = mysqli_query($mysqli, $sql);
 
-				$result = mysqli_query($mysqli, $sql);
-
-				// If Error
-				if (!$result) {
-						die('<p class="SQLError">Could not create boxes: ' . mysqli_error($mysqli) . '</p>');
-				}
-			}
 			$y += $hop;
 		}
 		$x += $hop;
 	}
-
 }
+
+//############## PRIORITISE BOXES ##############################################
+function prioritiseBoxes($mysqli) {
+	$max = getHighestID($mysqli);
+
+	for ($i=0; $i < $max; $i++) {
+		calcPriority($mysqli, $i);
+	}
+}
+
+//############## CALC PRIORITY #################################################
+function calcPriority($mysqli, $id)
+{
+	//given a db and id, calculate a priority value
+	$sql = "SELECT * from `box` WHERE `id` = $id";
+	$result = mysqli_query($mysqli, $sql);
+
+	// If Error
+	if (!$result) {
+			return FALSE;
+	}
+
+	$row = mysqli_fetch_row($result);
+
+	$now = (int)strtotime(mysqli_fetch_row(mysqli_query($mysqli, "SELECT CURTIME()"))[0]);
+
+	if(!is_null($row[4])) {
+		$rowtime = (int)strtotime($row[4]);
+		$p = ($now-$rowtime) * ($row[5]+1); //time difference * requests
+	} else {
+		$p = 999 + $row[5]; //set high priority if no lastupdate
+	}
+
+	$sql = "UPDATE `box` SET priority = $p WHERE id = $id";
+	mysqli_query($mysqli, $sql);
+}
+
+// Header and Return
+header('Location: ' . $_SERVER['HTTP_REFERER']);
 ?>

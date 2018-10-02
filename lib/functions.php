@@ -191,3 +191,14 @@ function JSONOutput($immediateCal, $radVal1)
     // Return Encoded JSON
     return $crimeImmediate;
 }
+
+// Get number of boxes.
+function getHighestID($mysqli) {
+  $sql = "SELECT `id` from `box` ORDER BY id DESC LIMIT 1";
+  $result = mysqli_query($mysqli, $sql);
+  $rows = mysqli_fetch_row($result);
+  mysqli_free_result($result); // Free Query
+  $count = $rows[0]; // Return Value.
+
+  return $count;
+}

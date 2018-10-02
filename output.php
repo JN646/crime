@@ -60,6 +60,7 @@ if ($radVal2 <= $radVal1) {
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
           <div class="btn-group mr-2" role="group" aria-label="First group">
             <button id='riskSliderToggle' type="button" onclick="toggleRiskSlider()" class="btn btn-secondary">Risk Slider</button>
+            <button id='riskToggle' type="button" onclick="toggleRiskFactor()" class="btn btn-secondary">Risk</button>
             <!-- <button type="button" class="btn btn-secondary">2</button>
             <button type="button" class="btn btn-secondary">3</button>
             <button type="button" class="btn btn-secondary">4</button> -->

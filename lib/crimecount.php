@@ -2,7 +2,7 @@
 // Get Database Config
 include_once 'functions.php';
 
-// Crime Counter
+//############## CRIME COUNTER #################################################
 function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
 {
     $time_start = microtime(true); // Start Timer
@@ -30,7 +30,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         return $resultCount_Immediate;
     }
 
-    // Pre Calc Table
+    //############## PRE CALC TABLE ############################################
     function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
     {
         $nRows = mysqli_num_rows($resultCount_Local);
@@ -68,7 +68,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         return $table; // Return the table.
     }
 
-    // Calc Risk
+    //############## CALC RISK #################################################
     function calcRisk($n1, $n2, $radius1, $radius2)
     {
     	//Scale coefficient (before limiting)
@@ -104,7 +104,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         return $result; // Return Calculation
     }
 
-    // Render Table
+    //############## RENDER TABLE ##############################################
     function renderTable($table) {
 
         // Init Running Total Values
@@ -166,7 +166,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
       <?php
     }
 
-    // Colour Risk
+    //############## COLOUR RISK ###############################################
     function colourRisk($risk) {
         // Threshold Value
         $thresh = 1.0;

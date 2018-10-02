@@ -42,11 +42,14 @@ function showError(error) {
 
 //############## TOGGLE RISK SLIDER ############################################
 function toggleRiskSlider() {
-  // Variables
-  var riskCol = document.getElementsByClassName('riskGraphicCol');
-
   // Toggle Column
   $('.riskGraphicCol').toggle();
+}
+
+//############## TOGGLE RISK SLIDER ############################################
+function toggleRiskFactor() {
+  // Toggle Column
+  $('.riskCol').toggle();
 }
 
 //############## TABLE SORT ####################################################
