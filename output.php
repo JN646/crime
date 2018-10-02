@@ -65,8 +65,8 @@ if ($radVal2 <= $radVal1) {
             <button type="button" class="btn btn-secondary">4</button> -->
           </div>
           <div class="btn-group mr-2" role="group" aria-label="Second group">
-            <!-- <button type="button" class="btn btn-secondary">5</button>
-            <button type="button" class="btn btn-secondary">6</button>
+            <button type="button" onclick="window.print()" class="btn btn-secondary"><i class="fas fa-print"></i></button>
+            <!-- <button type="button" class="btn btn-secondary">6</button>
             <button type="button" class="btn btn-secondary">7</button> -->
           </div>
           <div class="btn-group" role="group" aria-label="Third group">
