@@ -1,5 +1,12 @@
 <?php
-genBoxes();
+// SELECT All
+$query = "SELECT `box_id` FROM `box`";
+$result = mysqli_query($mysqli, $query);
+
+// Generate boxes if table is empty.
+if (empty($result)) {
+	genBoxes();
+}
 
 function genBoxes()
 {
