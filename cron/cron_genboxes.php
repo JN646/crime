@@ -3,11 +3,13 @@
 require_once '../config/config.php';
 require_once '../lib/functions.php';
 
-genBoxes($mysqli);
+genBoxes($mysqli, $boxHop);
+destroyBoxes($mysqli, $boxHop, $boxSize);
 prioritiseBoxes($mysqli);
 //calcPriority($mysqli, 1);
 
-function genBoxes($mysqli)
+//############## GENERATE BOXES ################################################
+function genBoxes($mysqli, $boxHop)
 {
 	// $sql = "INSERT INTO `box` (latitude, longitude) VALUES ($x, $y)";
 	$sql = "TRUNCATE TABLE `box`";
@@ -26,23 +28,60 @@ function genBoxes($mysqli)
 	** New boxes can be created or detoryed procedurally or manually.
 	*/
 
-	$ukLatMin = -10.8544921875; //truncate these numbers? just to beautify?
-	$ukLatMax = 2.021484375;
-	$ukLongMin = 49.82380908513249;
-	$ukLongMax = 59.478568831926395;
-
-	$hop = 0.5; //in radians - size to be confirmed
+	$ukLongMin = -10.8544921875; //truncate these numbers? just to beautify?
+	$ukLongMax = 2.021484375;
+	$ukLatMin = 49.82380908513249;
+	$ukLatMax = 59.478568831926395;
 
 	$x = $ukLatMin;
 	while($x < $ukLatMax) {
 		$y = $ukLongMin;
 		while($y < $ukLongMax) {
-			$sql = "INSERT INTO box (latitude, longitude) VALUES ($x, $y)";
+			$sql = "INSERT INTO `box` (latitude, longitude) VALUES ($x, $y)";
 			$result = mysqli_query($mysqli, $sql);
 
-			$y += $hop;
+			$y += $boxHop;
 		}
-		$x += $hop;
+		$x += $boxHop;
+	}
+}
+
+//############## DESTORY BOXES #################################################
+function destroyBoxes($mysqli, $boxHop, $boxSize) {
+	// Get Random Lat Long.
+	$sql = "SELECT * FROM `box` ORDER BY RAND() LIMIT 1";
+	$result = mysqli_query($mysqli, $sql);
+	$row = mysqli_fetch_assoc($result);
+
+	// Threshold
+	$threshold = 0.1;
+
+	// Assign Variables
+	$longVal = $row['longitude'];
+	$latVal = $row['latitude'];
+
+	// Random Lat Long.
+	echo $latVal . "  " . $longVal . "<br>";
+
+	// Calculate Boundaries
+	$longHigh = $longVal + $threshold;
+	$longLow  = $longVal - $threshold;
+	$latHigh = $latVal + $threshold;
+	$latLow = $latVal - $threshold;
+
+	$searchCrime = "SELECT id, Longitude, Latitude, SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2)) FROM data
+	WHERE Latitude > $latLow AND Latitude < $latHigh AND Longitude > $longLow AND Longitude < $longHigh";
+
+	$crimeResult = mysqli_query($mysqli, $searchCrime);
+
+	// If Error.
+	if (!$crimeResult) {
+			die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+	}
+
+	// Print all Lat Long.
+	while ($crimes = mysqli_fetch_assoc($crimeResult)) {
+		echo "Lat: " . $crimes["Latitude"] . " Long: " . $crimes["Longitude"] . "</br>";
 	}
 }
 
@@ -83,5 +122,5 @@ function calcPriority($mysqli, $id)
 }
 
 // Header and Return
-header('Location: ' . $_SERVER['HTTP_REFERER']);
+//header('Location: ' . $_SERVER['HTTP_REFERER']);
 ?>
