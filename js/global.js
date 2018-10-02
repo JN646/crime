@@ -40,6 +40,15 @@ function showError(error) {
   }
 }
 
+//############## TOGGLE RISK SLIDER ############################################
+function toggleRiskSlider() {
+  // Variables
+  var riskCol = document.getElementsByClassName('riskGraphicCol');
+
+  // Toggle Column
+  $('.riskGraphicCol').toggle();
+}
+
 //############## TABLE SORT ####################################################
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
