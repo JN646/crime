@@ -109,7 +109,7 @@ if ($radVal2 <= $radVal1) {
             </tr>
             <tr>
               <td><b>Generated:</b></td>
-              <td>01/10/2018</td>
+              <td><?php echo date("d/m/y") ?></td>
             </tr>
           </tbody>
         </table>

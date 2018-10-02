@@ -16,6 +16,7 @@
           'No Locations'=>countAllNoLocation($mysqli),
           'Falls Within'=>countFallsWithin($mysqli),
           'Recorded By'=>countReportedBy($mysqli),
+          'Boxes'=>countBoxes($mysqli),
       );
 
       foreach ($dd as $key=>$value) {

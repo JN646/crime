@@ -177,14 +177,14 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
             $colour = "alert-danger"; // Red
         }
 
-        // Grey
-        if ($risk == " - ") {
-            $colour = "alert-active"; // Grey
-        }
-
         // Green
         if ($risk < $thresh) {
             $colour = "alert-success"; // Green
+        }
+
+        // Grey
+        if ($risk == 0) {
+            $colour = "alert-active"; // Grey
         }
 
         return $colour;

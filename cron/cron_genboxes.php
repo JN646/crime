@@ -3,30 +3,16 @@
 require_once '../config/config.php';
 require_once '../lib/functions.php';
 
+// Run Functions
 genBoxes($mysqli, $boxHop);
 destroyBoxes($mysqli, $boxHop, $boxSize);
 prioritiseBoxes($mysqli);
-//calcPriority($mysqli, 1);
 
 //############## GENERATE BOXES ################################################
 function genBoxes($mysqli, $boxHop)
 {
-	// $sql = "INSERT INTO `box` (latitude, longitude) VALUES ($x, $y)";
 	$sql = "TRUNCATE TABLE `box`";
-
 	$result = mysqli_query($mysqli, $sql);
-	/*
-	** This function is intended to only ever be used once.
-	** It will generate the centrepoints of boxes with a defined
-	** spacing; and write these points to the db.
-	** This spacing is designed to be a constant (along with
-	** box size) over the lifetime of the product.
-	** If these constants were to be changed, an entire recalculation
-	** of boxes and the data they relate to must be performed.
-	**
-	** However, this list of boxes does not need to be static;
-	** New boxes can be created or detoryed procedurally or manually.
-	*/
 
 	$ukLongMin = -10.8544921875; //truncate these numbers? just to beautify?
 	$ukLongMax = 2.021484375;

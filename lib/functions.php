@@ -192,6 +192,26 @@ function JSONOutput($immediateCal, $radVal1)
     return $crimeImmediate;
 }
 
+//############## Count Boxes ###################################################
+function countBoxes($mysqli)
+{
+    // SELECT All
+    $query = "SELECT COUNT(id) FROM `box`";
+    $result = mysqli_query($mysqli, $query);
+    $rows = mysqli_fetch_row($result);
+
+    // If Error
+    if (!$result) {
+        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+    }
+
+    // Free Query
+    mysqli_free_result($result);
+
+    // Return Value.
+    return $rows[0];
+}
+
 // Get number of boxes.
 function getHighestID($mysqli) {
   $sql = "SELECT `id` from `box` ORDER BY id DESC LIMIT 1";
