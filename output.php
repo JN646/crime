@@ -54,12 +54,66 @@ if ($radVal2 <= $radVal1) {
     <!-- Render Table -->
     <?php
     if ($mode == 0) {
-        echo "<h2>Crime Counter</h2>";
+      ?>
+      <!-- Toolbar -->
+      <div id="crimeCountToolbar">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button id='riskSliderToggle' type="button" onclick="toggleRiskSlider()" class="btn btn-secondary">Risk Slider</button>
+            <button id='riskToggle' type="button" onclick="toggleRiskFactor()" class="btn btn-secondary">Risk</button>
+            <!-- <button type="button" class="btn btn-secondary">2</button>
+            <button type="button" class="btn btn-secondary">3</button>
+            <button type="button" class="btn btn-secondary">4</button> -->
+          </div>
+          <div class="btn-group mr-2" role="group" aria-label="Second group">
+            <button type="button" onclick="window.print()" class="btn btn-secondary"><i class="fas fa-print"></i></button>
+            <!-- <button type="button" class="btn btn-secondary">6</button>
+            <button type="button" class="btn btn-secondary">7</button> -->
+          </div>
+          <div class="btn-group" role="group" aria-label="Third group">
+            <!-- <button type="button" class="btn btn-secondary">8</button> -->
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <!-- Block Header -->
+      <h2>Crime Counter</h2>
+
+        <!-- Table -->
+        <table class='table col-md-6'>
+          <tbody>
+            <tr>
+              <td><b>Location:</b></td>
+              <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
+            </tr>
+            <tr>
+              <td><b>Generated:</b></td>
+              <td><?php echo date("d/m/y") ?></td>
+            </tr>
+          </tbody>
+        </table>
+        <?php
         echo crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2); // Crime Count
     }
 
     if ($mode == 1) {
-        echo "<h2>Time Series</h2>";
+      ?>
+        <h2>Time Series</h2>
+        <table class='table col-md-6'>
+          <tbody>
+            <tr>
+              <td><b>Location:</b></td>
+              <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
+            </tr>
+            <tr>
+              <td><b>Generated:</b></td>
+              <td><?php echo date("d/m/y") ?></td>
+            </tr>
+          </tbody>
+        </table>
+        <?php
         echo timeSeries($mysqli, $latVal, $longVal, $radVal1); // Time Series
     }
     ?>

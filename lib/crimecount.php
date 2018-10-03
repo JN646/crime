@@ -2,7 +2,7 @@
 // Get Database Config
 include_once 'functions.php';
 
-// Crime Counter
+//############## CRIME COUNTER #################################################
 function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
 {
     $time_start = microtime(true); // Start Timer
@@ -30,7 +30,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         return $resultCount_Immediate;
     }
 
-    // Pre Calc Table
+    //############## PRE CALC TABLE ############################################
     function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
     {
         $nRows = mysqli_num_rows($resultCount_Local);
@@ -68,16 +68,15 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         return $table; // Return the table.
     }
 
-    // Calc Risk
+    //############## CALC RISK #################################################
     function calcRisk($n1, $n2, $radius1, $radius2)
     {
     	//Scale coefficient (before limiting)
-    	$scale = 0.5;
+    	$scale = 0.2;
     	//soft limit between -1 & 1
     	$limit = True;
     	//number of decimal points (0 for no round)
     	$round = 2;
-
 
         // Get Area
         $area1 = PI()*$radius1*$radius1;
@@ -105,27 +104,26 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         return $result; // Return Calculation
     }
 
-    // Render Table
-    function renderTable($table)
-    {
+    //############## RENDER TABLE ##############################################
+    function renderTable($table) {
+
         // Init Running Total Values
         $runningCountL = $runningCountI = 0; ?>
       <table id="myTable2" class='table table-bordered'>
         <thead>
           <tr>
-            <th id="headerCrime" class='text-center text-bold' onclick="sortTable(0)">Crime</th>
-            <th id="headerImmediate" class='text-center text-bold' onclick="sortTable(1)">Immediate</th>
-            <th id="headerLocal" class='text-center text-bold' onclick="sortTable(2)">Local</th>
-            <th id="headerRisk" class='text-center text-bold' onclick="sortTable(3)">Risk</th>
-            <th id="headerRiskGraphic" class='text-center text-bold' onclick="sortTable(4)">Risk Graphic</th>
+            <th id="headerCrime" class='text-center text-bold crimeCol' onclick="sortTable(0)">Crime</th>
+            <th id="headerImmediate" class='text-center text-bold immediateCol' onclick="sortTable(1)">Immediate</th>
+            <th id="headerLocal" class='text-center text-bold localCol' onclick="sortTable(2)">Local</th>
+            <th id="headerRisk" class='text-center text-bold riskCol' onclick="sortTable(3)">Risk</th>
+            <th id="headerRiskGraphic" class='text-center text-bold riskGraphicCol' onclick="sortTable(4)">Risk Graphic</th>
           </tr>
         </thead>
         <tbody>
-      <?php for ($i=0; $i < count($table); $i++) {
-            ?>
+      <?php for ($i=0; $i < count($table); $i++) { ?>
         <tr>
-          <td class=''><?php echo $table[$i][0] ?></td>
-          <td class='text-center'>
+          <td class='crimeCol'><?php echo $table[$i][0] ?></td>
+          <td class='text-center immediateCol'>
             <?php
             // IMMEDIATE
             // Check to see if zero.
@@ -139,9 +137,9 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
                 $runningCountI = $runningCountI + $table[$i][1];
             } ?>
          </td>
-          <td class='text-center'><?php echo number_format($table[$i][2]) ?></td>
-          <td class='text-center <?php echo colourRisk($table[$i][3]) ?>'><?php echo $table[$i][3] ?></td>
-          <td class='text-center'><div><input class="form-control-range" type="range" min="-1" max="1" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
+          <td class='text-center localCol'><?php echo number_format($table[$i][2]) ?></td>
+          <td class='text-center riskCol <?php echo colourRisk($table[$i][3]) ?>'><?php echo $table[$i][3] ?></td>
+          <td class='text-center riskGraphicCol'><div id='riskslider'><input class="form-control-range" type="range" min="-1" max="1" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
         </tr>
         <?php
         // Contribute to running count.
@@ -149,7 +147,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         } ?>
         </tbody>
       </table>
-      <table class='table table-bordered'>
+      <table class='table'>
         <thead>
           <tr>
             <th class='outputText text-center text-bold'></th>
@@ -168,9 +166,8 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
       <?php
     }
 
-    // Colour Risk
-    function colourRisk($risk)
-    {
+    //############## COLOUR RISK ###############################################
+    function colourRisk($risk) {
         // Threshold Value
         $thresh = 1.0;
         $colour = "";
@@ -180,14 +177,14 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
             $colour = "alert-danger"; // Red
         }
 
-        // Grey
-        if ($risk == " - ") {
-            $colour = "alert-active"; // Grey
-        }
-
         // Green
         if ($risk < $thresh) {
             $colour = "alert-success"; // Green
+        }
+
+        // Grey
+        if ($risk == 0) {
+            $colour = "alert-active"; // Grey
         }
 
         return $colour;
