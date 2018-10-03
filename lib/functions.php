@@ -26,7 +26,7 @@ class ApplicationVersion
 
 //############## INIT VALUE ####################################################
 // Debug
-$radVal1 = $radVal2 = $n = 0;
+$radVal1 = $radVal2 = $n = $mode = 0;
 $JSONEnable = "TRUE";
 
 //############## GET VALUES ####################################################
@@ -34,7 +34,7 @@ $JSONEnable = "TRUE";
 function getMonths($mysqli)
 {
     // SELECT All
-    $query = "SELECT DISTINCT Month FROM data";
+    $query = "SELECT DISTINCT Month FROM data WHERE Month <> 0";
     $result = mysqli_query($mysqli, $query);
 
     // If Error
@@ -45,10 +45,10 @@ function getMonths($mysqli)
     if (mysqli_num_rows($result) > 0) {
         // output data of each row
         while ($row = mysqli_fetch_assoc($result)) {
-          echo "<option>" . $row['Month'] . "</option>";
+            echo "<option>" . $row['Month'] . "</option>";
         }
     } else {
-      echo "<option disabled>No Data</option>";
+        echo "<option disabled>No Data</option>";
     }
 }
 
@@ -130,7 +130,7 @@ function countAllNoLocation($mysqli)
     mysqli_free_result($result);
 
     // Return Value.
-    return $rows[0];
+    return number_format($rows[0]);
 }
 
 //############## Fall Within ###################################################
@@ -173,16 +173,6 @@ function countReportedBy($mysqli)
     return $rows[0];
 }
 
-//############## SPLIT DATES ###################################################
-function splitDate($crimeDate)
-{
-    list($crimeYear, $crimeMonth) = explode("-", $crimeDate);
-
-    $crimeMonthYear = array($crimeMonth, $crimeYear);
-
-    return $crimeMonthYear;
-}
-
 //############## JSON ##########################################################
 //############## Immediate & Local #############################################
 function JSONOutput($immediateCal, $radVal1)
@@ -202,45 +192,33 @@ function JSONOutput($immediateCal, $radVal1)
     return $crimeImmediate;
 }
 
-//############## COLOUR RISK ###################################################
-//############## Risk to Colour ################################################
-function colourRisk($risk)
+//############## Count Boxes ###################################################
+function countBoxes($mysqli)
 {
-    $thresh = .6;
-    $colour = "rgb(255,255,0)"; //defailt to yellow
+    // SELECT All
+    $query = "SELECT COUNT(id) FROM `box`";
+    $result = mysqli_query($mysqli, $query);
+    $rows = mysqli_fetch_row($result);
 
-    if($risk > $thresh) {
-      $colour = "rgb(255,0,0)"; //red
+    // If Error
+    if (!$result) {
+        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
     }
 
-    if($risk < -$thresh) {
-      $colour = "rgb(0,255,0)"; //green
-    }
+    // Free Query
+    mysqli_free_result($result);
 
-
-    return $colour;
+    // Return Value.
+    return $rows[0];
 }
 
-//############## Colour Gradient ###############################################
-function GreenYellowRed($number)
-{
-    $number = $number * (255/100);
-    $number--; // working with 0-99 will be easier.
+// Get number of boxes.
+function getHighestID($mysqli) {
+  $sql = "SELECT `id` from `box` ORDER BY id DESC LIMIT 1";
+  $result = mysqli_query($mysqli, $sql);
+  $rows = mysqli_fetch_row($result);
+  mysqli_free_result($result); // Free Query
+  $count = $rows[0]; // Return Value.
 
-    // Check if colour is less than half the range.
-    if ($number < 50) {
-        // green to yellow
-        $r = floor(255 * ($number / 50));
-        $g = 255;
-    } else {
-        // yellow to red.
-        $r = 255;
-        $g = floor(255 * ((50-$number%50) / 50));
-    }
-    $b = 0;
-
-    // Return colour value.
-    return "$r,$g,$b";
+  return $count;
 }
-
-?>

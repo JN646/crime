@@ -6,39 +6,31 @@
   <div class="statBox">
 
     <!-- All Crimes -->
-    <div class='statBlock'>
-      <p class='statHeader'><b>All Crimes: </b></p>
-      <p class='statBody'><?php echo countAllCrimes($mysqli); ?></p>
-    </div>
+    <div class='row'>
 
-    <!-- All Crime Types -->
-    <div class='statBlock'>
-      <p class='statHeader'><b>All Crime Types: </b></p>
-      <p class='statBody'><?php echo countAllCrimeTypes($mysqli); ?></p>
-    </div>
+      <?php
+      $dd=array(
+          'All Crimes'=>countAllCrimes($mysqli),
+          'All Crime Types'=>countAllCrimeTypes($mysqli),
+          'All Months'=>countAllMonth($mysqli),
+          'No Locations'=>countAllNoLocation($mysqli),
+          'Falls Within'=>countFallsWithin($mysqli),
+          'Recorded By'=>countReportedBy($mysqli),
+          'Boxes'=>countBoxes($mysqli),
+      );
 
-    <!-- Months Worth -->
-    <div class='statBlock'>
-      <p class='statHeader'><b>Months worth of data: </b></p>
-      <p class='statBody'><?php echo countAllMonth($mysqli); ?></p>
-    </div>
-
-    <!-- Crimes No Location -->
-    <div class='statBlock'>
-      <p class='statHeader'><b>Crimes with no location: </b></p>
-      <p class='statBody'><?php echo countAllNoLocation($mysqli); ?></p>
-    </div>
-
-    <!-- Falls Within -->
-    <div class='statBlock'>
-      <p class='statHeader'><b>Falls Within: </b></p>
-      <p class='statBody'><?php echo countFallsWithin($mysqli); ?></p>
-    </div>
-
-    <!-- Reported By -->
-    <div class='statBlock'>
-      <p class='statHeader'><b>Reported By: </b></p>
-      <p class='statBody'><?php echo countReportedBy($mysqli); ?></p>
+      foreach ($dd as $key=>$value) {
+          ?>
+          <div class='col-md-3 statBox'>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title text-center"><?php echo $key?></h5>
+                <h6 class="card-subtitle text-center mb-2 text-muted"><?php echo $value?></h6>
+              </div>
+            </div>
+          </div>
+      <?php
+      } ?>
     </div>
   </div>
 </div>

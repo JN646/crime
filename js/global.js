@@ -40,6 +40,18 @@ function showError(error) {
   }
 }
 
+//############## TOGGLE RISK SLIDER ############################################
+function toggleRiskSlider() {
+  // Toggle Column
+  $('.riskGraphicCol').toggle();
+}
+
+//############## TOGGLE RISK SLIDER ############################################
+function toggleRiskFactor() {
+  // Toggle Column
+  $('.riskCol').toggle();
+}
+
 //############## TABLE SORT ####################################################
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
