@@ -32,7 +32,7 @@
             'Remote Port'=>$_SERVER['REMOTE_PORT'],
             'Script File Name'=>$_SERVER['SCRIPT_FILENAME'],
             'Server Admin'=>$_SERVER['SERVER_ADMIN'],
-            'Serever Port'=>$_SERVER['SERVER_PORT'],
+            'Server Port'=>$_SERVER['SERVER_PORT'],
             'Script Name'=>$_SERVER['SCRIPT_NAME'],
             'Request URI'=>$_SERVER['REQUEST_URI'],
             'PHP Self'=>$_SERVER['PHP_SELF']
