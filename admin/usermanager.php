@@ -56,19 +56,21 @@ include('lib/userserver.php');
 								<th class='text-center' colspan="2">Action</th>
 							</tr>
 						</thead>
-						<?php while ($row = mysqli_fetch_array($results)) { ?>
-							<tr>
-								<td><?php echo $row['username']; ?></td>
-								<td class='text-center'><i class="fas fa-key" title="<?php echo $row['password']; ?>"></i></td>
-								<td><?php echo $row['email']; ?></td>
-								<td class='text-center'>
-									<a href="usermanager.php?edit=<?php echo $row['id']; ?>" class="btn btn-link" ><i class="far fa-edit"></i></a>
-								</td>
-								<td class='text-center'>
-									<a href="lib/userserver.php?del=<?php echo $row['id']; ?>" class="btn btn-link"><i class="far fa-trash-alt"></i></a>
-								</td>
-							</tr>
-						<?php } ?>
+						<tbody>
+							<?php while ($row = mysqli_fetch_array($results)) { ?>
+								<tr>
+									<td><?php echo $row['username']; ?></td>
+									<td class='text-center'><i class="fas fa-key" title="<?php echo $row['password']; ?>"></i></td>
+									<td><?php echo $row['email']; ?></td>
+									<td class='text-center'>
+										<a href="usermanager.php?edit=<?php echo $row['id']; ?>" class="btn btn-link" ><i class="far fa-edit"></i></a>
+									</td>
+									<td class='text-center'>
+										<a href="lib/userserver.php?del=<?php echo $row['id']; ?>" class="btn btn-link"><i class="far fa-trash-alt"></i></a>
+									</td>
+								</tr>
+							<?php } ?>
+						</tbody>
 					</table>
 
 					<!-- Create Update Block -->
@@ -76,18 +78,26 @@ include('lib/userserver.php');
 						<div class='form-group'>
 							<input type="hidden" name="id" value="<?php echo $id; ?>">
 						</div>
+
+							<!-- Username -->
 							<div class="form-group">
 								<label class=''>Username</label>
 								<input class='form-control' type="text" name="username" value="<?php echo $username; ?>">
 							</div>
+
+							<!-- Password -->
 							<div class="form-group">
 								<label class=''>Password</label>
 								<input class='form-control' type="text" name="password" value="<?php echo $password; ?>">
 							</div>
+
+							<!-- Email -->
 							<div class="form-group">
 								<label class=''>Email</label>
 								<input class='form-control' type="text" name="email" value="<?php echo $email; ?>">
 							</div>
+
+							<!-- Function Buttons -->
 							<div class="form-group">
 								<?php if ($update == true): ?>
 									<button class="btn btn-success" type="submit" name="update">Update</button>
@@ -95,6 +105,7 @@ include('lib/userserver.php');
 									<button class="btn btn-success" type="submit" name="save">Save</button>
 								<?php endif ?>
 							</div>
+
 						</div>
 					</form>
 				</div>
