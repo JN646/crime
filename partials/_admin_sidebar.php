@@ -29,13 +29,7 @@
     <h5>Cron Jobs</h5>
   </div>
   <ul class="nav flex-column">
-    <li class="nav-item"><a class="nav-link" href="../cron/cron_count.php"><i class="far fa-clock"></i> Cron Count</a></li>
-  </ul>
-  <ul class="nav flex-column">
-    <li class="nav-item"><a class="nav-link" href="../cron/cron_createTables.php"><i class="fas fa-table"></i> Cron Tables</a></li>
-  </ul>
-  <ul class="nav flex-column">
-    <li class="nav-item"><a class="nav-link" href="../cron/cron_genboxes.php"><i class="fas fa-box"></i> Cron Generate Boxes</a></li>
+    <li class="nav-item"><a class="nav-link" href='' data-toggle="modal" data-target=".cron-job-modal"><i class="fas fa-clock"></i> Cron Job List</a></li>
   </ul>
 </div>
 <br>
@@ -107,3 +101,34 @@
       </div>
     </div>
   </div>
+
+  <!-- Server Information -->
+  <div class="modal fade cron-job-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Cron Jobs</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Here are timed server jobs that you can run manually here.</p>
+          <div class="row">
+            <ul class="nav flex-column col-md-4">
+              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_count.php"><i class="far fa-clock"></i> Count Stats</a></li>
+            </ul>
+            <ul class="nav flex-column col-md-4">
+              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_createTables.php"><i class="fas fa-table"></i> Create Tables</a></li>
+            </ul>
+            <ul class="nav flex-column col-md-4">
+              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_genboxes.php"><i class="fas fa-box"></i> Generate Boxes</a></li>
+            </ul>
+          </div>
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>

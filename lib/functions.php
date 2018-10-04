@@ -113,6 +113,29 @@ function countAllMonth($mysqli)
     return $rows[0];
 }
 
+//############## Count All Crimes By Year ######################################
+function countAllYears($mysqli)
+{
+    // SELECT All
+    $years = array("2015","2016","2017","2018");
+    for ($i=0; $i < count($years); $i++) {
+      $query = "SELECT COUNT(id) FROM data WHERE month LIKE '$years[$i]%'";
+      $result = mysqli_query($mysqli, $query);
+      $rows[$years[$i]][] = mysqli_fetch_row($result);
+    }
+
+    // If Error
+    if (!$result) {
+        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+    }
+
+    // Free Query
+    mysqli_free_result($result);
+
+    // Return Value.
+    return $rows;
+}
+
 //############## Count No Locations ############################################
 function countAllNoLocation($mysqli)
 {
