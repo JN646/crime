@@ -15,6 +15,9 @@
     <h5>Config</h5>
   </div>
   <ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link" href="usermanager.php"><i class="fas fa-user"></i> User Manager</a></li>
+  </ul>
+  <ul class="nav flex-column">
     <li class="nav-item"><a class="nav-link" href="serverinfo.php"><i class="fas fa-server"></i> Server Info</a></li>
   </ul>
 </div>

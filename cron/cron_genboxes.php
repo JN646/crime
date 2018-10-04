@@ -11,25 +11,37 @@ prioritiseBoxes($mysqli);
 //############## GENERATE BOXES ################################################
 function genBoxes($mysqli, $boxHop)
 {
+	//############## INSERT BOXES ################################################
+	function insertBoxes($mysqli, $ukLatMin, $ukLatMax, $ukLongMin, $ukLongMax, $boxHop) {
+	  $x = $ukLatMin;
+	  while($x < $ukLatMax) {
+	    $y = $ukLongMin;
+	    while($y < $ukLongMax) {
+	      $sql = "INSERT INTO `box` (latitude, longitude) VALUES ($x, $y)";
+	      $result = mysqli_query($mysqli, $sql);
+
+	      // If Error.
+	      if (!$result) {
+	          die('<p class="SQLError">Could not insert boxes: ' . mysqli_error($mysqli) . '</p>');
+	      }
+
+	      $y += $boxHop;
+	    }
+	    $x += $boxHop;
+	  }
+	}
+	
 	$sql = "TRUNCATE TABLE `box`";
 	$result = mysqli_query($mysqli, $sql);
 
-	$ukLongMin = -10.8544921875; //truncate these numbers? just to beautify?
-	$ukLongMax = 2.021484375;
-	$ukLatMin = 49.82380908513249;
-	$ukLatMax = 59.478568831926395;
+	// UK Dimensions
+	$ukLongMin = number_format(-10.8544921875,6);
+	$ukLongMax = number_format(2.021484375,6);
+	$ukLatMin = number_format(49.82380908513249,6);
+	$ukLatMax = number_format(59.478568831926395,6);
 
-	$x = $ukLatMin;
-	while($x < $ukLatMax) {
-		$y = $ukLongMin;
-		while($y < $ukLongMax) {
-			$sql = "INSERT INTO `box` (latitude, longitude) VALUES ($x, $y)";
-			$result = mysqli_query($mysqli, $sql);
-
-			$y += $boxHop;
-		}
-		$x += $boxHop;
-	}
+	// Insert boxes into database.
+	insertBoxes($mysqli, $ukLatMin, $ukLatMax, $ukLongMin, $ukLongMax, $boxHop);
 }
 
 //############## DESTORY BOXES #################################################
@@ -63,11 +75,6 @@ function destroyBoxes($mysqli, $boxHop, $boxSize) {
 	// If Error.
 	if (!$crimeResult) {
 			die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-	}
-
-	// Print all Lat Long.
-	while ($crimes = mysqli_fetch_assoc($crimeResult)) {
-		echo "Lat: " . $crimes["Latitude"] . " Long: " . $crimes["Longitude"] . "</br>";
 	}
 }
 
@@ -108,5 +115,5 @@ function calcPriority($mysqli, $id)
 }
 
 // Header and Return
-//header('Location: ' . $_SERVER['HTTP_REFERER']);
+header('Location: ' . $_SERVER['HTTP_REFERER']);
 ?>

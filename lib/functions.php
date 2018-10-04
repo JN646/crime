@@ -173,25 +173,7 @@ function countReportedBy($mysqli)
     return $rows[0];
 }
 
-//############## JSON ##########################################################
-//############## Immediate & Local #############################################
-function JSONOutput($immediateCal, $radVal1)
-{
-    // Calculated Values JSON
-    $crimeValObj = new \stdClass();
-    $crimeValObj->LowLatitude   = $immediateCal[0];
-    $crimeValObj->HighLatitude  = $immediateCal[1];
-    $crimeValObj->LowLongitude  = $immediateCal[2];
-    $crimeValObj->HighLongitude = $immediateCal[3];
-    $crimeValObj->Radius1       = $radVal1;
-
-    // JSON Encode
-    $crimeImmediate = json_encode($crimeValObj);
-
-    // Return Encoded JSON
-    return $crimeImmediate;
-}
-
+//############## BOXES #########################################################
 //############## Count Boxes ###################################################
 function countBoxes($mysqli)
 {
@@ -209,7 +191,7 @@ function countBoxes($mysqli)
     mysqli_free_result($result);
 
     // Return Value.
-    return $rows[0];
+    return number_format($rows[0]);
 }
 
 // Get number of boxes.

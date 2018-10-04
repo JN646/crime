@@ -19,6 +19,6 @@ define("LOCAL", "http://localhost/crime/"); //local URL
 define("WEB", "http://192.168.1.72:80/crime/"); //website URL
 $environment = LOCAL; //change to WEB if you're live
 
-$boxHop = 0.5;
+$boxHop = 0.05;
 $boxSize = 0.7;
 ?>
