@@ -9,6 +9,7 @@ include('lib/userserver.php');
         if (count($record) == 1) {
             $n = mysqli_fetch_array($record);
             $username = $n['username'];
+						$password = $n['password'];
             $email = $n['email'];
         }
     }
@@ -33,12 +34,10 @@ include('lib/userserver.php');
 
 					<!-- Status Block -->
 					<?php if (isset($_SESSION['message'])): ?>
-						<div class="alert alert-info">
 							<?php
 				        echo $_SESSION['message'];
 				        unset($_SESSION['message']);
 				      ?>
-						</div>
 					<?php endif ?>
 
 					<h2>User Manager</h2>
@@ -52,6 +51,7 @@ include('lib/userserver.php');
 						<thead>
 							<tr>
 								<th class='text-center'>Username</th>
+								<th class='text-center'>Password</th>
 								<th class='text-center'>Email</th>
 								<th class='text-center' colspan="2">Action</th>
 							</tr>
@@ -59,12 +59,13 @@ include('lib/userserver.php');
 						<?php while ($row = mysqli_fetch_array($results)) { ?>
 							<tr>
 								<td><?php echo $row['username']; ?></td>
+								<td class='text-center'><i class="fas fa-key" title="<?php echo $row['password']; ?>"></i></td>
 								<td><?php echo $row['email']; ?></td>
-								<td>
-									<a href="usermanager.php?edit=<?php echo $row['id']; ?>" class="btn btn-primary" >Edit</a>
+								<td class='text-center'>
+									<a href="usermanager.php?edit=<?php echo $row['id']; ?>" class="btn btn-link" ><i class="far fa-edit"></i></a>
 								</td>
-								<td>
-									<a href="lib/userserver.php?del=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+								<td class='text-center'>
+									<a href="lib/userserver.php?del=<?php echo $row['id']; ?>" class="btn btn-link"><i class="far fa-trash-alt"></i></a>
 								</td>
 							</tr>
 						<?php } ?>
@@ -78,6 +79,10 @@ include('lib/userserver.php');
 							<div class="form-group">
 								<label class=''>Username</label>
 								<input class='form-control' type="text" name="username" value="<?php echo $username; ?>">
+							</div>
+							<div class="form-group">
+								<label class=''>Password</label>
+								<input class='form-control' type="text" name="password" value="<?php echo $password; ?>">
 							</div>
 							<div class="form-group">
 								<label class=''>Email</label>
