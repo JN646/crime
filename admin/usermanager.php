@@ -9,7 +9,7 @@ include('lib/userserver.php');
         if (count($record) == 1) {
             $n = mysqli_fetch_array($record);
             $username = $n['username'];
-						$password = $n['password'];
+            $password = $n['password'];
             $email = $n['email'];
         }
     }
@@ -35,9 +35,9 @@ include('lib/userserver.php');
 					<!-- Status Block -->
 					<?php if (isset($_SESSION['message'])): ?>
 							<?php
-				        echo $_SESSION['message'];
-				        unset($_SESSION['message']);
-				      ?>
+                echo $_SESSION['message'];
+                unset($_SESSION['message']);
+                      ?>
 					<?php endif ?>
 
 					<h2>User Manager</h2>
@@ -46,56 +46,31 @@ include('lib/userserver.php');
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<!-- Display Users -->
-					<table class='table table-bordered'>
-						<thead>
-							<tr>
-								<th class='text-center'>Username</th>
-								<th class='text-center'>Password</th>
-								<th class='text-center'>Email</th>
-								<th class='text-center' colspan="2">Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php while ($row = mysqli_fetch_array($results)) { ?>
-								<tr>
-									<td><?php echo $row['username']; ?></td>
-									<td class='text-center'><i class="fas fa-key" title="<?php echo $row['password']; ?>"></i></td>
-									<td><?php echo $row['email']; ?></td>
-									<td class='text-center'>
-										<a href="usermanager.php?edit=<?php echo $row['id']; ?>" class="btn btn-link" ><i class="far fa-edit"></i></a>
-									</td>
-									<td class='text-center'>
-										<a href="lib/userserver.php?del=<?php echo $row['id']; ?>" class="btn btn-link"><i class="far fa-trash-alt"></i></a>
-									</td>
-								</tr>
-							<?php } ?>
-						</tbody>
-					</table>
-
-					<!-- Create Update Block -->
-					<form class='col-md-6' method="post" action="lib/userserver.php" >
+          <!-- Create Update Block -->
+					<form class='border col-md-12' method="post" action="lib/userserver.php" >
 						<div class='form-group'>
 							<input type="hidden" name="id" value="<?php echo $id; ?>">
 						</div>
 
 							<!-- Username -->
-							<div class="form-group">
-								<label class=''>Username</label>
-								<input class='form-control' type="text" name="username" value="<?php echo $username; ?>">
-							</div>
+              <div class="row">
+                <div class="col-md-4 form-group">
+                  <label class=''>Username</label>
+                  <input class='form-control' type="text" name="username" value="<?php echo $username; ?>">
+                </div>
 
-							<!-- Password -->
-							<div class="form-group">
-								<label class=''>Password</label>
-								<input class='form-control' type="text" name="password" value="<?php echo $password; ?>">
-							</div>
+                <!-- Password -->
+                <div class="col-md-4 form-group">
+                  <label class=''>Password</label>
+                  <input class='form-control' type="text" name="password" value="<?php echo $password; ?>">
+                </div>
 
-							<!-- Email -->
-							<div class="form-group">
-								<label class=''>Email</label>
-								<input class='form-control' type="text" name="email" value="<?php echo $email; ?>">
-							</div>
+                <!-- Email -->
+                <div class="col-md-4 form-group">
+                  <label class=''>Email</label>
+                  <input class='form-control' type="text" name="email" value="<?php echo $email; ?>">
+                </div>
+              </div>
 
 							<!-- Function Buttons -->
 							<div class="form-group">
@@ -108,9 +83,43 @@ include('lib/userserver.php');
 
 						</div>
 					</form>
-				</div>
+        </div>
+
+        <br>
+
+				<!-- Display Users -->
+        <div class="row">
+          <div class="col-md-12">
+            <table class='table table-bordered'>
+              <thead>
+                <tr>
+                  <th class='text-center'>Username</th>
+                  <th class='text-center'>Password</th>
+                  <th class='text-center'>Email</th>
+                  <th class='text-center' colspan="2">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php while ($row = mysqli_fetch_array($results)) {
+                          ?>
+                  <tr>
+                    <td><?php echo $row['username']; ?></td>
+                    <td class='text-center'><i class="fas fa-key" title="<?php echo $row['password']; ?>"></i></td>
+                    <td><?php echo $row['email']; ?></td>
+                    <td class='text-center'>
+                      <a href="usermanager.php?edit=<?php echo $row['id']; ?>" class="btn btn-link" ><i class="far fa-edit"></i></a>
+                    </td>
+                    <td class='text-center'>
+                      <a href="lib/userserver.php?del=<?php echo $row['id']; ?>" class="btn btn-link"><i class="far fa-trash-alt"></i></a>
+                    </td>
+                  </tr>
+                <?php
+                      } ?>
+              </tbody>
+            </table>
+          </div>
+			  </div>
 			</div>
-		</div>
 		</div>
 	</div>
 	<!-- Footer -->

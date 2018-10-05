@@ -18,6 +18,9 @@
     <li class="nav-item"><a class="nav-link" href="usermanager.php"><i class="fas fa-user"></i> User Manager</a></li>
   </ul>
   <ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link" href="crimemanager.php"><i class="fas fa-list"></i> Crime Manager</a></li>
+  </ul>
+  <ul class="nav flex-column">
     <li class="nav-item"><a class="nav-link" href='' data-toggle="modal" data-target=".server-info-modal"><i class="fas fa-server"></i> Server Info</a></li>
   </ul>
 </div>
