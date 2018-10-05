@@ -15,6 +15,7 @@
 	$long = "";
 	$crime_type = "";
 	$falls_within = "";
+	$month = "";
 	$id = 0;
 	$update = false;
 
@@ -24,15 +25,16 @@
 		$long = $_POST['Longitude'];
 		$crime_type = $_POST['Crime_Type'];
 		$falls_within = $_POST['Falls_Within'];
+		$month = $_POST['Month'];
 
-		mysqli_query($myslqi, "INSERT INTO data (Latitude, Longitude, Crime_Type, Falls_Within) VALUES ('$lat', '$long', '$crime_type', '$falls_within')");
+		mysqli_query($myslqi, "INSERT INTO data (Latitude, Longitude, Crime_Type, Falls_Within, Month) VALUES ('$lat', '$long', '$crime_type', '$falls_within', '$month')");
 
 		// If Error.
 		if (!$result) {
-			$_SESSION['message'] = "<div class='alert alert-danger'>User creation not implemented yet</div>";
+			$_SESSION['message'] = "<div class='alert alert-danger'>Crime creation not implemented yet</div>";
 			header('location: ../crimemanager.php');
 		} else {
-			$_SESSION['message'] = "<div class='alert alert-success'>User saved!</div>";
+			$_SESSION['message'] = "<div class='alert alert-success'>Crime saved!</div>";
 			header('location: ../crimemanager.php');
 		}
 	}
@@ -44,15 +46,16 @@
 		$long = $_POST['Longitude'];
 		$crime_type = $_POST['Crime_Type'];
 		$falls_within = $_POST['Falls_Within'];
+		$month = $_POST['Month'];
 
-	  $result =	mysqli_query($mysqli, "UPDATE data SET Latitude='$lat', Longitude='$long', Crime_Type='$crime_type', Falls_Within='$falls_within' WHERE id=$id");
+	  $result =	mysqli_query($mysqli, "UPDATE data SET Latitude='$lat', Longitude='$long', Crime_Type='$crime_type', Falls_Within='$falls_within', Month='$month' WHERE id=$id");
 
 		// If Error.
 		if (!$result) {
-			$_SESSION['message'] = "<div class='alert alert-danger'>User update failed!</div>";
+			$_SESSION['message'] = "<div class='alert alert-danger'>Crime update failed!</div>";
 			header('location: ../crimemanager.php');
 		} else {
-			$_SESSION['message'] = "<div class='alert alert-success'>User updated!</div>";
+			$_SESSION['message'] = "<div class='alert alert-success'>Crime updated!</div>";
 			header('location: ../crimemanager.php');
 		}
 	}
@@ -64,10 +67,10 @@
 
 		// If Error.
 		if (!$result) {
-			$_SESSION['message'] = "<div class='alert alert-danger'>User delete failed!</div>";
+			$_SESSION['message'] = "<div class='alert alert-danger'>Crime delete failed!</div>";
 			header('location: ../crimemanager.php');
 		} else {
-			$_SESSION['message'] = "<div class='alert alert-success'>User deleted!</div>";
+			$_SESSION['message'] = "<div class='alert alert-success'>Crime deleted!</div>";
 			header('location: ../crimemanager.php');
 		}
 	}
