@@ -113,6 +113,29 @@ function countAllMonth($mysqli)
     return $rows[0];
 }
 
+//############## Count All Crimes By Year ######################################
+function countAllYears($mysqli)
+{
+    // SELECT All
+    $years = array("2015","2016","2017","2018");
+    for ($i=0; $i < count($years); $i++) {
+      $query = "SELECT COUNT(id) FROM data WHERE month LIKE '$years[$i]%'";
+      $result = mysqli_query($mysqli, $query);
+      $rows[$years[$i]][] = mysqli_fetch_row($result);
+    }
+
+    // If Error
+    if (!$result) {
+        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+    }
+
+    // Free Query
+    mysqli_free_result($result);
+
+    // Return Value.
+    return $rows;
+}
+
 //############## Count No Locations ############################################
 function countAllNoLocation($mysqli)
 {
@@ -173,25 +196,7 @@ function countReportedBy($mysqli)
     return $rows[0];
 }
 
-//############## JSON ##########################################################
-//############## Immediate & Local #############################################
-function JSONOutput($immediateCal, $radVal1)
-{
-    // Calculated Values JSON
-    $crimeValObj = new \stdClass();
-    $crimeValObj->LowLatitude   = $immediateCal[0];
-    $crimeValObj->HighLatitude  = $immediateCal[1];
-    $crimeValObj->LowLongitude  = $immediateCal[2];
-    $crimeValObj->HighLongitude = $immediateCal[3];
-    $crimeValObj->Radius1       = $radVal1;
-
-    // JSON Encode
-    $crimeImmediate = json_encode($crimeValObj);
-
-    // Return Encoded JSON
-    return $crimeImmediate;
-}
-
+//############## BOXES #########################################################
 //############## Count Boxes ###################################################
 function countBoxes($mysqli)
 {
@@ -209,7 +214,7 @@ function countBoxes($mysqli)
     mysqli_free_result($result);
 
     // Return Value.
-    return $rows[0];
+    return number_format($rows[0]);
 }
 
 // Get number of boxes.
