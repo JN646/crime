@@ -15,7 +15,7 @@ if ($mysqli->connect_error) {
 }
 
 // Global Variables.
-define("LOCAL", "http://localhost/crime/"); //local URL
+define("LOCAL", "http://localhost:8888/crime/"); //local URL
 define("WEB", "http://192.168.1.72:80/crime/"); //website URL
 $environment = LOCAL; //change to WEB if you're live
 

@@ -6,6 +6,21 @@ include_once 'functions.php';
 function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
 {
     $time_start = microtime(true); // Start Timer
+
+    function writeLog($mysqli, $latVal, $longVal, $radVal1, $radVal2) {
+      //immediate area
+      $report_logSQL = "INSERT INTO report_log (report_lat, report_long, report_immediate, report_local, report_user)
+      VALUES ($latVal, $longVal, $radVal1, $radVal2, 1)";
+
+      // Run Query
+      $report_logSQLQ = mysqli_query($mysqli, $report_logSQL);
+
+      // If Error
+      if (!$report_logSQLQ) {
+          die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+      }
+    }
+
     function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal)
     {
         //immediate area
@@ -204,6 +219,9 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     // Run Queries
     $resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
     $resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
+
+    // Write to Log
+    writeLog($mysqli, $latVal, $longVal, $radVal1, $radVal2);
 
     // Generate Table of Data
     $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);

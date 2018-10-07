@@ -6,6 +6,7 @@ require_once '../config/config.php';
 cronCreateStatTable($mysqli);
 cronCreateBox($mysqli);
 cronCreateUsers($mysqli);
+cronReportLog($mysqli);
 
 //############## Create Stat Table #############################################
 function cronCreateStatTable($mysqli)
@@ -17,7 +18,7 @@ function cronCreateStatTable($mysqli)
     if (empty($result)) {
         // Create table if doesn't exist.
         $query = "CREATE TABLE IF NOT EXISTS `stats` (
-      `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Statistic ID',
+      `id` int(11) NOT NULL AUTO_INCREMENT AUTO_INCREMENT COMMENT 'Statistic ID',
       `stat` varchar(100) DEFAULT NULL COMMENT 'Statistic Name',
       `count` int(11) DEFAULT '0' COMMENT 'Statistic Count',
       `last_run` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated',
@@ -26,7 +27,7 @@ function cronCreateStatTable($mysqli)
 
         // If Error
         if (!$result) {
-            die('<p class="SQLError">Could not get month list: ' . mysqli_error($mysqli) . '</p>');
+            die('<p class="SQLError">Could not create stat table: ' . mysqli_error($mysqli) . '</p>');
         }
 
         // Insert Data.
@@ -42,6 +43,32 @@ function cronCreateStatTable($mysqli)
 }
 
 //############## Create Box ####################################################
+function cronReportLog($mysqli)
+{
+    // SELECT All
+    $query = "SELECT id FROM 'report_log'";
+    $result = mysqli_query($mysqli, $query);
+
+    if (empty($result)) {
+        // Create table if doesn't exist.
+        $query = "CREATE TABLE `report_log` (
+          `report_id` int(11) NOT NULL COMMENT 'The report ID number',
+          `report_lat` decimal(9,6) DEFAULT NULL COMMENT 'The Latitude for the report.',
+          `report_long` decimal(9,6) DEFAULT NULL COMMENT 'The Longitude for the report.',
+          `report_immediate` float DEFAULT NULL COMMENT 'Immediate Radius.',
+          `report_local` float DEFAULT NULL COMMENT 'Local Radius.',
+          `report_user` int(11) DEFAULT '0' COMMENT 'The ID number of the user that has created the report.'
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+        $result = mysqli_query($mysqli, $query);
+
+        // If Error
+        if (!$result) {
+            die('<p class="SQLError">SQL ERROR: Create report_log ' . mysqli_error($mysqli) . '</p>');
+        }
+    }
+}
+
+//############## Create Box ####################################################
 function cronCreateBox($mysqli)
 {
     // SELECT All
@@ -50,12 +77,15 @@ function cronCreateBox($mysqli)
 
     if (empty($result)) {
         // Create table if doesn't exist.
-        $query = "CREATE TABLE IF NOT EXISTS `box` (
-      `box_id` int(11) NOT NULL AUTO_INCREMENT,
-      `box_lat` decimal(9,3) DEFAULT NULL,
-      `box_long` decimal(9,3) DEFAULT NULL,
-      PRIMARY KEY (`box_id`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=latin1";
+        $query = "CREATE TABLE `box` (
+          `id` int(11) NOT NULL COMMENT 'The box ID.',
+          `latitude` decimal(9,3) DEFAULT NULL COMMENT 'Latitude of the box.',
+          `longitude` decimal(9,3) DEFAULT NULL COMMENT 'Longitude of the box.',
+          `priority` float DEFAULT NULL COMMENT 'Priority for an update.',
+          `priority_updated` timestamp NULL DEFAULT NULL COMMENT 'Last updated.',
+          `timeseries_updated` timestamp NULL DEFAULT NULL COMMENT 'Timeseries Updated time.',
+          `requests` int(11) NOT NULL DEFAULT '0' COMMENT 'Number of requests.'
+        ) ENGINE=MyISAM DEFAULT CHARSET=latin1";
         $result = mysqli_query($mysqli, $query);
 
         // If Error
