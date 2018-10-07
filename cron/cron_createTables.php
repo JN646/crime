@@ -3,9 +3,44 @@
 require_once '../config/config.php';
 
 //############## MAIN ##########################################################
+cronCreateData($mysqli);
 cronCreateStatTable($mysqli);
 cronCreateBox($mysqli);
 cronCreateUsers($mysqli);
+
+//############## Create Data ###################################################
+function cronCreateData($mysqli)
+{
+    // SELECT All
+    $query = "SELECT id FROM 'data'";
+    $result = mysqli_query($mysqli, $query);
+
+    if (empty($result)) {
+        // Create table if doesn't exist.
+        $query = "CREATE TABLE `data` (
+          `id` int(11) NOT NULL,
+          `Crime_ID` varchar(255) DEFAULT NULL,
+          `Month` varchar(20) DEFAULT NULL,
+          `Reported_By` varchar(255) DEFAULT NULL,
+          `Falls_Within` varchar(255) DEFAULT NULL,
+          `Longitude` decimal(9,6) DEFAULT '0.000000',
+          `Latitude` decimal(9,6) DEFAULT '0.000000',
+          `Location` varchar(200) DEFAULT NULL,
+          `LSOA_Code` varchar(100) DEFAULT NULL,
+          `LSOA_Name` varchar(100) DEFAULT NULL,
+          `Crime_Type` varchar(250) DEFAULT NULL,
+          `Last_Outcome_Category` text,
+          `Context` text,
+          `import_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date imported.'
+        ) ENGINE=MyISAM DEFAULT CHARSET=latin1";
+        $result = mysqli_query($mysqli, $query);
+
+        // If Error
+        if (!$result) {
+            die('<p class="SQLError">SQL ERROR: Create data ' . mysqli_error($mysqli) . '</p>');
+        }
+    }
+}
 
 //############## Create Stat Table #############################################
 function cronCreateStatTable($mysqli)
