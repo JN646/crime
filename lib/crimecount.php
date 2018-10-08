@@ -1,4 +1,7 @@
 <?php
+// Initialize the session
+session_start();
+
 // Get Database Config
 include_once 'functions.php';
 
@@ -8,9 +11,18 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     $time_start = microtime(true); // Start Timer
 
     function writeLog($mysqli, $latVal, $longVal, $radVal1, $radVal2) {
-      //immediate area
+      // Set Session ID to variable.
+      if (isset($_SESSION["id"])) {
+        // If there is a session ID.
+        $userid = $_SESSION["id"];
+      } else {
+        // If there is no session ID.
+        $userid = 0;
+      }
+
+      // Insert SQL
       $report_logSQL = "INSERT INTO report_log (report_lat, report_long, report_immediate, report_local, report_user)
-      VALUES ($latVal, $longVal, $radVal1, $radVal2, 1)";
+      VALUES ($latVal, $longVal, $radVal1, $radVal2, $userid)";
 
       // Run Query
       $report_logSQLQ = mysqli_query($mysqli, $report_logSQL);

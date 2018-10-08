@@ -7,6 +7,12 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
+
+// Set Session ID to variable.
+if (isset($_SESSION["id"])) {
+  // If there is a session ID.
+  $userid = $_SESSION["id"];
+}
 ?>
 
 <!-- Header -->
@@ -30,6 +36,53 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         </p>
 
         <hr>
+
+        <h2>Bookmarked</h2>
+
+        <table class='table table-bordered table-sm'>
+
+        <?php
+        // get the info from the db
+        $sql = "SELECT DISTINCT `report_id`, `report_comment`, `report_lat`, `report_long`
+        FROM `report_log`
+        WHERE `report_user` = $userid
+        AND `report_bookmarked` = 1
+        LIMIT 5";
+
+        $result = mysqli_query($mysqli, $sql) or trigger_error("SQL", E_USER_ERROR);
+
+        ?>
+          <thead>
+            <tr>
+              <th class='text-center'>#</th>
+              <th class='text-center'>Comment</th>
+              <th class='text-center'>Latitude</th>
+              <th class='text-center'>Longitude</th>
+              <th class='text-center' colspan="2">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          <?php
+        // while there are rows to be fetched...
+        while ($row = mysqli_fetch_assoc($result)) {
+           ?>
+           <tr>
+             <td class='text-center'><?php echo $row['report_id']; ?></td>
+             <td><?php echo $row['report_comment']; ?></td>
+             <td><?php echo $row['report_lat']; ?></td>
+             <td><?php echo $row['report_long']; ?></td>
+             <td class='text-center'>
+               <a href="crimemanager.php?edit=<?php echo $row['id']; ?>" data-toggle="" data-target="" class="btn btn-link"><i class="far fa-edit"></i></a>
+             </td>
+             <td class='text-center'>
+               <a href="lib/crimeserver.php?del=<?php echo $row['id']; ?>" class="btn btn-link"><i class="far fa-trash-alt"></i></a>
+             </td>
+           </tr>
+           <?php
+        }
+         ?>
+          </tbody>
+        </table>
 
         <h2>Your Reports</h2>
 
@@ -70,9 +123,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
           $offset = ($currentpage - 1) * $rowsperpage;
 
           // get the info from the db
-          $sql = "SELECT DISTINCT `report_id`, `report_lat`, `report_long`
+          $sql = "SELECT DISTINCT `report_id`, `report_comment`, `report_lat`, `report_long`
           FROM `report_log`
-          WHERE `report_user` = 1 
+          WHERE `report_user` = $userid
+          AND `report_bookmarked` = 0
           LIMIT $offset, $rowsperpage";
 
           $result = mysqli_query($mysqli, $sql) or trigger_error("SQL", E_USER_ERROR);
@@ -81,6 +135,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <thead>
               <tr>
                 <th class='text-center'>#</th>
+                <th class='text-center'>Comment</th>
                 <th class='text-center'>Latitude</th>
                 <th class='text-center'>Longitude</th>
                 <th class='text-center' colspan="2">Action</th>
@@ -93,6 +148,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
              ?>
              <tr>
                <td class='text-center'><?php echo $row['report_id']; ?></td>
+               <td><?php echo $row['report_comment']; ?></td>
                <td><?php echo $row['report_lat']; ?></td>
                <td><?php echo $row['report_long']; ?></td>
                <td class='text-center'>
