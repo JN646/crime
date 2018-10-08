@@ -1,5 +1,5 @@
 <?php
-// Initialize the session
+// Initialise the session
 session_start();
 
 // Get Database Config
@@ -8,7 +8,12 @@ include_once 'functions.php';
 //############## CRIME COUNTER #################################################
 function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
 {
-    $time_start = microtime(true); // Start Timer
+    if ($TimeSeries_ExecTimer == TRUE) {
+      if ($CrimeCounter_ExecTimer) {
+        $time_start = microtime(true); // Start Timer
+      }
+
+    }
 
     function writeLog($mysqli, $latVal, $longVal, $radVal1, $radVal2) {
       // Set Session ID to variable.
@@ -232,8 +237,12 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     $resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
     $resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
 
-    // Write to Log
-    writeLog($mysqli, $latVal, $longVal, $radVal1, $radVal2);
+    // Write to Log only if user is logged in.
+    if ($require_logon_to_search == TRUE) {
+      if(isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == true){
+        writeLog($mysqli, $latVal, $longVal, $radVal1, $radVal2);
+      }
+    }
 
     // Generate Table of Data
     $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
@@ -242,12 +251,13 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     renderTable($table);
 
     // Display Script End time
-    $time_end = microtime(true);
+    if ($CrimeCounter_ExecTimer) {
+      $time_end = microtime(true);
 
-    //dividing with 60 will give the execution time in minutes other wise seconds
-    $execution_time = ($time_end - $time_start);
+      //dividing with 60 will give the execution time in minutes other wise seconds
+      $execution_time = ($time_end - $time_start);
 
-    //execution time of the script
-    echo '<b>Total Execution Time:</b> ' . number_format($execution_time, 4) . ' Seconds';
+      echo '<b>Total Execution Time:</b> ' . number_format($execution_time, 4) . ' Seconds';
+    }
 }
  ?>

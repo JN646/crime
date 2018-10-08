@@ -30,7 +30,10 @@ function prioritiseBoxes()
 
 function timeSeries($mysqli, $lat, $long, $radius)
 {
-    $time_start = microtime(true);
+    if ($TimeSeries_ExecTimer == TRUE) {
+      $time_start = microtime(true);
+    }
+
     $monthArray = $crimeTypeArray = array();
 
     // Calculate
@@ -228,12 +231,14 @@ function timeSeries($mysqli, $lat, $long, $radius)
     // Draw table.
     renderTimeSeriesTable($mysqli, $crimeTypeArray, $monthArray, $table);
 
-    // Display Script End time
-    $time_end = microtime(true);
+    if ($TimeSeries_ExecTimer) {
+      // Display Script End time
+      $time_end = microtime(true);
 
-    //dividing with 60 will give the execution time in minutes other wise seconds
-    $execution_time = ($time_end - $time_start);
+      //dividing with 60 will give the execution time in minutes other wise seconds
+      $execution_time = ($time_end - $time_start);
 
-    //execution time of the script
-    echo '<b>Total Execution Time:</b> ' . number_format($execution_time, 4) . ' Seconds';
+      //execution time of the script
+      echo '<b>Total Execution Time:</b> ' . number_format($execution_time, 4) . ' Seconds';
+    }
 }

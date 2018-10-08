@@ -1,5 +1,5 @@
 <?php
-// Initialize the session
+// Initialise the session
 session_start();
  ?>
 
@@ -15,13 +15,20 @@ session_start();
       <!-- Form Partial -->
       <?php
       // Check if the user is logged in, if not then redirect to login page
-      if(isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == true){
-          include 'partials/_form.php';
+      if ($require_logon_to_search == FALSE) {
+        if(isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == true){
+            include 'partials/_form.php';
+        } else {
+          ?>
+          <div class="alert alert-info">
+            <p class='text-center'><a href='users/login.php'>Login to run a personalised search.</a></p>
+          </div>
+          <?php
+        }
       } else {
-        echo "Log in to start a search...";
+        include 'partials/_form.php';
       }
-       ?>
-
+      ?>
       <hr>
 
       <!-- Stats Partial -->

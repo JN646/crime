@@ -1,6 +1,5 @@
-<!-- Header Form -->
 <?php
-// Initialize the session
+// Initialise the session
 session_start();
 
 // Check if the user is logged in, if not then redirect to login page
