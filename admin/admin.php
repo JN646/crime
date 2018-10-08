@@ -8,6 +8,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: ../users/login.php");
     exit;
 }
+
+// Check if the user is an admin.
+if($_SESSION["admin"] !== 1){
+    header("location: ../users/login.php");
+}
  ?>
 
 <?php include '../partials/_header.php' ?>
