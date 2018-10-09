@@ -20,9 +20,10 @@ define("WEB", "http://192.168.1.72:80/crime/"); //website URL
 $environment = LOCAL; //change to WEB if you're live
 
 
-// IN METERS NOW
+// Constants - IN METERS
 $boxHop = 10000; //10km???
 $boxSize = 120000; //120km
+$earthR = 6371000;
 
 // Global Settings
 $require_logon_to_search = TRUE;
