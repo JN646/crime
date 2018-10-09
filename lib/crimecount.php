@@ -1,11 +1,43 @@
 <?php
+// Initialise the session
+session_start();
+
 // Get Database Config
 include_once 'functions.php';
 
 //############## CRIME COUNTER #################################################
 function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
 {
-    $time_start = microtime(true); // Start Timer
+    if ($TimeSeries_ExecTimer == TRUE) {
+      if ($CrimeCounter_ExecTimer) {
+        $time_start = microtime(true); // Start Timer
+      }
+
+    }
+
+    function writeLog($mysqli, $latVal, $longVal, $radVal1, $radVal2) {
+      // Set Session ID to variable.
+      if (isset($_SESSION["id"])) {
+        // If there is a session ID.
+        $userid = $_SESSION["id"];
+      } else {
+        // If there is no session ID.
+        $userid = 0;
+      }
+
+      // Insert SQL
+      $report_logSQL = "INSERT INTO report_log (report_lat, report_long, report_immediate, report_local, report_user)
+      VALUES ($latVal, $longVal, $radVal1, $radVal2, $userid)";
+
+      // Run Query
+      $report_logSQLQ = mysqli_query($mysqli, $report_logSQL);
+
+      // If Error
+      if (!$report_logSQLQ) {
+          die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+      }
+    }
+
     function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal)
     {
         //immediate area
@@ -205,6 +237,13 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     $resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
     $resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
 
+    // Write to Log only if user is logged in.
+    if ($require_logon_to_search == TRUE) {
+      if(isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == true){
+        writeLog($mysqli, $latVal, $longVal, $radVal1, $radVal2);
+      }
+    }
+
     // Generate Table of Data
     $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
 
@@ -212,12 +251,13 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     renderTable($table);
 
     // Display Script End time
-    $time_end = microtime(true);
+    if ($CrimeCounter_ExecTimer) {
+      $time_end = microtime(true);
 
-    //dividing with 60 will give the execution time in minutes other wise seconds
-    $execution_time = ($time_end - $time_start);
+      //dividing with 60 will give the execution time in minutes other wise seconds
+      $execution_time = ($time_end - $time_start);
 
-    //execution time of the script
-    echo '<b>Total Execution Time:</b> ' . number_format($execution_time, 4) . ' Seconds';
+      echo '<b>Total Execution Time:</b> ' . number_format($execution_time, 4) . ' Seconds';
+    }
 }
  ?>
