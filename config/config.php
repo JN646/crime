@@ -21,8 +21,8 @@ $environment = LOCAL; //change to WEB if you're live
 
 
 // Constants - IN METERS
-$boxHop = 10000; //10km???
-$boxSize = 120000; //120km
+$boxHop = 8000; //8km
+$boxSize = 10000; //10km
 $earthR = 6371000;
 
 // Global Settings

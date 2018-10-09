@@ -4,16 +4,6 @@ require_once '../config/config.php';
 require_once '../lib/functions.php';
 
 
-//Constants
-$d180p = 180.0/PI();
-$dp180 = PI()/180;
-$eR = 6317000; //earth radius in meters
-$aRHop = $boxHop/$eR; //arc radius (for hop)
-
-echo "starting... <br>";
-echo "hop in meters: " . $boxHop . "<br>";
-echo "rad hop: " . $aRHop . "<br>";
-echo "deg hop: " . radToDeg($aRHop) . "<br>";
 
 // Run Functions
 genBoxes($mysqli, $boxHop);
@@ -21,48 +11,45 @@ genBoxes($mysqli, $boxHop);
 //prioritiseBoxes($mysqli);
 
 
-//############## Geometry Conversion Maths ##########################################
-function degToRad($deg) {
-	return $deg * PI()/180;
-}
-
-function radToDeg($rad) {
-	return $rad * 180.0/PI();
-}
-
 //############## GENERATE BOXES ################################################
 function genBoxes($mysqli, $boxHop)
-{	
+{
+	//echo $boxHop . "<br>";
 	//############## INSERT BOXES ################################################
 	function insertBoxes($mysqli, $ukLatMin, $ukLatMax, $ukLongMin, $ukLongMax, $boxHop) {
-	  global $aRHop;
-	  $x = $ukLatMin;
-	  while($x < $ukLatMax) {
-	    $y = $ukLongMin;
-	    while($y < $ukLongMax) {
-	      $sql = "INSERT INTO `box` (latitude, longitude) VALUES ($x, $y)";
-	      $result = mysqli_query($mysqli, $sql);
-		
-	      // If Error.
-	      if (!$result) {
-	          die('<p class="SQLError">Could not insert boxes: ' . mysqli_error($mysqli) . '</p>');
-	      }
-
-	      $y += radToDeg($aRHop);
-	    }
-	    $x += radToDeg($aRHop);
-	  }
+		$loc = ['lat' => $ukLatMin, 'lng' => $ukLongMin];
+		while($loc['lat'] < $ukLatMax) {
+			echo round($loc['lat'], 2) . "<br>";
+			$loc['lng'] = $ukLongMin;
+			while($loc['lng'] < $ukLongMax) {
+	    		echo "__" . round($loc['lng'], 2) . "<br>";
+	    		$a = $loc['lat'];
+	    		$b = $loc['lng'];
+				$sql = "INSERT INTO `box` (latitude, longitude) VALUES ($a, $b)";
+				$result = mysqli_query($mysqli, $sql);
+				
+				// Error check
+				if (!$result) {
+					die('<p class="SQLError">Could not insert boxes: ' . mysqli_error($mysqli) . '</p>');
+				}
+				
+			$loc = computeOffset($loc, $boxHop,  90);
+			}
+		$loc = computeOffset($loc, $boxHop,  0);
+		//echo round($loc['lat'], 2) . " " . round($loc['lng'], 2) . "<br>";
+		}
 	}
+	
 	
 	$sql = "TRUNCATE TABLE `box`";
 	$result = mysqli_query($mysqli, $sql);
 
-	// UK Dimensions
+	// UK Dimensions - add to config file?
 	$ukLongMin = number_format(-10.8544921875,6);
 	$ukLongMax = number_format(2.021484375,6);
 	$ukLatMin = number_format(49.82380908513249,6);
 	$ukLatMax = number_format(59.478568831926395,6);
-
+	
 	// Insert boxes into database.
 	insertBoxes($mysqli, $ukLatMin, $ukLatMax, $ukLongMin, $ukLongMax, $boxHop);
 }

@@ -227,3 +227,24 @@ function getHighestID($mysqli) {
 
   return $count;
 }
+
+
+
+
+//############## SPHERICAL GEOMETRY #############################################
+
+function computeOffset($from, $distance, $heading) {
+	$distance /= 6371000; //MathUtil::EARTH_RADIUS; //calculates fraction of unit circle. Can we call this constant from somewhere?
+	$heading = deg2rad($heading);
+	// http://williams.best.vwh.net/avform.htm#LL
+	$fromLat = deg2rad($from['lat']);
+	$fromLng = deg2rad($from['lng']);
+	$cosDistance = cos($distance);
+	$sinDistance = sin($distance);
+	$sinFromLat = sin($fromLat);
+	$cosFromLat = cos($fromLat);
+	$sinLat = $cosDistance * $sinFromLat + $sinDistance * $cosFromLat * cos($heading);
+	$dLng = atan2($sinDistance * $cosFromLat * sin($heading),
+		$cosDistance - $sinFromLat * $sinLat);
+	return ['lat' => rad2deg(asin($sinLat)), 'lng' =>rad2deg($fromLng + $dLng)];
+}
