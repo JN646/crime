@@ -23,10 +23,6 @@ $environment = LOCAL; //change to WEB if you're live
 // IN METERS NOW
 $boxHop = 10000; //10km???
 $boxSize = 120000; //120km
-=======
-// Box Settings
-$boxHop = 0.05;
-$boxSize = 0.7;
 
 // Global Settings
 $require_logon_to_search = TRUE;
