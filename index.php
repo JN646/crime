@@ -29,6 +29,12 @@ session_start();
         include 'partials/_form.php';
       }
       ?>
+
+      <!-- Link to create tables -->
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" href="../cron/cron_createTables.php"><i class="fas fa-table"></i> Create Tables</a></li>
+      </ul>
+
       <hr>
 
       <!-- Stats Partial -->
