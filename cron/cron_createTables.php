@@ -53,7 +53,7 @@ function cronReportLog($mysqli)
     if (empty($result)) {
         // Create table if doesn't exist.
         $query = "CREATE TABLE IF NOT EXISTS `report_log` (
-          `report_id` int(11) NOT NULL COMMENT 'The report ID number',
+          `report_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'The report ID number',
           `report_lat` decimal(9,6) DEFAULT NULL COMMENT 'The Latitude for the report.',
           `report_long` decimal(9,6) DEFAULT NULL COMMENT 'The Longitude for the report.',
           `report_immediate` float DEFAULT NULL COMMENT 'Immediate Radius.',
@@ -79,7 +79,7 @@ function cronCreateBox($mysqli)
     if (empty($result)) {
         // Create table if doesn't exist.
         $query = "CREATE TABLE IF NOT EXISTS `box` (
-          `id` int(11) NOT NULL,
+          `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
           `latitude` float NOT NULL,
           `longitude` float NOT NULL,
           `lat_min` float NOT NULL,
@@ -109,7 +109,7 @@ function cronCreateBoxMonth($mysqli)
     if (empty($result)) {
         // Create table if doesn't exist.
         $query = "CREATE TABLE IF NOT EXISTS `box_month` (
-          `bm_id` int(11) NOT NULL,
+          `bm_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
           `bm_month` varchar(20) DEFAULT NULL,
           `bm_boxid` int(11) DEFAULT NULL,
           `bm_antisocial` int(11) DEFAULT NULL,
