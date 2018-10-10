@@ -21,7 +21,7 @@ $environment = LOCAL; //change to WEB if you're live
 
 
 // Constants - IN METERS
-$boxHop = 8000; //8km
+$boxHop = 8000; //ideal size is 8-10km. Made larger for fast debugging
 $boxSize = 10000; //10km
 $earthR = 6371000;
 

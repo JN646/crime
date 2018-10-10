@@ -4,28 +4,29 @@ require_once '../config/config.php';
 require_once '../lib/functions.php';
 
 
-
 // Run Functions
-genBoxes($mysqli, $boxHop);
-//destroyBoxes($mysqli, $boxHop, $boxSize);
+//genBoxes($mysqli, $boxHop);
+destroyBoxes($mysqli, $boxHop, $boxSize);
 //prioritiseBoxes($mysqli);
 
 
 //############## GENERATE BOXES ################################################
 function genBoxes($mysqli, $boxHop)
 {
-	//echo $boxHop . "<br>";
 	//############## INSERT BOXES ################################################
 	function insertBoxes($mysqli, $ukLatMin, $ukLatMax, $ukLongMin, $ukLongMax, $boxHop) {
+		$boxSize = 12000; //why isn't this getting called from config?; It doesn't work.
 		$loc = ['lat' => $ukLatMin, 'lng' => $ukLongMin];
 		while($loc['lat'] < $ukLatMax) {
-			echo round($loc['lat'], 2) . "<br>";
 			$loc['lng'] = $ukLongMin;
 			while($loc['lng'] < $ukLongMax) {
-	    		echo "__" . round($loc['lng'], 2) . "<br>";
-	    		$a = $loc['lat'];
-	    		$b = $loc['lng'];
-				$sql = "INSERT INTO `box` (latitude, longitude) VALUES ($a, $b)";
+				$a = $loc['lat'];
+				$b = $loc['lng'];
+	    		$lat_min = computeOffset($loc, $boxSize/2, 180)['lat'];
+	    		$lat_max = computeOffset($loc, $boxSize/2, 0)['lat'];
+	    		$long_min = computeOffset($loc, $boxSize/2, 90)['lng'];
+	    		$long_max = computeOffset($loc, $boxSize/2, 270)['lng'];
+				$sql = "INSERT INTO `box` (latitude, longitude, lat_min, lat_max, long_min, long_max) VALUES ($a, $b, $lat_min, $lat_max, $long_min, $long_max)";
 				$result = mysqli_query($mysqli, $sql);
 				
 				// Error check
@@ -54,35 +55,60 @@ function genBoxes($mysqli, $boxHop)
 	insertBoxes($mysqli, $ukLatMin, $ukLatMax, $ukLongMin, $ukLongMax, $boxHop);
 }
 
+
 //############## DESTORY BOXES #################################################
-/*
 function destroyBoxes($mysqli, $boxHop, $boxSize) {
-	// Get Random box.
-	$sql = "SELECT * FROM `box` ORDER BY RAND() LIMIT 1";
-	$result = mysqli_query($mysqli, $sql);
-	$row = mysqli_fetch_assoc($result);
+	$N = 10; //Counter maximum (break loop)
+	$n = 0; //Counter
 	
-	// Threshold
-	$thresh = 0.1;
-	
-	// Assign Variables
-	$longVal = $row['longitude'];
-	$latVal = $row['latitude'];
-	
-	// Lat Long of box.
-	echo $latVal . "  " . $longVal . "<br>";
-	
-	$searchCrime = "SELECT COUNT(id)=0, Longitude, Latitude FROM data
-	WHERE SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2)) < $thresh";
-	
-	$crimeResult = mysqli_query($mysqli, $searchCrime);
-	
-	// If Error.
-	if (!$crimeResult) {
-			die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+	while($n < $N) {
+		// Get Random box.
+		$sql = "SELECT * FROM `box` ORDER BY RAND() LIMIT 1";
+		$result = mysqli_query($mysqli, $sql);
+		$row = mysqli_fetch_assoc($result);
+		
+		// Assign Variables
+		$longVal = $row['longitude'];
+		$latVal = $row['latitude'];
+		
+		// Lat Long of box.
+		$thresh = 1;
+		$latLow = $latVal - $thresh;
+		$latHigh = $latVal + $thresh;
+		$longLow = $longVal - $thresh;
+		$longHigh = $longVal + $thresh;
+		
+		
+		//is there a crime in the area?
+		//this is the most inefficient search and destory method I can think of:
+		//A long search, followed by a single destroy.
+		$searchCrime = "SELECT COUNT(`id`), COUNT(Longitude), COUNT(Latitude) FROM data
+		WHERE Longitude > $longLow
+   	     AND Longitude < $longHigh
+   	     AND Latitude > $latLow
+   	     AND Latitude < $latHigh";
+		
+		$crimeResult = mysqli_query($mysqli, $searchCrime);
+		$result = mysqli_fetch_assoc($crimeResult);
+		//if empty, delete, reset counter
+		if (!$result['COUNT(`id`)']) {
+			echo "deleting " . $row[id] . "<br>";
+			$sqldel = "DELETE FROM `box` WHERE `id` = $row[id]";
+			$del = mysqli_query($mysqli, $sqldel);
+			$n = 0; //reset counter
+		} else {
+			$n++; //interate counter
+		}
+		
+		/*
+		// If Error.
+		if (!$crimeResult) {
+				die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+		} */
 	}
 }
-*/
+
+
 //############## PRIORITISE BOXES ##############################################
 function prioritiseBoxes($mysqli) {
 	$max = getHighestID($mysqli);
