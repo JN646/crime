@@ -5,8 +5,8 @@ require_once '../lib/functions.php';
 
 
 // Run Functions
-//genBoxes($mysqli, $boxHop);
-destroyBoxes($mysqli, $boxHop, $boxSize);
+genBoxes($mysqli, $boxHop);
+activateBoxes($mysqli);
 //prioritiseBoxes($mysqli);
 
 
@@ -24,8 +24,8 @@ function genBoxes($mysqli, $boxHop)
 				$b = $loc['lng'];
 	    		$lat_min = computeOffset($loc, $boxSize/2, 180)['lat'];
 	    		$lat_max = computeOffset($loc, $boxSize/2, 0)['lat'];
-	    		$long_min = computeOffset($loc, $boxSize/2, 90)['lng'];
-	    		$long_max = computeOffset($loc, $boxSize/2, 270)['lng'];
+	    		$long_min = computeOffset($loc, $boxSize/2, 270)['lng'];
+	    		$long_max = computeOffset($loc, $boxSize/2, 90)['lng'];
 				$sql = "INSERT INTO `box` (latitude, longitude, lat_min, lat_max, long_min, long_max) VALUES ($a, $b, $lat_min, $lat_max, $long_min, $long_max)";
 				$result = mysqli_query($mysqli, $sql);
 				
@@ -46,59 +46,63 @@ function genBoxes($mysqli, $boxHop)
 	$result = mysqli_query($mysqli, $sql);
 
 	// UK Dimensions - add to config file?
-	$ukLongMin = number_format(-10.8544921875,6);
-	$ukLongMax = number_format(2.021484375,6);
-	$ukLatMin = number_format(49.82380908513249,6);
-	$ukLatMax = number_format(59.478568831926395,6);
+	$ukLongMin = -10.8544921875;
+	$ukLongMax = 2.021484375;
+	$ukLatMin = 49.82380908513249;
+	$ukLatMax = 56; //55.478568831926395; //cuts off Scotland
 	
 	// Insert boxes into database.
 	insertBoxes($mysqli, $ukLatMin, $ukLatMax, $ukLongMin, $ukLongMax, $boxHop);
 }
 
 
-//############## DESTORY BOXES #################################################
-function destroyBoxes($mysqli, $boxHop, $boxSize) {
-	$N = 10; //Counter maximum (break loop)
-	$n = 0; //Counter
-	
-	while($n < $N) {
+//############## Activate BOXES #################################################
+function activateBoxes($mysqli) {
+	$box = 1;
+	while($box) { // does this work?
 		// Get Random box.
-		$sql = "SELECT * FROM `box` ORDER BY RAND() LIMIT 1";
-		$result = mysqli_query($mysqli, $sql);
-		$row = mysqli_fetch_assoc($result);
+		$sql = "SELECT `id`, latitude, longitude FROM `box` WHERE active IS NULL ORDER BY RAND() LIMIT 1";
+		$query = mysqli_query($mysqli, $sql);
+		$box = mysqli_fetch_assoc($query);
+		//if no box, finish function
+		if(!$box) {
+			return 0;
+		}
 		
 		// Assign Variables
-		$longVal = $row['longitude'];
-		$latVal = $row['latitude'];
+		$latVal = $box['latitude'];
+		$longVal = $box['longitude'];
+		$loc = ['lat' => $latVal, 'lng' => $longVal];
 		
-		// Lat Long of box.
-		$thresh = 1;
-		$latLow = $latVal - $thresh;
-		$latHigh = $latVal + $thresh;
-		$longLow = $longVal - $thresh;
-		$longHigh = $longVal + $thresh;
-		
+		// Lat Long search range
+		$thresh = 10000; //EACH DIRECTION
+		$latLow = computeOffset($loc, $thresh, 180)['lat'];
+		$latHigh = computeOffset($loc, $thresh, 0)['lat'];
+		$longLow = computeOffset($loc, $thresh, 270)['lng'];
+		$longHigh = computeOffset($loc, $thresh, 90)['lng'];
 		
 		//is there a crime in the area?
 		//this is the most inefficient search and destory method I can think of:
 		//A long search, followed by a single destroy.
 		$searchCrime = "SELECT COUNT(`id`), COUNT(Longitude), COUNT(Latitude) FROM data
 		WHERE Longitude > $longLow
-   	     AND Longitude < $longHigh
-   	     AND Latitude > $latLow
-   	     AND Latitude < $latHigh";
-		
+   	    	AND Longitude < $longHigh
+   	    	AND Latitude > $latLow
+   	    	AND Latitude < $latHigh";
 		$crimeResult = mysqli_query($mysqli, $searchCrime);
-		$result = mysqli_fetch_assoc($crimeResult);
-		//if empty, delete, reset counter
-		if (!$result['COUNT(`id`)']) {
-			echo "deleting " . $row[id] . "<br>";
-			$sqldel = "DELETE FROM `box` WHERE `id` = $row[id]";
-			$del = mysqli_query($mysqli, $sqldel);
+		$crimeResult = mysqli_fetch_assoc($crimeResult);
+		
+		$active = 1;
+		$n++; //interate counter
+		//if empty, deactivate, reset counter
+		if (!$crimeResult['COUNT(`id`)']) {
+			$active = 0;
 			$n = 0; //reset counter
-		} else {
-			$n++; //interate counter
 		}
+		
+		$bID = $box['id'];
+		$sqlUpdate = "UPDATE `box` SET active = $active WHERE `id` = $bID";
+		$updateResult = mysqli_query($mysqli, $sqlUpdate);
 		
 		/*
 		// If Error.
@@ -106,6 +110,7 @@ function destroyBoxes($mysqli, $boxHop, $boxSize) {
 				die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
 		} */
 	}
+	echo "break<br>";
 }
 
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 09, 2018 at 11:38 PM
+-- Generation Time: Oct 10, 2018 at 01:06 PM
 -- Server version: 5.7.23
 -- PHP Version: 7.2.8
 
@@ -35,7 +35,8 @@ CREATE TABLE `box` (
   `long_min` float NOT NULL,
   `long_max` float NOT NULL,
   `last_update` timestamp NULL DEFAULT NULL,
-  `priority` float DEFAULT NULL
+  `priority` float DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
