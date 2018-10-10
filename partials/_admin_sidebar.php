@@ -125,7 +125,13 @@
               <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_createTables.php"><i class="fas fa-table"></i> Create Tables</a></li>
             </ul>
             <ul class="nav flex-column col-md-4">
-              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_genboxes.php"><i class="fas fa-box"></i> Generate Boxes</a></li>
+              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_genBoxes.php"><i class="fas fa-box"></i> Generate Boxes</a></li>
+            </ul>
+            <ul class="nav flex-column col-md-4">
+              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_boxMonth.php"><i class="fas fa-chart-line"></i> Process Time Series</a></li>
+            </ul>
+            <ul class="nav flex-column col-md-4">
+              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_prioritiseBoxes.php"><i class="fas fa-sort-amount-down"></i> Prioritise Boxes</a></li>
             </ul>
           </div>
         </div>

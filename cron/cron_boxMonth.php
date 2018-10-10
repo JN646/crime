@@ -13,10 +13,23 @@
 	*	- Total the types of crimes inside the box & insert to box_month!
 	*	- Repeat indefinately
 	*/
-
-
-
-
-
-
+	
+	//Select a box
+	$sqlBoxQ = "SELECT * FROM `box` WHERE timeseries_updated IS NULL ORDER BY priority DESC LIMIT 1";
+	$sqlBoxR = mysqli_query($mysqli, $sqlBoxQ);
+	$box = mysqli_fetch_assoc($sqlBoxR);
+	var_dump($box);
+	if(!$sqlBoxR) { //if no NULL results, pick highest priority
+		$sqlBoxQ = "SELECT * FROM `box` WHERE timeseries_updated < priority_updated ORDER BY priority DESC LIMIT 1";
+		$sqlBoxR = mysqli_query($mysqli, $sqlBoxQ);
+	}
+	if(!$sqlBoxR) {
+		echo "Error<br>";
+		return 0;
+	}
+	
+	
+	
+	// Header and Return
+	//header('Location: ' . $_SERVER['HTTP_REFERER']);
 ?>

@@ -59,7 +59,7 @@ function genBoxes($mysqli, $boxHop)
 //############## Activate BOXES #################################################
 function activateBoxes($mysqli) {
 	$box = 1;
-	while($box) { // does this work?
+	while($box) {
 		// Get Random box.
 		$sql = "SELECT `id`, latitude, longitude FROM `box` WHERE active IS NULL ORDER BY RAND() LIMIT 1";
 		$query = mysqli_query($mysqli, $sql);
@@ -90,25 +90,26 @@ function activateBoxes($mysqli) {
    	    	AND Latitude > $latLow
    	    	AND Latitude < $latHigh";
 		$crimeResult = mysqli_query($mysqli, $searchCrime);
-		$crimeResult = mysqli_fetch_assoc($crimeResult);
-		
-		$active = 1;
-		$n++; //interate counter
-		//if empty, deactivate, reset counter
-		if (!$crimeResult['COUNT(`id`)']) {
-			$active = 0;
-			$n = 0; //reset counter
-		}
-		
-		$bID = $box['id'];
-		$sqlUpdate = "UPDATE `box` SET active = $active WHERE `id` = $bID";
-		$updateResult = mysqli_query($mysqli, $sqlUpdate);
-		
-		/*
 		// If Error.
 		if (!$crimeResult) {
 				die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-		} */
+		}
+		$crimeResult = mysqli_fetch_assoc($crimeResult);
+		
+		$active = 1;
+		$priority = $crimeResult['COUNT(`id`)'];
+		//if empty, deactivate, reset counter
+		if (!$crimeResult['COUNT(`id`)']) {
+			$active = 0;
+		}
+		
+		$bID = $box['id'];
+		// Update priority or not?
+		//$sqlUpdate = "UPDATE `box` SET active = $active, priority = $priority, priority_updated = NOW() WHERE `id` = $bID";
+		$sqlUpdate = "UPDATE `box` SET active = $active WHERE `id` = $bID";
+		$updateResult = mysqli_query($mysqli, $sqlUpdate);
+		
+		
 	}
 	echo "break<br>";
 }
@@ -151,5 +152,5 @@ function calcPriority($mysqli, $id)
 }
 
 // Header and Return
-//header('Location: ' . $_SERVER['HTTP_REFERER']);
+header('Location: ' . $_SERVER['HTTP_REFERER']);
 ?>
