@@ -53,7 +53,7 @@ function cronReportLog($mysqli)
     if (empty($result)) {
         // Create table if doesn't exist.
         $query = "CREATE TABLE IF NOT EXISTS `report_log` (
-          `report_id` int(11) NOT NULL COMMENT 'The report ID number',
+          `report_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'The report ID number',
           `report_lat` decimal(9,6) DEFAULT NULL COMMENT 'The Latitude for the report.',
           `report_long` decimal(9,6) DEFAULT NULL COMMENT 'The Longitude for the report.',
           `report_immediate` float DEFAULT NULL COMMENT 'Immediate Radius.',
@@ -79,6 +79,7 @@ function cronCreateBox($mysqli)
     if (empty($result)) {
         // Create table if doesn't exist.
         $query = "CREATE TABLE IF NOT EXISTS `box` (
+<<<<<<< HEAD
 			`id` int(11) NOT NULL,
 			`latitude` float NOT NULL,
 			`longitude` float NOT NULL,
@@ -92,6 +93,19 @@ function cronCreateBox($mysqli)
 			`requests` int(11) NOT NULL,
 			`active` tinyint(1) DEFAULT NULL
 			) ENGINE=MyISAM DEFAULT CHARSET=latin1";
+=======
+          `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+          `latitude` float NOT NULL,
+          `longitude` float NOT NULL,
+          `lat_min` float NOT NULL,
+          `lat_max` float NOT NULL,
+          `long_min` float NOT NULL,
+          `long_max` float NOT NULL,
+          `last_update` timestamp NULL DEFAULT NULL,
+          `priority` float DEFAULT NULL,
+          `active` tinyint(1) DEFAULT NULL
+        ) ENGINE=MyISAM DEFAULT CHARSET=latin1";
+>>>>>>> 01ff514d01d35194e359a424bbbc0f338449c6c9
         $result = mysqli_query($mysqli, $query);
 
         // If Error
@@ -111,7 +125,7 @@ function cronCreateBoxMonth($mysqli)
     if (empty($result)) {
         // Create table if doesn't exist.
         $query = "CREATE TABLE IF NOT EXISTS `box_month` (
-          `bm_id` int(11) NOT NULL,
+          `bm_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
           `bm_month` varchar(20) DEFAULT NULL,
           `bm_boxid` int(11) DEFAULT NULL,
           `bm_antisocial` int(11) DEFAULT NULL,
