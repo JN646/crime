@@ -5,6 +5,7 @@ require_once '../config/config.php';
 //############## MAIN ##########################################################
 cronCreateStatTable($mysqli);
 cronCreateBox($mysqli);
+cronCreateBoxMonth($mysqli);
 cronCreateUsers($mysqli);
 cronReportLog($mysqli);
 
@@ -42,7 +43,7 @@ function cronCreateStatTable($mysqli)
     }
 }
 
-//############## Create Box ####################################################
+//############## Create Report Log #############################################
 function cronReportLog($mysqli)
 {
     // SELECT All
@@ -51,7 +52,7 @@ function cronReportLog($mysqli)
 
     if (empty($result)) {
         // Create table if doesn't exist.
-        $query = "CREATE TABLE `report_log` (
+        $query = "CREATE TABLE IF NOT EXISTS `report_log` (
           `report_id` int(11) NOT NULL COMMENT 'The report ID number',
           `report_lat` decimal(9,6) DEFAULT NULL COMMENT 'The Latitude for the report.',
           `report_long` decimal(9,6) DEFAULT NULL COMMENT 'The Longitude for the report.',
@@ -77,14 +78,17 @@ function cronCreateBox($mysqli)
 
     if (empty($result)) {
         // Create table if doesn't exist.
-        $query = "CREATE TABLE `box` (
-          `id` int(11) NOT NULL COMMENT 'The box ID.',
-          `latitude` decimal(9,3) DEFAULT NULL COMMENT 'Latitude of the box.',
-          `longitude` decimal(9,3) DEFAULT NULL COMMENT 'Longitude of the box.',
-          `priority` float DEFAULT NULL COMMENT 'Priority for an update.',
-          `priority_updated` timestamp NULL DEFAULT NULL COMMENT 'Last updated.',
-          `timeseries_updated` timestamp NULL DEFAULT NULL COMMENT 'Timeseries Updated time.',
-          `requests` int(11) NOT NULL DEFAULT '0' COMMENT 'Number of requests.'
+        $query = "CREATE TABLE IF NOT EXISTS `box` (
+          `id` int(11) NOT NULL,
+          `latitude` float NOT NULL,
+          `longitude` float NOT NULL,
+          `lat_min` float NOT NULL,
+          `lat_max` float NOT NULL,
+          `long_min` float NOT NULL,
+          `long_max` float NOT NULL,
+          `last_update` timestamp NULL DEFAULT NULL,
+          `priority` float DEFAULT NULL,
+          `active` tinyint(1) DEFAULT NULL
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1";
         $result = mysqli_query($mysqli, $query);
 
@@ -105,25 +109,24 @@ function cronCreateBoxMonth($mysqli)
     if (empty($result)) {
         // Create table if doesn't exist.
         $query = "CREATE TABLE IF NOT EXISTS `box_month` (
-      `bm_id` int(11) NOT NULL AUTO_INCREMENT,
-      `bm_month` varchar(20) DEFAULT NULL,
-      `bm_boxid` int(11) DEFAULT NULL,
-      `bm_antisocial` int(11) DEFAULT NULL,
-      `bm_burglary` int(11) DEFAULT NULL,
-      `bm_othertheft` int(11) DEFAULT NULL,
-      `bm_publicorder` int(11) DEFAULT NULL,
-      `bm_violencesex` int(11) DEFAULT NULL,
-      `bm_vehiclecrime` int(11) DEFAULT NULL,
-      `bm_criminaldamage` int(11) DEFAULT NULL,
-      `bm_othercrime` int(11) DEFAULT NULL,
-      `bm_robbery` int(11) DEFAULT NULL,
-      `bm_bicycletheft` int(11) DEFAULT NULL,
-      `bm_drugs` int(11) DEFAULT NULL,
-      `bm_shoplifting` int(11) DEFAULT NULL,
-      `bm_theftperson` int(11) DEFAULT NULL,
-      `bm_weapons` int(11) DEFAULT NULL,
-      PRIMARY KEY (`bm_id`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=latin1";
+          `bm_id` int(11) NOT NULL,
+          `bm_month` varchar(20) DEFAULT NULL,
+          `bm_boxid` int(11) DEFAULT NULL,
+          `bm_antisocial` int(11) DEFAULT NULL,
+          `bm_burglary` int(11) DEFAULT NULL,
+          `bm_othertheft` int(11) DEFAULT NULL,
+          `bm_publicorder` int(11) DEFAULT NULL,
+          `bm_violencesex` int(11) DEFAULT NULL,
+          `bm_vehiclecrime` int(11) DEFAULT NULL,
+          `bm_criminaldamage` int(11) DEFAULT NULL,
+          `bm_othercrime` int(11) DEFAULT NULL,
+          `bm_robbery` int(11) DEFAULT NULL,
+          `bm_bicycletheft` int(11) DEFAULT NULL,
+          `bm_drugs` int(11) DEFAULT NULL,
+          `bm_shoplifting` int(11) DEFAULT NULL,
+          `bm_theftperson` int(11) DEFAULT NULL,
+          `bm_weapons` int(11) DEFAULT NULL
+        ) ENGINE=MyISAM DEFAULT CHARSET=latin1";
         $result = mysqli_query($mysqli, $query);
 
         // If Error
