@@ -97,15 +97,12 @@ function activateBoxes($mysqli) {
 		$crimeResult = mysqli_fetch_assoc($crimeResult);
 		
 		$active = 1;
-		$priority = $crimeResult['COUNT(`id`)'];
 		//if empty, deactivate, reset counter
 		if (!$crimeResult['COUNT(`id`)']) {
 			$active = 0;
 		}
 		
 		$bID = $box['id'];
-		// Update priority or not?
-		//$sqlUpdate = "UPDATE `box` SET active = $active, priority = $priority, priority_updated = NOW() WHERE `id` = $bID";
 		$sqlUpdate = "UPDATE `box` SET active = $active WHERE `id` = $bID";
 		$updateResult = mysqli_query($mysqli, $sqlUpdate);
 		
