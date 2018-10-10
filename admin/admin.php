@@ -17,15 +17,15 @@ if($_SESSION["admin"] !== 1){
 <?php include '../partials/_header.php' ?>
 
   <!-- Container -->
-  <div id='bodyContainer' class="container">
+  <div id='bodyContainer' class="fluid-container">
     <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
       <div class='col-md-12'>
         <!-- Side Bar -->
         <?php include '../partials/_admin_sidebar.php' ?>
       </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
       <div class="row">
         <div class="col-md-12">
           <h2>Admin</h2>
