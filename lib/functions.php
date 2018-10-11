@@ -261,3 +261,16 @@ function computeArcDistance($latitude1, $longitude1, $latitude2, $longitude2) {
 	
 	return $d;    
 }
+
+
+//############## CONVERT MONTHS #############################################
+
+function formatDateAsInt($date) {
+	$break = explode("-", $date);
+	$year = $break[0];
+	$month = $break[1];
+	$epoch = 1970; //year 0
+	return (($year-$epoch)*12) + $month;
+}
+
+
