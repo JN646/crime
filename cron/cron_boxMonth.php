@@ -24,7 +24,7 @@
 	$sqlBoxQ = "SELECT * FROM `box` WHERE timeseries_updated IS NULL AND active = 1 ORDER BY priority DESC LIMIT 1";
 	$sqlBoxR = mysqli_query($mysqli, $sqlBoxQ);
 	$box = mysqli_fetch_assoc($sqlBoxR);
-	// If no un-updated found. find timeseries_update<priorety updated active, prioritised
+	// If no un-updated found. find timeseries_update<priorety_updated, active, prioritised
 	if(!$sqlBoxR) {
 		$sqlBoxQ = "SELECT * FROM `box` WHERE timeseries_updated < priority_updated AND active = 1 ORDER BY priority DESC LIMIT 1";
 		$sqlBoxR = mysqli_query($mysqli, $sqlBoxQ);
@@ -36,22 +36,37 @@
 		return 0;
 	}
 	
+	// Final boxID
 	$bID = $box['id'];
+	echo "boxID: " . $bID . "<br>";
+	
+	// Find all the boxmonths that exist for this box
 	$sqlBoxMonthQ = "SELECT bm_id, bm_month FROM box_month WHERE bm_boxid = $bID";
 	$sqlBoxMonthR = mysqli_query($mysqli, $sqlBoxMonthQ);
-	
-	// Find existing boxmonths
+	var_dump($sqlBoxMonthR);
+	echo "<br>";
+	if($sqlBoxMonthR) {
+		echo "boxmonth success<br>";
+	} else {
+		
+		echo "boxmonth failure<br>";
+	}
 	$existingMonths = array();
 	while($row = mysqli_fetch_array($sqlBoxMonthR)) {
 		$existingMonths[] = $row['bm_month'];
+		echo $row['bm_month']."<br>";
 	}
-	
-	echo "boxID: " . $bID . "<br>";
+	var_dump($existingMonths);
+	echo "<br><br>";
 	
 	// Process boxmonths that do not exist
-	$M = 6; //Max months - to be determined by data ingestion process or manually set
-	for($m=5; $m <= $M; $m++) {
-		echo $m.": ";
+	$M = 48; //Max months - to be determined by data ingestion process or manually set
+	for($m=0; $m<=$M; $m++) {
+		$date = intAsDate($m); //$m as a date like "2018-10"
+		$dateS = '"'.$date.'"'; //$date as 'string'
+		echo $m.": ".$date."<br>";
+		
+		
 		//verify that data from all constabularies exist
 		//$verifyQ = "SELECT * FROM dataImport WHERE month = $m"; //this table needs to be made
 		$verifyMonth = 1; //default verified for now
@@ -59,11 +74,54 @@
 		// If not already processed and data for the month exists
 		if(!in_array($m, $existingMonths) && $verifyMonth) {
 			// Process timeSeries
-			$crimeQ = "SELECT COUNT(data.id), COUNT(data.Latitude), COUNT(data.Longitude), COUNT(box.lat_min), COUNT(box.lat_max), COUNT(box.long_min), COUNT(box.long_max) FROM data, box WHERE box.id = $bID AND data.Month = $m AND data.Latitude > box.lat_min AND data.Latitude > box.lat_max AND data.Longitude > box.long_min AND data.Longitude > box.long_max";
+			
+			
+			//debug this shit
+			$debug = True;
+			$crimeQ;
+			if($debug) {
+				$crimeQ = "SELECT `COUNT(id)` AS count, Crime_Type AS type FROM data GROUP BY type"; //simple shit does not work.
+			} else {
+				//THIS RANDOMLY STOPPED WORKING - CAN'T FIGURE OUT WHY. HAVE CUT IT DOWN TO A REALLY BASIC QUERY AND STILL DOESN'T WORK.
+				$crimeQ = "SELECT `COUNT(data.id)` AS count, data.Crime_Type AS type, data.Month, COUNT(data.Latitude), COUNT(data.Longitude), COUNT(box.lat_min), COUNT(box.lat_max), COUNT(box.long_min), COUNT(box.long_max) FROM data, box 
+				WHERE box.id = $bID AND data.Month = $date AND data.Latitude > box.lat_min AND data.Latitude > box.lat_max AND data.Longitude > box.long_min AND data.Longitude > box.long_max
+				GROUP BY data.Crime_Type";
+			}
+			
 			$crimeR = mysqli_query($mysqli, $crimeQ);
-			var_dump($crimeR);
-			echo "<br>";
-			echo mysqli_fetch_array($crimeR)['COUNT(data.id)'];
+			echo "RESULT: ".$crimeR . "<br>";
+			$types = array();
+			$counts = array();
+			while($row = mysqli_fetch_array($crimeR)) {
+				echo $row["Crime_Type"] . ": " . $row['count'] . "<br>";
+				$types[] =  "`".$row["type"]."`";
+				$counts[] = $row["count"];
+			}
+			
+			$columns = "bm_month, bm_boxid";
+			$values =  "'" . $date . "', " . $bID;
+			if(count($types) > 0) {
+				//append $types and $counts to $columns and $values
+				$columns = $columns . ", " . implode(", ", $types);
+				$values = $values . ", " . implode(", ", $counts);
+			}
+			//echo $columns . "<br>";
+			//echo $values . "<br>";
+			$insertQ = "INSERT INTO box_month ($columns) VALUES ($values)";
+			$insertR = mysqli_query($mysqli, $insertQ);
+			
+			// If insert success, update box
+			if($insertR) {
+				$updateQ = "UPDATE box SET timeseries_updated = NOW() WHERE `id` = $bID";
+				$updateR = mysqli_query($mysqli, $updateQ);
+				if(!$updateR) {
+					echo "Error updating timeseries_updated of box<br>";
+				}
+			} else {
+				echo "Error inserting new timeseries data: data might not exist.<br>";
+			}
+		} else {
+			echo "Skipping this month; already exists in boxmonth<br>";
 		}
 		echo "<br>";
 	}

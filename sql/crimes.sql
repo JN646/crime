@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 10, 2018 at 01:06 PM
+-- Generation Time: Oct 11, 2018 at 03:38 PM
 -- Server version: 5.7.23
 -- PHP Version: 7.2.8
 
@@ -34,8 +34,10 @@ CREATE TABLE `box` (
   `lat_max` float NOT NULL,
   `long_min` float NOT NULL,
   `long_max` float NOT NULL,
-  `last_update` timestamp NULL DEFAULT NULL,
+  `timeseries_updated` timestamp NULL DEFAULT NULL,
   `priority` float DEFAULT NULL,
+  `priority_updated` timestamp NULL DEFAULT NULL,
+  `requests` int(11) NOT NULL,
   `active` tinyint(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -49,20 +51,20 @@ CREATE TABLE `box_month` (
   `bm_id` int(11) NOT NULL,
   `bm_month` varchar(20) DEFAULT NULL,
   `bm_boxid` int(11) DEFAULT NULL,
-  `bm_antisocial` int(11) DEFAULT NULL,
-  `bm_burglary` int(11) DEFAULT NULL,
-  `bm_othertheft` int(11) DEFAULT NULL,
-  `bm_publicorder` int(11) DEFAULT NULL,
-  `bm_violencesex` int(11) DEFAULT NULL,
-  `bm_vehiclecrime` int(11) DEFAULT NULL,
-  `bm_criminaldamage` int(11) DEFAULT NULL,
-  `bm_othercrime` int(11) DEFAULT NULL,
-  `bm_robbery` int(11) DEFAULT NULL,
-  `bm_bicycletheft` int(11) DEFAULT NULL,
-  `bm_drugs` int(11) DEFAULT NULL,
-  `bm_shoplifting` int(11) DEFAULT NULL,
-  `bm_theftperson` int(11) DEFAULT NULL,
-  `bm_weapons` int(11) DEFAULT NULL
+  `Anti-social behaviour` int(11) DEFAULT NULL,
+  `Burglary` int(11) DEFAULT NULL,
+  `Other theft` int(11) DEFAULT NULL,
+  `Public order` int(11) DEFAULT NULL,
+  `Violence and sexual offences` int(11) DEFAULT NULL,
+  `Vehicle crime` int(11) DEFAULT NULL,
+  `Criminal damage and arson` int(11) DEFAULT NULL,
+  `Other crime` int(11) DEFAULT NULL,
+  `Robbery` int(11) DEFAULT NULL,
+  `Bicycle theft` int(11) DEFAULT NULL,
+  `Drugs` int(11) DEFAULT NULL,
+  `Shoplifting` int(11) DEFAULT NULL,
+  `Theft from the person` int(11) DEFAULT NULL,
+  `Possession of weapons` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -77,8 +79,8 @@ CREATE TABLE `data` (
   `Month` varchar(20) DEFAULT NULL,
   `Reported_By` varchar(255) DEFAULT NULL,
   `Falls_Within` varchar(255) DEFAULT NULL,
-  `Longitude` decimal(9,6) DEFAULT '0.000000',
-  `Latitude` decimal(9,6) DEFAULT '0.000000',
+  `Longitude` decimal(9,6) DEFAULT NULL,
+  `Latitude` decimal(9,6) DEFAULT NULL,
   `Location` varchar(200) DEFAULT NULL,
   `LSOA_Code` varchar(100) DEFAULT NULL,
   `LSOA_Name` varchar(100) DEFAULT NULL,
@@ -87,6 +89,21 @@ CREATE TABLE `data` (
   `Context` text,
   `import_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date imported.'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `report_log`
+--
+
+CREATE TABLE `report_log` (
+  `report_id` int(11) NOT NULL COMMENT 'The report ID number',
+  `report_lat` decimal(9,6) DEFAULT NULL COMMENT 'The Latitude for the report.',
+  `report_long` decimal(9,6) DEFAULT NULL COMMENT 'The Longitude for the report.',
+  `report_immediate` float DEFAULT NULL COMMENT 'Immediate Radius.',
+  `report_local` float DEFAULT NULL COMMENT 'Local Radius.',
+  `report_user` int(11) DEFAULT '0' COMMENT 'The ID number of the user that has created the report.'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
