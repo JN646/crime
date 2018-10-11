@@ -39,67 +39,79 @@ if($_SESSION["admin"] !== 1){
 
 					<h2>Import Manager</h2>
 					<p>This is the data import manager.</p>
-          <div class="row">
 
-            <!-- Block 1 -->
-            <div class="col-md-6">
-              <div class="col-md-12 border">
-                <h3>Import</h3>
-                <form class="" action="#" method="post">
-                  <div class="form-group">
-                    <label for="">File importer</label>
-                    <br>
-                    <select class="form-control" name="fileFormat">
-                      <option value="csv">.csv</option>
-                    </select>
-                    <br>
-                    <button class="btn btn-primary" type="button" name="browseFile">Browse</button>
-                  </div>
-                </form>
-              </div>
-            </div>
+          <table class='table table-bordered'>
+            <thead>
+              <tr>
+                <th class='text-center'>Forces</th>
+                <?php
+                $mYears = array('2015-08',
+                '2015-09',
+                '2015-10',
+                '2015-11',
+                '2015-12',
+                '2016-01',
+                '2016-02',
+                '2016-03',
+                '2016-04',
+                '2016-05',
+                '2016-06',
+                '2016-07',
+                '2016-08',
+                '2016-09',
+                '2016-10',
+                '2016-11',
+                '2016-12',
+                '2017-01',
+                '2017-02',
+                '2017-03',
+                '2017-04',
+                '2017-05',
+                '2017-06',
+                '2017-07',
+                '2017-08',
+                '2017-09',
+                '2017-10',
+                '2017-11',
+                '2017-12');
 
-            <!-- Block 2 -->
-            <div class="col-md-6">
-              <div class="col-md-12 border">
-                <h3>Config.</h3>
-              </div>
-            </div>
-          </div>
+                for ($i=0; $i < count($mYears); $i++) {
+                  echo "<th class='text-center'>" . $mYears[$i] . "</th>";
+                }
+                ?>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $sql = "SELECT * FROM data_constab";
+              $sqlR = mysqli_query($mysqli, $sql);
 
-          <br>
+              // If Error
+              if (!$sqlR) {
+                die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+              }
 
+              if (mysqli_num_rows($sqlR) > 0) {
+                // output data of each row
+                while($row = mysqli_fetch_assoc($sqlR)) {
+                  ?>
+                <tr>
+                  <td><?php echo $row['constab_name'] ?></td>
+                  <?php
+                  for ($i=0; $i < count($mYears); $i++) {
+                    echo "<td class='text-center'>M</td>";
+                  }
+                  ?>
+                </tr>
+                  <?php
+                }
+              } else {
+                  echo "0 results";
+              }
+              ?>
+            </tbody>
+          </table>
 				</div>
-			</div>
-
-      <!-- Import Log -->
-			<div class="row">
-        <div class="col-md-12">
-          <div class="col-md-12 border">
-            <h3>Import Log</h3>
-            <table class='table table-bordered'>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Imported File</th>
-                  <th>Date</th>
-                  <th>Upload Date</th>
-                  <th colspan="2">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Bedford_March_2015.csv</td>
-                  <td>2015-03</td>
-                  <td>10/10/2018 21:32</td>
-                  <td><a href='#'>View</a></td>
-                  <td><a href='#'>Unport</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
 			</div>
 		</div>
 	</div>
