@@ -3,12 +3,17 @@
 require_once '../config/config.php';
 
 //############## MAIN ##########################################################
-cronCountCrimes($mysqli);
-cronCountCrimeTypes($mysqli);
-cronCountMonths($mysqli);
-cronCountNoLocation($mysqli);
-cronCountFallsWithin($mysqli);
-cronCountReportedBy($mysqli);
+//cronCountCrimes($mysqli);
+//cronCountCrimeTypes($mysqli);
+//cronCountMonths($mysqli);
+//cronCountNoLocation($mysqli);
+//cronCountFallsWithin($mysqli);
+//cronCountReportedBy($mysqli);
+
+// New Function: use ($mysqli, $statName, $query)
+runQuery($mysqli, "'All Boxes'", "SELECT COUNT(*) FROM box");
+runQuery($mysqli, "'Active Boxes'", "SELECT COUNT(*) FROM box WHERE active = 1");
+runQuery($mysqli, "'NULL Boxes'", "SELECT COUNT(*) FROM box WHERE active IS NULL");
 
 //############## Count All Crimes ##############################################
 function cronCountCrimes($mysqli)
@@ -71,14 +76,11 @@ function cronCountMonths($mysqli)
     mysqli_free_result($writeCrimeCount); // Free Query
 }
 
-// Header and Return
-header('Location: ' . $_SERVER['HTTP_REFERER']);
-
 //############## Count No Location #############################################
 function cronCountNoLocation($mysqli)
 {
     // SELECT CRIME TYPES
-    $query = "SELECT COUNT(DISTINCT(ID)) FROM data WHERE Longitude = 0 AND Latitude = 0";
+    $query = "SELECT COUNT(DISTINCT(ID)) FROM data WHERE Longitude IS NULL AND Latitude IS NULL";
     $result = mysqli_query($mysqli, $query);
     $rows = mysqli_fetch_row($result);
     mysqli_free_result($result); // Free Query
@@ -136,6 +138,62 @@ function cronCountReportedBy($mysqli)
 
     mysqli_free_result($writeCrimeCount); // Free Query
 }
+
+//############## Count Boxes #############################################
+function cronCountBoxes($mysqli, $name, $filter = 1)
+{
+    // SELECT CRIME TYPES
+    $query = "SELECT COUNT(*) FROM box WHERE $filter";
+    $result = mysqli_query($mysqli, $query);
+    $rows = mysqli_fetch_row($result);
+    mysqli_free_result($result); // Free Query
+	
+    // Return Value.
+    $count = $rows[0];
+    
+    
+    // Run Query
+    $sqlCrimeCount = "UPDATE stats SET count = $count WHERE stat = $name";
+    $writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
+    
+     // If Fails
+    if(!$writeCrimeCount) {
+		$sqlCrimeCount = "INSERT INTO stats (stat, count) VALUES ($name, $count)";
+    	$writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
+    }
+    $sqlCrimeCountOutput = mysqli_fetch_row($writeCrimeCount);
+
+    mysqli_free_result($writeCrimeCount); // Free Query
+}
+
+
+function runQuery($mysqli, $name, $query) //for generic queries returning one value (like COUNT(), MIN(), MAX, etc)
+{
+    $result = mysqli_query($mysqli, $query);
+    $rows = mysqli_fetch_row($result);
+    mysqli_free_result($result); // Free Query
+	
+    // Return Value.
+    $count = $rows[0];
+    
+    $sqlStatExists = mysqli_query($mysqli, "SELECT COUNT(*) FROM stats WHERE stat = $name");
+    $exists = mysqli_fetch_row($sqlStatExists)[0];
+    if($exists) {
+    	// Update
+    	$sqlCrimeCount = "UPDATE stats SET count = $count WHERE stat = $name";
+    	$writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
+    } else {
+    	// Insert
+		$sqlCrimeCount = "INSERT INTO stats (stat, count) VALUES ($name, $count)";
+    	$writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
+    }
+    
+    
+    $sqlCrimeCountOutput = mysqli_fetch_row($writeCrimeCount); //is this needed?
+    mysqli_free_result($writeCrimeCount); // Free Query
+}
+
+
 
 // Header and Return
 header('Location: ' . $_SERVER['HTTP_REFERER']);

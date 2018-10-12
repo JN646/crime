@@ -198,15 +198,17 @@ function countReportedBy($mysqli)
 
 //############## BOXES #########################################################
 //############## Count Boxes ###################################################
-function countBoxes($mysqli)
+
+function countBoxes($mysqli, $stat)
 {
     // SELECT All
-    $query = "SELECT COUNT(id) FROM `box`";
+    $query = "SELECT count FROM stats WHERE stat = $stat";
     $result = mysqli_query($mysqli, $query);
     $rows = mysqli_fetch_row($result);
 
     // If Error
     if (!$result) {
+    	//no stat - need to make one?
         die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
     }
 
@@ -217,15 +219,24 @@ function countBoxes($mysqli)
     return number_format($rows[0]);
 }
 
-// Get number of boxes.
-function getHighestID($mysqli) {
-  $sql = "SELECT `id` from `box` ORDER BY id DESC LIMIT 1";
-  $result = mysqli_query($mysqli, $sql);
-  $rows = mysqli_fetch_row($result);
-  mysqli_free_result($result); // Free Query
-  $count = $rows[0]; // Return Value.
 
-  return $count;
+function callStat($mysqli, $stat) {
+	// SELECT All
+	$query = "SELECT count FROM stats WHERE stat = $stat";
+	$result = mysqli_query($mysqli, $query);
+	$rows = mysqli_fetch_row($result);
+	
+	// If Error
+	if (!$result) {
+		//no stat? - run the cron job?
+		die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+	}
+	
+	// Free Query
+	mysqli_free_result($result);
+	
+	// Return Value.
+	return number_format($rows[0]);
 }
 
 
