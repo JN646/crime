@@ -21,7 +21,7 @@ function cronCreateStatTable($mysqli)
         $query = "CREATE TABLE IF NOT EXISTS `stats` (
       `id` int(11) NOT NULL AUTO_INCREMENT AUTO_INCREMENT COMMENT 'Statistic ID',
       `stat` varchar(100) DEFAULT NULL COMMENT 'Statistic Name',
-      `count` int(11) DEFAULT '0' COMMENT 'Statistic Count',
+      `count` varchar(255) DEFAULT '0' COMMENT 'Statistic Count',
       `last_run` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated',
       PRIMARY KEY (`id`)) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1";
         $result = mysqli_query($mysqli, $query);
@@ -86,10 +86,11 @@ function cronCreateBox($mysqli)
           `lat_max` float NOT NULL,
           `long_min` float NOT NULL,
           `long_max` float NOT NULL,
+          `constabulary` varchar(255) DEFAULT NULL,
           `timeseries_updated` timestamp NULL DEFAULT NULL,
           `priority` float DEFAULT NULL,
           `priority_updated` timestamp NULL DEFAULT NULL,
-          `requests` int(11) DEFAULT NULL,
+          `requests` int(11) NOT NULL DEFAULT '0',
           `active` tinyint(1) DEFAULT NULL
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1";
         $result = mysqli_query($mysqli, $query);
