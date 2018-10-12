@@ -4,7 +4,7 @@ require_once '../config/config.php';
 
 //############## MAIN ##########################################################
 
-// New Function: use ($mysqli, [statName], [query])
+// New Function: use ($mysqli, [stat-name], [query])
 runQuery($mysqli, "'nBoxes'", "SELECT COUNT(*) FROM box");
 runQuery($mysqli, "'nBoxesActive'", "SELECT COUNT(*) FROM box WHERE active = 1");
 runQuery($mysqli, "'nBoxesNull'", "SELECT COUNT(*) FROM box WHERE active IS NULL");
@@ -14,32 +14,35 @@ runQuery($mysqli, "'nCrimesNoLoc'", "SELECT COUNT(DISTINCT(ID)) FROM data WHERE 
 runQuery($mysqli, "'nMonths'", "SELECT COUNT(DISTINCT(Month)) FROM data");
 runQuery($mysqli, "'nCrimes'", "SELECT COUNT(*) FROM data");
 runQuery($mysqli, "'nCrimeTypes'", "SELECT COUNT(DISTINCT(CRIME_Type)) FROM data");
+runQuery($mysqli, "'nBoxmonths'", "SELECT COUNT(*) FROM box_month");
+runQuery($mysqli, "'nUsers'", "SELECT COUNT(*) FROM users");
+runQuery($mysqli, "'nStats'", "SELECT COUNT(*) FROM stats");
 
-function runQuery($mysqli, $name, $query) //for generic queries returning one value (like COUNT(), MIN(), MAX, etc)
+ // Always Last
+runQuery($mysqli, "'statsLastUpdate'", "SELECT NOW()");
+
+function runQuery($mysqli, $name, $query) //for generic queries returning one value (like COUNT(), MIN(), MAX(), etc)
 {
     $result = mysqli_query($mysqli, $query);
     $rows = mysqli_fetch_row($result);
     mysqli_free_result($result); // Free Query
 	
-    // Return Value.
-    $output = $rows[0];
-    
+    // Return Value, format for SQL string
+    $output = '"'.$rows[0].'"';
     $sqlStatExists = mysqli_query($mysqli, "SELECT COUNT(*) FROM stats WHERE stat = $name");
     $exists = mysqli_fetch_row($sqlStatExists)[0];
-    $writeCrimeCount; //init var
+    $writeCrimeCount; //initialise variable
     if($exists) { // Update
-    	$sqlCrimeCount = "UPDATE stats SET count = $output WHERE stat = $name";
-    	$writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
+    	$sqlCrimeCount = "UPDATE stats SET count=$output, last_run=NOW() WHERE stat = $name";
     } else { // Insert
 		$sqlCrimeCount = "INSERT INTO stats (stat, count) VALUES ($name, $output)";
-    	$writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
     }
     
+    $writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
     if (!$writeCrimeCount) {
-		die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+		die('<p class="SQLError">Could not run query '.($exists?"UPDATE ":"INSERT ").$name.': ' . mysqli_error($mysqli) . '</p>');
 	}
     
-    //$sqlCrimeCountOutput = mysqli_fetch_row($writeCrimeCount); //is this needed?
     mysqli_free_result($writeCrimeCount); // Free Query
 }
 

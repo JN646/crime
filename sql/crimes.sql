@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 11, 2018 at 03:38 PM
+-- Generation Time: Oct 12, 2018 at 07:52 PM
 -- Server version: 5.7.23
 -- PHP Version: 7.2.8
 
@@ -34,10 +34,11 @@ CREATE TABLE `box` (
   `lat_max` float NOT NULL,
   `long_min` float NOT NULL,
   `long_max` float NOT NULL,
+  `constabulary` varchar(255) DEFAULT NULL,
   `timeseries_updated` timestamp NULL DEFAULT NULL,
   `priority` float DEFAULT NULL,
   `priority_updated` timestamp NULL DEFAULT NULL,
-  `requests` int(11) NOT NULL,
+  `requests` int(11) NOT NULL DEFAULT '0',
   `active` tinyint(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -70,29 +71,6 @@ CREATE TABLE `box_month` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `data`
---
-
-CREATE TABLE `data` (
-  `id` int(11) NOT NULL,
-  `Crime_ID` varchar(255) DEFAULT NULL,
-  `Month` varchar(20) DEFAULT NULL,
-  `Reported_By` varchar(255) DEFAULT NULL,
-  `Falls_Within` varchar(255) DEFAULT NULL,
-  `Longitude` decimal(9,6) DEFAULT NULL,
-  `Latitude` decimal(9,6) DEFAULT NULL,
-  `Location` varchar(200) DEFAULT NULL,
-  `LSOA_Code` varchar(100) DEFAULT NULL,
-  `LSOA_Name` varchar(100) DEFAULT NULL,
-  `Crime_Type` varchar(250) DEFAULT NULL,
-  `Last_Outcome_Category` text,
-  `Context` text,
-  `import_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date imported.'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `report_log`
 --
 
@@ -113,8 +91,8 @@ CREATE TABLE `report_log` (
 
 CREATE TABLE `stats` (
   `id` int(11) NOT NULL COMMENT 'Statistic ID',
-  `stat` varchar(100) DEFAULT NULL COMMENT 'Statistic Name',
-  `count` int(11) DEFAULT '0' COMMENT 'Statistic Count',
+  `stat` varchar(255) DEFAULT NULL COMMENT 'Statistic Name',
+  `count` varchar(255) DEFAULT NULL COMMENT 'Statistic Count',
   `last_run` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -150,12 +128,6 @@ ALTER TABLE `box_month`
   ADD PRIMARY KEY (`bm_id`);
 
 --
--- Indexes for table `data`
---
-ALTER TABLE `data`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `stats`
 --
 ALTER TABLE `stats`
@@ -183,12 +155,6 @@ ALTER TABLE `box`
 --
 ALTER TABLE `box_month`
   MODIFY `bm_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `data`
---
-ALTER TABLE `data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `stats`

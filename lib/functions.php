@@ -29,29 +29,6 @@ class ApplicationVersion
 $radVal1 = $radVal2 = $n = $mode = 0;
 $JSONEnable = "TRUE";
 
-//############## GET VALUES ####################################################
-//############## Get Months ####################################################
-function getMonths($mysqli)
-{
-    // SELECT All
-    $query = "SELECT DISTINCT Month FROM data WHERE Month <> 0";
-    $result = mysqli_query($mysqli, $query);
-
-    // If Error
-    if (!$result) {
-        die('<p class="SQLError">Could not get month list: ' . mysqli_error($mysqli) . '</p>');
-    }
-
-    if (mysqli_num_rows($result) > 0) {
-        // output data of each row
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<option>" . $row['Month'] . "</option>";
-        }
-    } else {
-        echo "<option disabled>No Data</option>";
-    }
-}
-
 //############## CALL STATS #########################################################
 
 function callStat($mysqli, $stat) {
@@ -61,17 +38,18 @@ function callStat($mysqli, $stat) {
 	$rows = mysqli_fetch_row($result);
 	
 	// If Error
-	if (!$result) {
+	if (!$rows) {
 		//no stat?
 		// it could be that the stat hasn't been defined, or the name is wrong, or the cron job hasn't been run yet
-		die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+		//die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+		return "Stat does not exist:<br>Contact your system administrator";
 	}
 	
 	// Free Query
 	mysqli_free_result($result);
 	
 	// Return Value.
-	return number_format($rows[0]);
+	return $rows[0];
 }
 
 
