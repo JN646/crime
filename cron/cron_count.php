@@ -5,16 +5,22 @@ require_once '../config/config.php';
 //############## MAIN ##########################################################
 
 // New Function: use ($mysqli, [stat-name], [query])
-runQuery($mysqli, "'nBoxes'", "SELECT COUNT(*) FROM box");
-runQuery($mysqli, "'nBoxesActive'", "SELECT COUNT(*) FROM box WHERE active = 1");
-runQuery($mysqli, "'nBoxesNull'", "SELECT COUNT(*) FROM box WHERE active IS NULL");
+
+//Crimes
+runQuery($mysqli, "'nCrimes'", "SELECT COUNT(*) FROM data");
+runQuery($mysqli, "'nCrimesNoLoc'", "SELECT COUNT(DISTINCT(ID)) FROM data WHERE Longitude IS NULL AND Latitude IS NULL");
+runQuery($mysqli, "'nCrimeTypes'", "SELECT COUNT(DISTINCT(CRIME_Type)) FROM data");
 runQuery($mysqli, "'FallsWithin'", "SELECT COUNT(DISTINCT(Falls_Within)) FROM data");
 runQuery($mysqli, "'ReportedBy'", "SELECT COUNT(DISTINCT(Reported_By)) FROM data");
-runQuery($mysqli, "'nCrimesNoLoc'", "SELECT COUNT(DISTINCT(ID)) FROM data WHERE Longitude IS NULL AND Latitude IS NULL");
 runQuery($mysqli, "'nMonths'", "SELECT COUNT(DISTINCT(Month)) FROM data");
-runQuery($mysqli, "'nCrimes'", "SELECT COUNT(*) FROM data");
-runQuery($mysqli, "'nCrimeTypes'", "SELECT COUNT(DISTINCT(CRIME_Type)) FROM data");
+
+//Boxes
+runQuery($mysqli, "'nBoxes'", "SELECT COUNT(*) FROM box");
+runQuery($mysqli, "'nBoxesActive'", "SELECT CONCAT(ROUND(CAST((SELECT COUNT(*) FROM box WHERE active=1) AS DECIMAL)/CAST(COUNT(*) AS DECIMAL)*100, 2), '%') FROM box");
+runQuery($mysqli, "'nBoxesNull'", "SELECT CONCAT(ROUND(CAST((SELECT COUNT(*) FROM box WHERE active IS NULL) AS DECIMAL)/CAST(COUNT(*) AS DECIMAL)*100, 2), '%') FROM box");
 runQuery($mysqli, "'nBoxmonths'", "SELECT COUNT(*) FROM box_month");
+
+//Other
 runQuery($mysqli, "'nUsers'", "SELECT COUNT(*) FROM users");
 runQuery($mysqli, "'nStats'", "SELECT COUNT(*) FROM stats");
 
