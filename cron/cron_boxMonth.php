@@ -13,13 +13,13 @@
 	*	- Total the types of crimes inside the box & insert to box_month!
 	*	- Repeat indefinately
 	*/
-
+	
 	// Add Database Connection
 	require_once '../config/config.php';
 	require_once '../lib/functions.php';
 	
 	
-	for($i=0; $i<100; $i++) {
+	for($i=0; $i<10000; $i++) {
 		processABox($mysqli);
 	}
 	
@@ -35,7 +35,7 @@
 			$sqlBoxR = mysqli_query($mysqli, $sqlBoxQ);
 			$box = mysqli_fetch_assoc($sqlBoxR);
 		}
-	
+		
 		if(!$sqlBoxR) {
 			// In this instance (in theory), all active boxes have been processed since updating their priority.
 			// Suggest updating priority and starting procesing for time series again.
@@ -55,15 +55,14 @@
 			$existingMonths[] = $row['bm_month'];
 		}
 		
-	
+		
 		// Process boxmonths that do not exist
-		$M = 48; //Max months - to be determined by data ingestion process or manually set
+		$M = 1; //Max months - to be determined by data ingestion process or manually set
 		for($m=0; $m<=$M; $m++) {
 			$date = intAsDate($m); //$m as a date like "2018-10"
-			$dateS = '"'.$date.'"'; //$date as 'string'?
+			$dateS = '"'.$date.'"'; //$date as "string"
 			
-			
-			//verify that data from all constabularies exist
+			//verify that data from all constabularies exist for the month $m
 			//$verifyQ = "SELECT * FROM dataImport WHERE month = $m"; //this table needs to be made
 			$verifyMonth = 1; //default verified for now
 			
@@ -92,30 +91,30 @@
 				
 				$columns = "bm_month, bm_boxid";
 				$values =  "'" . $date . "', " . $bID;
-					
+				
 				// This means if returned no crimes of any type. This could mean error & don't insert.
 				// Behaviour must be defined further.
-					if(count($types) > 0) {
+				if(count($types) > 0) {
 					//append $types and $counts to $columns and $values
 					$columns = $columns . ", " . implode(", ", $types);
 					$values = $values . ", " . implode(", ", $counts);
 					}
 				$insertQ = "INSERT INTO box_month ($columns) VALUES ($values)";
 				$insertR = mysqli_query($mysqli, $insertQ);
-	
+				
 				// If insert success, update box
 				if($insertR) {
 					$updateQ = "UPDATE box SET timeseries_updated = NOW() WHERE `id` = $bID";
 					$updateR = mysqli_query($mysqli, $updateQ);
 					if(!$updateR) {
-						echo "Error updating timeseries_updated of box<br>";
+						echo "Error updating timeseries_updated of box ".$bID."<br>";
 					}
 				}
 			}
 		}
 	}
-
-
-	// Header and Return
-	//header('Location: ' . $_SERVER['HTTP_REFERER']);
+	
+	
+	Header and Return
+	header('Location: ' . $_SERVER['HTTP_REFERER']);
 ?>

@@ -23,7 +23,7 @@
 			if(is_null($boxR['timeseries_updated'])) {
 				$priority = ($boxR['requests']);
 			} else {
-				$priority = ($boxR['requests']) * (1-(strtotime($boxR['timeseries_updated']/$now)));
+				$priority = ($boxR['requests']) * (1-(strtotime($boxR['timeseries_updated'])/$now));
 			}
 			
 			$updateQ = "UPDATE `box` SET priority = $priority, priority_updated = NOW() WHERE `id` = $bID";
