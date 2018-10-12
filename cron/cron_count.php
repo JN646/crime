@@ -5,7 +5,6 @@ require_once '../config/config.php';
 //############## MAIN ##########################################################
 
 // New Function: use ($mysqli, [stat-name], [query])
-
 //Crimes
 runQuery($mysqli, "'nCrimes'", "SELECT COUNT(*) FROM data");
 runQuery($mysqli, "'nCrimesNoLoc'", "SELECT COUNT(DISTINCT(ID)) FROM data WHERE Longitude IS NULL AND Latitude IS NULL");
@@ -35,8 +34,11 @@ function runQuery($mysqli, $name, $query) //for generic queries returning one va
 	
     // Return Value, format for SQL string
     $output = '"'.$rows[0].'"';
+    
+    // Find out if it already exists by matching $name
     $sqlStatExists = mysqli_query($mysqli, "SELECT COUNT(*) FROM stats WHERE stat = $name");
     $exists = mysqli_fetch_row($sqlStatExists)[0];
+    
     $writeCrimeCount; //initialise variable
     if($exists) { // Update
     	$sqlCrimeCount = "UPDATE stats SET count=$output, last_run=NOW() WHERE stat = $name";
@@ -51,8 +53,6 @@ function runQuery($mysqli, $name, $query) //for generic queries returning one va
     
     mysqli_free_result($writeCrimeCount); // Free Query
 }
-
-
 
 // Header and Return
 header('Location: ' . $_SERVER['HTTP_REFERER']);
