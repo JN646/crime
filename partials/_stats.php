@@ -10,15 +10,15 @@
 
       <?php
       $dd=array(
-          'All Crimes'=>callStat($mysqli, "'Crime Count'"),
-          'All Crime Types'=>callStat($mysqli, "'All Crime Types'"),
-          'All Months'=>callStat($mysqli, "'All Months'"), //doesn't exist in stats
-          'No Locations'=>callStat($mysqli, "'No Locations'"), //doesn't exist in stats
-          'Falls Within'=>callStat($mysqli, "'Falls Within'"),
-          'Reported By'=>callStat($mysqli, "'Reported By'"),
-          'Boxes'=>callStat($mysqli, "'All Boxes'"),
-          'Active Boxes'=>callStat($mysqli, "'Active Boxes'"),
-          'NULL Activations'=>callStat($mysqli, "'NULL Boxes'")
+          'All Crimes'=>callStat($mysqli, "'nCrimes'"),
+          'All Crime Types'=>callStat($mysqli, "'nCrimeTypes'"),
+          'All Months'=>callStat($mysqli, "'nMonths'"),
+          'No Locations'=>callStat($mysqli, "'nCrimesNoLoc'"),
+          'Falls Within'=>callStat($mysqli, "'FallsWithin'"),
+          'Reported By'=>callStat($mysqli, "'ReportedBy'"),
+          'Boxes'=>callStat($mysqli, "'nBoxes'"),
+          'Active Boxes'=>callStat($mysqli, "'nBoxesActive'"),
+          'NULL Activations'=>callStat($mysqli, "'nBoxesNull'")
       );
 
       foreach ($dd as $key=>$value) {

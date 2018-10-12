@@ -52,173 +52,7 @@ function getMonths($mysqli)
     }
 }
 
-//############## COUNT THINGS ##################################################
-//############## Count All Crimes ##############################################
-function countAllCrimes($mysqli)
-{
-    // SELECT All
-    $query = "SELECT count FROM stats WHERE stat = 'Crime Count'";
-    $result = mysqli_query($mysqli, $query);
-    $rows = mysqli_fetch_row($result);
-
-    // If Error
-    if (!$result) {
-        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-    }
-
-    // Free Query
-    mysqli_free_result($result);
-
-    // Return Value.
-    return number_format($rows[0]);
-}
-
-//############## Count All Crime Types #########################################
-function countAllCrimeTypes($mysqli)
-{
-    // SELECT All
-    $query = "SELECT count FROM stats WHERE stat = 'All Crime Types'";
-    $result = mysqli_query($mysqli, $query);
-    $rows = mysqli_fetch_row($result);
-
-    // If Error
-    if (!$result) {
-        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-    }
-
-    // Free Query
-    mysqli_free_result($result);
-
-    // Return Value.
-    return $rows[0];
-}
-
-//############## Count All Months ##############################################
-function countAllMonth($mysqli)
-{
-    // SELECT All
-    $query = "SELECT count FROM stats WHERE stat = 'Months worth of data'";
-    $result = mysqli_query($mysqli, $query);
-    $rows = mysqli_fetch_row($result);
-
-    // If Error
-    if (!$result) {
-        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-    }
-
-    // Free Query
-    mysqli_free_result($result);
-
-    // Return Value.
-    return $rows[0];
-}
-
-//############## Count All Crimes By Year ######################################
-function countAllYears($mysqli)
-{
-    // SELECT All
-    $years = array("2015","2016","2017","2018");
-    for ($i=0; $i < count($years); $i++) {
-      $query = "SELECT COUNT(id) FROM data WHERE month LIKE '$years[$i]%'";
-      $result = mysqli_query($mysqli, $query);
-      $rows[$years[$i]][] = mysqli_fetch_row($result);
-    }
-
-    // If Error
-    if (!$result) {
-        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-    }
-
-    // Free Query
-    mysqli_free_result($result);
-
-    // Return Value.
-    return $rows;
-}
-
-//############## Count No Locations ############################################
-function countAllNoLocation($mysqli)
-{
-    // SELECT All
-    $query = "SELECT count FROM stats WHERE stat = 'Crimes with no location'";
-    $result = mysqli_query($mysqli, $query);
-    $rows = mysqli_fetch_row($result);
-
-    // If Error
-    if (!$result) {
-        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-    }
-
-    // Free Query
-    mysqli_free_result($result);
-
-    // Return Value.
-    return number_format($rows[0]);
-}
-
-//############## Fall Within ###################################################
-function countFallsWithin($mysqli)
-{
-    // SELECT All
-    $query = "SELECT count FROM stats WHERE stat = 'Falls Within'";
-    $result = mysqli_query($mysqli, $query);
-    $rows = mysqli_fetch_row($result);
-
-    // If Error
-    if (!$result) {
-        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-    }
-
-    // Free Query
-    mysqli_free_result($result);
-
-    // Return Value.
-    return $rows[0];
-}
-
-//############## Fall Within ###################################################
-function countReportedBy($mysqli)
-{
-    // SELECT All
-    $query = "SELECT count FROM stats WHERE stat = 'Reported By'";
-    $result = mysqli_query($mysqli, $query);
-    $rows = mysqli_fetch_row($result);
-
-    // If Error
-    if (!$result) {
-        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-    }
-
-    // Free Query
-    mysqli_free_result($result);
-
-    // Return Value.
-    return $rows[0];
-}
-
-//############## BOXES #########################################################
-//############## Count Boxes ###################################################
-
-function countBoxes($mysqli, $stat)
-{
-    // SELECT All
-    $query = "SELECT count FROM stats WHERE stat = $stat";
-    $result = mysqli_query($mysqli, $query);
-    $rows = mysqli_fetch_row($result);
-
-    // If Error
-    if (!$result) {
-    	//no stat - need to make one?
-        die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-    }
-
-    // Free Query
-    mysqli_free_result($result);
-
-    // Return Value.
-    return number_format($rows[0]);
-}
-
+//############## CALL STATS #########################################################
 
 function callStat($mysqli, $stat) {
 	// SELECT All
@@ -228,7 +62,8 @@ function callStat($mysqli, $stat) {
 	
 	// If Error
 	if (!$result) {
-		//no stat? - run the cron job?
+		//no stat?
+		// it could be that the stat hasn't been defined, or the name is wrong, or the cron job hasn't been run yet
 		die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
 	}
 	
@@ -238,8 +73,6 @@ function callStat($mysqli, $stat) {
 	// Return Value.
 	return number_format($rows[0]);
 }
-
-
 
 
 //############## SPHERICAL GEOMETRY #############################################
@@ -291,10 +124,3 @@ function intAsDate($int) {
 	$year = floor($int/12)+$epoch;
 	return $year."-".$month;
 }
-
-
-
-
-
-
-
