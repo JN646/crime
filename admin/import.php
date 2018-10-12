@@ -12,6 +12,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 if($_SESSION["admin"] !== 1){
     header("location: ../users/login.php");
 }
+
+function isMissingIndicator() {
+  if (true) {
+    return "<i class='fas fa-exclamation' style='color: red'></i>";
+  }
+
+  if (false) {
+    return "<i class='fas fa-check' style='color: green'></i>";
+  }
+}
 ?>
 <!-- Header -->
 <?php include '../partials/_header.php' ?>
@@ -99,7 +109,7 @@ if($_SESSION["admin"] !== 1){
                   <td><?php echo $row['constab_name'] ?></td>
                   <?php
                   for ($i=0; $i < count($mYears); $i++) {
-                    echo "<td class='text-center'>M</td>";
+                    echo "<td class='text-center'>" . isMissingIndicator() . "</td>";
                   }
                   ?>
                 </tr>
