@@ -17,3 +17,9 @@ Display the crime trends in your location over time. Check to see what types of 
 ## User Accounts and Management
 
 Now featuring a user and crime management system to handle users and data.
+
+## Features
+- User account and crime management system.
+- Report generation.
+- Chart integration.
+- Data statistics.
