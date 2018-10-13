@@ -40,16 +40,20 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <h2>Bookmarked</h2>
 
             <table class='table table-bordered table-sm'>
-
             <?php
             // get the info from the db
-            $sql = "SELECT DISTINCT `report_id`, `report_comment`, `report_lat`, `report_long`
+            $sql = "SELECT DISTINCT `report_id`, `report_lat`, `report_long`
             FROM `report_log`
             WHERE `report_user` = $userid
             AND `report_bookmarked` = 1
             LIMIT 5";
 
-            $result = mysqli_query($mysqli, $sql) or trigger_error("SQL", E_USER_ERROR);
+            $result = mysqli_query($mysqli, $sql);
+
+            // If Error
+            if (!$result) {
+                die('<p class="SQLError">Could not get bookmarked: ' . mysqli_error($mysqli) . '</p>');
+            }
 
             // Count number of rows
             $nRows = mysqli_num_rows($result);
@@ -226,9 +230,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
               ?>
               </tbody>
             </table>
-
           </div>
         </div>
+
     </div>
   </div>
 </body>
