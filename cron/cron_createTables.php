@@ -53,13 +53,15 @@ function cronReportLog($mysqli)
     if (empty($result)) {
         // Create table if doesn't exist.
         $query = "CREATE TABLE IF NOT EXISTS `report_log` (
-          `report_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'The report ID number',
+          `report_id` int(11) NOT NULL COMMENT 'The report ID number',
           `report_lat` decimal(9,6) DEFAULT NULL COMMENT 'The Latitude for the report.',
           `report_long` decimal(9,6) DEFAULT NULL COMMENT 'The Longitude for the report.',
           `report_immediate` float DEFAULT NULL COMMENT 'Immediate Radius.',
           `report_local` float DEFAULT NULL COMMENT 'Local Radius.',
-          `report_user` int(11) DEFAULT '0' COMMENT 'The ID number of the user that has created the report.'
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+          `report_user` int(11) DEFAULT '0' COMMENT 'The ID number of the user that has created the report.',
+          `report_comment` varchar(255) DEFAULT NULL COMMENT 'Comment about the report.',
+          `report_bookmarked` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Has the report been bookmarked?'
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
         $result = mysqli_query($mysqli, $query);
 
         // If Error
