@@ -19,8 +19,8 @@
 	require_once '../lib/functions.php';
 	
 	// There is no trigger to control start or stop yet
-	for($i=3350; $i<=3500; $i++) {
-		processABox($mysqli, $i);
+	for($i=0; $i<=10000; $i++) {
+		processABox($mysqli); //processABox($mysqli, $bID) can be used to force processing of a box
 	}
 	
 	

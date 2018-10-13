@@ -91,11 +91,6 @@
 							data: myData.datasets.data['Theft from the person'],
 							fill: false,
 							borderColor: 'rgba(0, 255, 255, 0.5)'
-						}, 	{
-							label: myData.datasets.label[13], 
-							data: myData.datasets.data['Theft from the person'],
-							fill: false,
-							borderColor: 'rgba(0, 0, 0, 0.5)'
 						}
 					]
         		}
@@ -124,7 +119,6 @@
 						"Bicycle theft",
 						"Drugs",
 						"Shoplifting",
-						"Theft from the person",
 						"Theft from the person"
 					], 'data'=>[]
 				]
