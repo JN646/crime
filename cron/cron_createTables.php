@@ -167,5 +167,70 @@ function cronCreateUsers($mysqli)
     }
 }
 
+//############## Create Constab List ##################################################
+function cronCreateConstabList($mysqli)
+{
+    // SELECT All
+    $query = "SELECT constab_id FROM 'data_constab'";
+    $result = mysqli_query($mysqli, $query);
+
+    if (empty($result)) {
+        // Create table if doesn't exist.
+        $query = "CREATE TABLE IF NOT EXISTS `data_constab` (
+          `constab_id` int(11) PRIMARY KEY NOT NULL,
+          `constab_name` varchar(255) DEFAULT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+        $result = mysqli_query($mysqli, $query);
+
+        // If Error
+        if (!$result) {
+            die('<p class="SQLError">SQL ERROR: Create Constabulary List ' . mysqli_error($mysqli) . '</p>');
+        }
+
+        // Insert Data.
+        $query = "INSERT INTO `data_constab` (`constab_id`, `constab_name`) VALUES
+        (2, 'Avon and Somerset Constabulary'),
+        (3, 'Bedfordshire Police'),
+        (4, 'Cambridgeshire Constabulary'),
+        (5, 'Cheshire Constabulary'),
+        (6, 'City of London Police'),
+        (7, 'Cleveland Police'),
+        (8, 'Cumbria Constabulary'),
+        (9, 'Derbyshire Constabulary'),
+        (10, 'Devon & Cornwall Police'),
+        (11, 'Dorset Police'),
+        (12, 'Durham Constabulary'),
+        (13, 'Essex Police'),
+        (14, 'Gloucestershire Constabulary'),
+        (15, 'Greater Manchester Police'),
+        (16, 'Hampshire Constabulary'),
+        (17, 'Hertfordshire Constabulary'),
+        (18, 'Humberside Police'),
+        (19, 'Kent Police'),
+        (20, 'Lancashire Constabulary'),
+        (21, 'Leicestershire Police'),
+        (22, 'Lincolnshire Police'),
+        (23, 'Merseyside Police'),
+        (24, 'Metropolitan Police Service'),
+        (25, 'Norfolk Constabulary'),
+        (26, 'North Yorkshire Police'),
+        (27, 'Northamptonshire Police'),
+        (28, 'Northumbria Police'),
+        (29, 'Nottinghamshire Police'),
+        (30, 'South Yorkshire Police'),
+        (31, 'Staffordshire Police'),
+        (32, 'Suffolk Constabulary'),
+        (33, 'Surrey Police'),
+        (34, 'Sussex Police'),
+        (35, 'Thames Valley Police'),
+        (36, 'Warwickshire Police'),
+        (37, 'West Mercia Police'),
+        (38, 'West Midlands Police'),
+        (39, 'West Yorkshire Police'),
+        (40, 'Wiltshire Police')";
+        $result = mysqli_query($mysqli, $query);
+    }
+}
+
 // Header and Return
 header('Location: ' . $_SERVER['HTTP_REFERER']);

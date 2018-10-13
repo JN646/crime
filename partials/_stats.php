@@ -29,8 +29,8 @@
       } ?>
     </div>
   </div>
-  
-  
+
+
   <h3 class=''>Boxes</h3>
   <!-- Stat Container -->
   <div class="statBox">
@@ -57,8 +57,8 @@
       } ?>
     </div>
   </div>
-  
-  
+
+
   <h3 class=''>Other</h3>
   <!-- Stat Container -->
   <div class="statBox">
@@ -84,6 +84,6 @@
       } ?>
     </div>
   </div>
-  
+
 </div>
 </html>

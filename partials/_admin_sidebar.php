@@ -117,30 +117,84 @@
         </div>
         <div class="modal-body">
           <p>Here are timed server jobs that you can run manually here.</p>
+
+          <!-- Row 1 -->
           <div class="row">
-            <ul class="nav flex-column col-md-4">
-              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_count.php"><i class="far fa-clock"></i> Count Stats</a></li>
-            </ul>
-            <ul class="nav flex-column col-md-4">
-              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_createTables.php"><i class="fas fa-table"></i> Create Tables</a></li>
-            </ul>
-            <ul class="nav flex-column col-md-4">
-              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_genBoxes.php"><i class="fas fa-box"></i> Generate Boxes</a></li>
-            </ul>
-            <ul class="nav flex-column col-md-4">
-              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_activateBoxes.php"><i class="fab fa-connectdevelop"></i> Activate Boxes</a></li>
-            </ul>
-            <ul class="nav flex-column col-md-4">
-              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_prioritiseBoxes.php"><i class="fas fa-sort-amount-down"></i> Prioritise Boxes</a></li>
-            </ul>
-            <ul class="nav flex-column col-md-4">
-              <li class="nav-item text-center"><a class="nav-link" href="../cron/cron_boxMonth.php"><i class="fas fa-chart-line"></i> Process Time Series</a></li>
-            </ul>
+            <div class='col-md-3'>
+              <a href="../cron/cron_createTables.php">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-center"><i class="fas fa-table"></i></h5>
+                    <h6 class="card-subtitle text-center mb-2 text-muted">Create Tables</h6>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <div class='col-md-3'>
+              <a href="../cron/cron_count.php">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-center"><i class="far fa-clock"></i></h5>
+                    <h6 class="card-subtitle text-center mb-2 text-muted">Count Stats</h6>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <div class='col-md-3'>
+              <a href="../cron/cron_genBoxes.php">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-center"><i class="fas fa-box"></i></h5>
+                    <h6 class="card-subtitle text-center mb-2 text-muted">Generate Boxes</h6>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <div class='col-md-3'>
+              <a href="../cron/cron_activateBoxes.php">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-center"><i class="fab fa-connectdevelop"></i></h5>
+                    <h6 class="card-subtitle text-center mb-2 text-muted">Activate Boxes</h6>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- Row 2 -->
+          <div class="row">
+            <div class='col-md-3'>
+              <a href="../cron/cron_prioritiseBoxes.php">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-center"><i class="fas fa-sort-amount-down"></i></h5>
+                    <h6 class="card-subtitle text-center mb-2 text-muted">Prioritise Boxes</h6>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <div class='col-md-3'>
+              <a href="../cron/cron_boxMonth.php">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title text-center"><i class="fas fa-chart-line"></i></h5>
+                    <h6 class="card-subtitle text-center mb-2 text-muted">Process Time Series</h6>
+                  </div>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
+  </div>
