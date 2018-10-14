@@ -18,33 +18,41 @@
 	require_once '../config/config.php';
 	require_once '../lib/functions.php';
 	
-	
-	for($i=0; $i<10000; $i++) {
-		processABox($mysqli);
+	// There is no trigger to control start or stop yet
+	for($i=0; $i<=10000; $i++) {
+		processABox($mysqli); //processABox($mysqli, $bID) can be used to force processing of a box
 	}
 	
 	
-	function processABox($mysqli) {
-		// Select a box. never been updated, active, prioritised
-		$sqlBoxQ = "SELECT * FROM `box` WHERE timeseries_updated IS NULL AND active = 1 ORDER BY priority DESC LIMIT 1";
-		$sqlBoxR = mysqli_query($mysqli, $sqlBoxQ);
-		$box = mysqli_fetch_assoc($sqlBoxR);
-		// If no un-updated found. find timeseries_update<priorety_updated, active, prioritised
-		if(!$sqlBoxR) {
-			$sqlBoxQ = "SELECT * FROM `box` WHERE timeseries_updated < priority_updated AND active = 1 ORDER BY priority DESC LIMIT 1";
+	function processABox($mysqli, $bID = NULL)
+	{
+		if(IS_NULL($bID)) {
+			// Select a box. never been updated, active, prioritised
+			$sqlBoxQ = "SELECT * FROM `box` WHERE timeseries_updated IS NULL AND active = 1 ORDER BY priority DESC LIMIT 1";
 			$sqlBoxR = mysqli_query($mysqli, $sqlBoxQ);
 			$box = mysqli_fetch_assoc($sqlBoxR);
-		}
-		
-		if(!$sqlBoxR) {
-			// In this instance (in theory), all active boxes have been processed since updating their priority.
-			// Suggest updating priority and starting procesing for time series again.
-			echo '<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>';
-			return 0;
-		}
 			
-		// Final boxID
-		$bID = $box['id'];
+			// If no un-updated found. find timeseries_update<priorety_updated, active, prioritised
+			if(!$sqlBoxR) {
+				$sqlBoxQ = "SELECT * FROM `box` WHERE timeseries_updated < priority_updated AND active = 1 ORDER BY priority DESC LIMIT 1";
+				$sqlBoxR = mysqli_query($mysqli, $sqlBoxQ);
+				$box = mysqli_fetch_assoc($sqlBoxR);
+			}
+			
+			if(!$sqlBoxR) {
+				// In this instance (in theory), all active boxes have been processed since updating their priority.
+				// Suggest updating priority and starting procesing for time series again.
+				echo '<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>';
+				return 0;
+			}
+			
+			// Final boxID
+			$bID = $box['id'];
+		} else {
+			if($bID < 0) {
+				echo "Error: Value given for box ID cannot be below 0<br>";
+			}
+		}
 		
 		// Find all the boxmonths that exist for this box
 		$sqlBoxMonthQ = "SELECT bm_id, bm_month FROM box_month WHERE bm_boxid = $bID";
@@ -55,9 +63,8 @@
 			$existingMonths[] = $row['bm_month'];
 		}
 		
-		
 		// Process boxmonths that do not exist
-		$M = 1; //Max months - to be determined by data ingestion process or manually set
+		$M = 48; //Max months - to be determined by data ingestion process or manually set
 		for($m=0; $m<=$M; $m++) {
 			$date = intAsDate($m); //$m as a date like "2018-10"
 			$dateS = '"'.$date.'"'; //$date as "string"
@@ -69,13 +76,14 @@
 			// If not already processed and data for the month exists
 			if(!in_array(intAsDate($m), $existingMonths) && $verifyMonth) {
 				// Process timeSeries
-				
-				$crimeQ = "SELECT COUNT(data.id) AS count, data.Crime_Type AS type, data.Month, COUNT(data.Latitude), COUNT(data.Longitude), COUNT(box.lat_min), COUNT(box.lat_max), COUNT(box.long_min), COUNT(box.long_max) FROM data, box
+				/*$crimeQ = "SELECT COUNT(data.id) AS count, data.Crime_Type AS type, data.Month, COUNT(data.Latitude), COUNT(data.Longitude), COUNT(box.lat_min), COUNT(box.lat_max), COUNT(box.long_min), COUNT(box.long_max) FROM data, box
 				WHERE box.id = $bID AND data.Month = $dateS AND data.Latitude > box.lat_min AND data.Latitude > box.lat_max AND data.Longitude > box.long_min AND data.Longitude > box.long_max
-				GROUP BY data.Crime_Type";
+				GROUP BY data.Crime_Type"; */
+				$crimeQ = "SELECT COUNT(data.id) AS count, data.Crime_Type AS type FROM data, box
+				WHERE box.id = $bID AND data.Month = $dateS AND data.Latitude > box.lat_min AND data.Latitude < box.lat_max AND data.Longitude > box.long_min AND data.Longitude < box.long_max
+				GROUP BY type";
 				
 				$crimeR = mysqli_query($mysqli, $crimeQ);
-				//echo "RESULT: " . $crimeR . " <br>"; //THIS BREAKS SHIT. I DON'T KNOW WHY.
 				if(!$crimeR) {
 					echo '<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>';
 					return 0;
@@ -115,6 +123,6 @@
 	}
 	
 	
-	Header and Return
-	header('Location: ' . $_SERVER['HTTP_REFERER']);
+	//Header and Return
+	//header('Location: ' . $_SERVER['HTTP_REFERER']);
 ?>
