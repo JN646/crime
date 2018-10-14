@@ -8,6 +8,7 @@ cronCreateBox($mysqli);
 cronCreateBoxMonth($mysqli);
 cronCreateUsers($mysqli);
 cronReportLog($mysqli);
+cronCreateConstabList($mysqli);
 
 //############## Create Stat Table #############################################
 function cronCreateStatTable($mysqli)

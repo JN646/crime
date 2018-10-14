@@ -2,7 +2,10 @@
 	require_once '../config/config.php';
 	
 	
-	$data = getTimeSeries($mysqli, 3391);
+	$now = "'".date("Y-m")."'";
+	// ($mysqli, [box-id], [month-start], [month-end])
+	$data = getTimeSeries($mysqli, 3391, NULL, $now);
+	
 	
 ?>
 <!DOCTYPE html>
@@ -14,14 +17,16 @@
 	</head>
 	<body>
 		
-		<canvas id="myChart"></canvas>
+		<canvas id="lineChart"></canvas>
 		
 		<script type="text/javascript">
-			// Get arrays from PHP
+			// Get array from PHP
 			var myData = <?php echo json_encode($data); ?>;
 			
-			var ctx = document.getElementById("myChart").getContext('2d');
-			var theChart = new Chart(ctx, {
+			console.log(myData);
+			
+			var ctxL = document.getElementById("lineChart").getContext('2d');
+			var lineChart = new Chart(ctxL, {
 				type: 'line',
 				data: {
 					labels: myData.labels,
@@ -96,18 +101,23 @@
         		}
 			});
 		</script>
-		
-		<div class='chart'>
-			<div id="theChart"></div>
-		</div>
 	</body>
 	
 	<?php
-		function getTimeSeries($mysqli, $bID)
+		function getTimeSeries($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 		{
+			// Error Check Start and End
+			if(!is_null($mStart) && !is_null($mEnd) && $mStart>=$mEnd) {
+				//could just swap them around if not equal?
+				echo "Start date cannot be after or the same as end date<br>";
+				return 0;
+			}
+			
 			// Returns the boxmonths for a given box ID, and +1 to requests
-			$out = [ 'labels'=>[''], 'datasets'=>[
-					'label'=>["Anti-social behaviour",
+			$out = [ 'labels'=>[], 'datasets'=>[
+					'label'=>[
+						//this array can be passed to the function as a variable to select what is returned
+						"Anti-social behaviour",
 						"Burglary",
 						"Other theft",
 						"Public order",
@@ -125,11 +135,19 @@
 			];
 			
 			// Add 1 to Requests
-			$addQ = "UPDATE box SET requests = requests + 1 WHERE `id` = $bID";
+			$addQ = "UPDATE `box` SET `requests` = `requests` + 1 WHERE `id` = $bID";
 			$addR = mysqli_query($mysqli, $addQ);
 			
+			// Build a Smart Query
+			$TSQ = "SELECT * FROM `box_month` WHERE `bm_boxid` = $bID";
+			if(!is_null($mStart)) {
+				$TSQ = $TSQ." AND `bm_month` > $mStart";
+			}
+			if(!is_null($mEnd)) {
+				$TSQ = $TSQ." AND `bm_month` <= $mEnd";
+			}
+			
 			// Return Time Series
-			$TSQ = "SELECT * FROM box_month WHERE `bm_boxid` = $bID";
 			$TSR = mysqli_query($mysqli, $TSQ);
 			
 			while($row = mysqli_fetch_assoc($TSR)) {
