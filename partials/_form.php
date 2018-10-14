@@ -38,6 +38,7 @@
     <select class="form-control" name="mode">
       <option value="0">Crime Counter</option>
       <option value="1">Time Series</option>
+      <option value="2">Time Series 2</option>
     </select>
   </div>
 

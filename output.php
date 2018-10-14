@@ -116,6 +116,25 @@ if ($radVal2 <= $radVal1) {
         <?php
         echo timeSeries($mysqli, $latVal, $longVal, $radVal1); // Time Series
     }
+
+    if ($mode == 2) {
+      ?>
+        <h2>Time Series 2</h2>
+        <table class='table col-md-6'>
+          <tbody>
+            <tr>
+              <td><b>Location:</b></td>
+              <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
+            </tr>
+            <tr>
+              <td><b>Generated:</b></td>
+              <td><?php echo date("d/m/y") ?></td>
+            </tr>
+          </tbody>
+        </table>
+        <?php
+        include 'lib/timeseries2.php';
+    }
     ?>
 </div>
     <!-- Footer -->
