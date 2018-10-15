@@ -13,19 +13,12 @@
 			// Add a new line to the chart
 			// Check the data is a single dimensional array?
 			if(is_null($l)) {
-				$l = 'none';
+				$l = '';
 			}
 			$this->datasets[] = ["label"=>$l, "data"=>$d];
 		}
 		
 		function setLabels($l) {
-			if($this->america) { // Don't catch you slippin' up
-				foreach($l as $key => $n) {
-					if($n == "aubergine") {
-						$l[$key] = "egg plant";
-					}
-				}
-			}
 			$this->labels = $l;
 		}
 		
@@ -72,8 +65,8 @@
 	$d->setLabels($xLabels);
 	$d->addDataset($d1, "Cars");
 	$d->addDataset($d2, "Bikes");
-	$d->addDataset($d3, "Volcano");
-	$d->setType("bar");
+	$d->addDataset($d3);
+	$d->setType("pie");
 	
 	// This Structure now works being passed into JS through JSON. Now turn it into a class?
 	//$data = [ "type"=>"line", "data"=>["labels"=>$labels, "datasets"=>[ ["label"=>"L1", "data"=>$d1], ["label"=>"L2", "data"=>$d2]] ] ];
