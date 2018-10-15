@@ -1,10 +1,9 @@
 <?php
 	require_once '../config/config.php';
-
-
-	$now = "'".date("Y-m")."'";
+	echo "foo";
+	
 	// ($mysqli, [box-id], [month-start], [month-end])
-	$data = getTimeSeries($mysqli, 3391, NULL, $now);
+	$data = getTimeSeries($mysqli, 3391);
 ?>
 
 <!DOCTYPE html>
@@ -100,7 +99,7 @@
 			});
 		</script>
 	</body>
-
+	
 	<?php
 		function getTimeSeries($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 		{
@@ -110,7 +109,7 @@
 				echo "Start date cannot be after or the same as end date<br>";
 				return 0;
 			}
-
+			
 			// Returns the boxmonths for a given box ID, and +1 to requests
 			$out = [ 'labels'=>[], 'datasets'=>[
 					'label'=>[
@@ -144,10 +143,10 @@
 			if(!is_null($mEnd)) {
 				$TSQ = $TSQ." AND `bm_month` <= $mEnd";
 			}
-
+			
 			// Return Time Series
 			$TSR = mysqli_query($mysqli, $TSQ);
-
+			
 			while($row = mysqli_fetch_assoc($TSR)) {
 				$out['labels'][] = $row['bm_month'];
 				//echo $row['bm_month']."<br>";
