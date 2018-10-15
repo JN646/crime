@@ -51,13 +51,20 @@ if ($radVal2 <= $radVal1) {
   <!-- Container -->
   <div id='bodyContainer' class="container">
 
+    <!-- Nav Pills -->
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+
+      <!-- Crime Counter -->
       <li class="nav-item">
         <a class="nav-link active" id="pills-crimecounter-tab" data-toggle="pill" href="#pills-crimecounter" role="tab" aria-controls="pills-crimecount" aria-selected="true">Crime Counter</a>
       </li>
+
+      <!-- Something Else -->
       <li class="nav-item">
         <a class="nav-link" id="pills-p2-tab" data-toggle="pill" href="#pills-p2" role="tab" aria-controls="pills-p2" aria-selected="false">Pane 2</a>
       </li>
+
+      <!-- Time Series Chart -->
       <li class="nav-item">
         <a class="nav-link" id="pills-timeseries-tab" data-toggle="pill" href="#pills-timeseries" role="tab" aria-controls="pills-timeseries" aria-selected="false">Time Series</a>
       </li>
@@ -68,61 +75,23 @@ if ($radVal2 <= $radVal1) {
       <div class="tab-pane fade show active" id="pills-crimecounter" role="tabpanel" aria-labelledby="pills-crimecounter-tab">
         <!-- Block Header -->
         <h2>Crime Counter</h2>
-
-          <!-- Table -->
-          <table class='table col-md-6'>
-            <tbody>
-              <tr>
-                <td><b>Location:</b></td>
-                <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
-              </tr>
-              <tr>
-                <td><b>Generated:</b></td>
-                <td><?php echo date("d/m/y") ?></td>
-              </tr>
-            </tbody>
-          </table>
-          <?php echo crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2); ?>
+        <?php echo reportHeader($latVal, $longVal); ?>
+        <?php echo crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2); ?>
       </div>
 
       <!-- Something Else -->
       <div class="tab-pane fade" id="pills-p2" role="tabpanel" aria-labelledby="pills-p2-tab">
         <!-- Block Header -->
         <h2>Something Else</h2>
-
-          <!-- Table -->
-          <table class='table col-md-6'>
-            <tbody>
-              <tr>
-                <td><b>Location:</b></td>
-                <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
-              </tr>
-              <tr>
-                <td><b>Generated:</b></td>
-                <td><?php echo date("d/m/y") ?></td>
-              </tr>
-            </tbody>
-          </table>
+        <?php echo reportHeader($latVal, $longVal); ?>
       </div>
 
       <!-- Time Series Chart -->
       <div class="tab-pane fade" id="pills-timeseries" role="tabpanel" aria-labelledby="pills-timeseries-tab">
         <!-- Block Header -->
         <h2>Time Series Chart</h2>
+        <?php echo reportHeader($latVal, $longVal); ?>
 
-          <!-- Table -->
-          <table class='table col-md-6'>
-            <tbody>
-              <tr>
-                <td><b>Location:</b></td>
-                <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
-              </tr>
-              <tr>
-                <td><b>Generated:</b></td>
-                <td><?php echo date("d/m/y") ?></td>
-              </tr>
-            </tbody>
-          </table>
         <canvas id="lineChart"></canvas>
 
     		<script type="text/javascript">
@@ -136,8 +105,6 @@ if ($radVal2 <= $radVal1) {
     		</script>
       </div>
     </div>
-
-      <br>
 </div>
     <!-- Footer -->
     <?php include 'partials/_footer.php' ?>

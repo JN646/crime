@@ -36,7 +36,7 @@ function callStat($mysqli, $stat) {
 	$query = "SELECT count FROM stats WHERE stat = $stat";
 	$result = mysqli_query($mysqli, $query);
 	$rows = mysqli_fetch_row($result);
-	
+
 	// If Error
 	if (!$rows) {
 		//no stat?
@@ -44,10 +44,10 @@ function callStat($mysqli, $stat) {
 		//die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
 		return "Stat does not exist:<br>Contact your system administrator";
 	}
-	
+
 	// Free Query
 	mysqli_free_result($result);
-	
+
 	// Return Value.
 	return $rows[0];
 }
@@ -73,19 +73,19 @@ function computeOffset($from, $distance, $heading) {
 
 function computeArcDistance($latitude1, $longitude1, $latitude2, $longitude2) {
 	$earth_radius = 6371000;
-	
+
 	$dLat = deg2rad($latitude2 - $latitude1);
 	$dLon = deg2rad($longitude2 - $longitude1);
-	
+
 	$a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * sin($dLon/2) * sin($dLon/2);
 	$c = 2 * asin(sqrt($a));
 	$d = $earth_radius * $c;
-	
-	return $d;    
+
+	return $d;
 }
 
 
-//############## CONVERT MONTHS #############################################
+//############## CONVERT MONTHS ################################################
 
 function dateAsInt($date) {
 	$ym = explode("-", $date); //year|month array
@@ -101,4 +101,23 @@ function intAsDate($int) {
 	}
 	$year = floor($int/12)+$epoch;
 	return $year."-".$month;
+}
+
+//############## REPORT HEADER #################################################
+function reportHeader($latVal, $longVal) {
+  ?>
+  <!-- Table -->
+  <table class='table col-md-6'>
+    <tbody>
+      <tr>
+        <td><b>Location:</b></td>
+        <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
+      </tr>
+      <tr>
+        <td><b>Generated:</b></td>
+        <td><?php echo date("d/m/y") ?></td>
+      </tr>
+    </tbody>
+  </table>
+  <?php
 }
