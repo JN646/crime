@@ -1,9 +1,11 @@
 <?php
-	// Put custom classes here
+	include_once("functions.php");
+	
+	// Put custom classes in here
 	
 	
 	// For making chart.js data objects
-	class chartData
+	class ChartData
 	{
 		private $data; //master variable to return for JS
 		private $type = "line";

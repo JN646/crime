@@ -29,7 +29,7 @@ $earthR = 6371000;
 $require_logon_to_search = TRUE;
 
 // Time Series
-$TimeSeries_ExecTimer == TRUE;
+$TimeSeries_ExecTimer == TRUE; //should these be using "=="?
 
 // Crime Counter
 $CrimeCounter_ExecTimer == TRUE;

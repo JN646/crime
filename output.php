@@ -1,9 +1,9 @@
 <!-- Header Form -->
-<?php include 'partials/_header.php' ?>
+<?php include 'partials/_header.php'; ?>
 
 <!-- Include Reporting Options -->
-<?php include 'lib/crimecount.php' ?>
-<?php include 'lib/timeseries.php' ?>
+<?php include 'lib/crimecount.php'; ?>
+<?php include 'lib/timeseries2.php'; ?>
 
 <?php
 //############## SERVER FILE ###################################################
@@ -90,18 +90,21 @@ if ($radVal2 <= $radVal1) {
       <div class="tab-pane fade" id="pills-timeseries" role="tabpanel" aria-labelledby="pills-timeseries-tab">
         <!-- Block Header -->
         <h2>Time Series Chart</h2>
-        <?php echo reportHeader($latVal, $longVal); ?>
+        <?php 
+        	echo reportHeader($latVal, $longVal);
+        	$timeSeriesData = timeSeriesRequest($latVal, $longVal);
+        	var_dump($timeSeriesData);
+        ?>
 
-        <canvas id="lineChart"></canvas>
+        <canvas id="timeSeriesChart"></canvas>
 
     		<script type="text/javascript">
     			// Get array from PHP
-    			var myData = <?php echo json_encode($data); ?>;
-
-    			console.log(myData);
-
-    			var ctxL = document.getElementById("lineChart").getContext('2d');
-    			var lineChart = new Chart(ctxL, data);
+    			var TSData = <?php echo json_encode($timeSeriesData); ?>;
+    			console.log(TSData);
+    			
+    			var ctx = document.getElementById("timeSeriesChart").getContext('2d');
+    			var tsChart = new Chart(ctx, TSData);
     		</script>
       </div>
     </div>

@@ -1,4 +1,6 @@
 <?php
+include_once("classes.php");
+
 //############## FUNCTION FILE #################################################
 //############## Version Number ################################################
 class ApplicationVersion
@@ -59,6 +61,9 @@ function callStat($mysqli, $stat) {
 
 function getTimeSeriesData($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 {
+	$bID = 3390; // !!! - TEMP OVERRIDE - !!!
+	echo "Box ID Override: ".$bID."<br>(change in code to something that works for you)<br><br>";
+	
 	// Error Check Start and End
 	if(!is_null($mStart) && !is_null($mEnd) && $mStart>=$mEnd) {
 		//could just swap them around if not equal?
@@ -66,27 +71,15 @@ function getTimeSeriesData($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 		return 0;
 	}
 	
-	// Returns the boxmonths for a given box ID, and +1 to requests
-	$out = [ 'labels'=>[], 'datasets'=>[
-			'label'=>[
-				//this array can be passed to the function as a variable to select what is returned
-				"Anti-social behaviour",
-				"Burglary",
-				"Other theft",
-				"Public order",
-				"Violence and sexual offences",
-				"Vehicle crime",
-				"Criminal damage and arson",
-				"Other crime",
-				"Robbery",
-				"Bicycle theft",
-				"Drugs",
-				"Shoplifting",
-				"Theft from the person"
-			], 'data'=>[]
-		]
-	];
-
+	// Get Crime Types from table.
+	$CTR = mysqli_query($mysqli, "SELECT `crime_type` FROM `data_crimes`");
+	$crime_types = array();
+	while($row = mysqli_fetch_assoc($CTR)) {
+		$crime_types[] = $row['crime_type'];
+	}
+	
+	$out = new ChartData();
+	
 	// Add 1 to Requests
 	$addQ = "UPDATE `box` SET `requests` = `requests` + 1 WHERE `id` = $bID";
 	$addR = mysqli_query($mysqli, $addQ);
@@ -99,19 +92,28 @@ function getTimeSeriesData($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 	if(!is_null($mEnd)) {
 		$TSQ = $TSQ." AND `bm_month` <= $mEnd";
 	}
+	$TSQ = $TSQ." ORDER BY `bm_month` ASC";
 	
-	// Return Time Series
+	// Return Time Series Query
 	$TSR = mysqli_query($mysqli, $TSQ);
 	
+	// Fetch results into ChartData class
+	$xLabels = array();
+	$sets = array();
 	while($row = mysqli_fetch_assoc($TSR)) {
-		$out['labels'][] = $row['bm_month'];
-		//echo $row['bm_month']."<br>";
-		foreach(array_keys($row) as $name) {
-			$out['datasets']['data'][$name][] = $row[$name];
+		$xLabels[] = $row['bm_month'];
+		foreach(array_keys($row) as $type) {
+			$sets[$type][] = $row[$type];
+		}
+	}
+	$out->setLabels($xLabels);
+	foreach($sets as $type => $counts) {
+		if(in_array($type, $crime_types)) { // This filters out crime_types not in data_crimes
+			$out->addDataset($counts, $type);
 		}
 	}
 	
-	return $out;
+	return $out->getData();
 }
 
 
