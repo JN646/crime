@@ -32,16 +32,6 @@
     <input id='radius2' class="form-control" onkeydown="checkEmpty()" size='3' type="number" step="0.0000001" name="rad2" value="0.02">
   </div>
 
-  <!-- Mode -->
-  <div id='modeBlock' class='col form-group'>
-    <label for="mode">Mode</label>
-    <select class="form-control" name="mode">
-      <option value="0">Crime Counter</option>
-      <option value="1">Time Series</option>
-      <option value="2">Time Series 2</option>
-    </select>
-  </div>
-
   <!-- Search Button -->
   <div class='col form-group'>
     <label>&nbsp</label>
