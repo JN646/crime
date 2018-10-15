@@ -5,7 +5,7 @@
 	// ($mysqli, [box-id], [month-start], [month-end])
 	//$data = getTimeSeries($mysqli, 3391);
 	
-	timeSeriesRequest(52, 0);
+	//timeSeriesRequest(52, 0);
 	
 	// A request from a device to get timeseries information
 	function timeSeriesRequest($lat, $long) {
@@ -32,7 +32,5 @@
 		
 		return $data;
 	}
-	
-	
 	
 ?>
