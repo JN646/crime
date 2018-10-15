@@ -1,5 +1,6 @@
 <!-- Header Form -->
 <?php include 'partials/_header.php'; ?>
+<script src="<?php echo $environment; ?>js/Chart.min.js" charset="utf-8"></script>
 
 <!-- Include Reporting Options -->
 <?php include 'lib/crimecount.php'; ?>
@@ -90,7 +91,7 @@ if ($radVal2 <= $radVal1) {
       <div class="tab-pane fade" id="pills-timeseries" role="tabpanel" aria-labelledby="pills-timeseries-tab">
         <!-- Block Header -->
         <h2>Time Series Chart</h2>
-        <?php 
+        <?php
         	echo reportHeader($latVal, $longVal);
         	$timeSeriesData = timeSeriesRequest($latVal, $longVal);
         	var_dump($timeSeriesData);
@@ -102,7 +103,7 @@ if ($radVal2 <= $radVal1) {
     			// Get array from PHP
     			var TSData = <?php echo json_encode($timeSeriesData); ?>;
     			console.log(TSData);
-    			
+
     			var ctx = document.getElementById("timeSeriesChart").getContext('2d');
     			var tsChart = new Chart(ctx, TSData);
     		</script>
