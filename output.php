@@ -51,91 +51,60 @@ if ($radVal2 <= $radVal1) {
   <!-- Container -->
   <div id='bodyContainer' class="container">
 
-    <!-- Render Table -->
-    <?php
-    if ($mode == 0) {
-      ?>
-      <!-- Toolbar -->
-      <div id="crimeCountToolbar">
-        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-          <div class="btn-group mr-2" role="group" aria-label="First group">
-            <button id='riskSliderToggle' type="button" onclick="toggleRiskSlider()" class="btn btn-secondary">Risk Slider</button>
-            <button id='riskToggle' type="button" onclick="toggleRiskFactor()" class="btn btn-secondary">Risk</button>
-            <!-- <button type="button" class="btn btn-secondary">2</button>
-            <button type="button" class="btn btn-secondary">3</button>
-            <button type="button" class="btn btn-secondary">4</button> -->
-          </div>
-          <div class="btn-group mr-2" role="group" aria-label="Second group">
-            <button type="button" onclick="window.print()" class="btn btn-secondary"><i class="fas fa-print"></i></button>
-            <!-- <button type="button" class="btn btn-secondary">6</button>
-            <button type="button" class="btn btn-secondary">7</button> -->
-          </div>
-          <div class="btn-group" role="group" aria-label="Third group">
-            <!-- <button type="button" class="btn btn-secondary">8</button> -->
-          </div>
-        </div>
+    <!-- Nav Pills -->
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+
+      <!-- Crime Counter -->
+      <li class="nav-item">
+        <a class="nav-link active" id="pills-crimecounter-tab" data-toggle="pill" href="#pills-crimecounter" role="tab" aria-controls="pills-crimecount" aria-selected="true">Crime Counter</a>
+      </li>
+
+      <!-- Something Else -->
+      <li class="nav-item">
+        <a class="nav-link" id="pills-p2-tab" data-toggle="pill" href="#pills-p2" role="tab" aria-controls="pills-p2" aria-selected="false">Pane 2</a>
+      </li>
+
+      <!-- Time Series Chart -->
+      <li class="nav-item">
+        <a class="nav-link" id="pills-timeseries-tab" data-toggle="pill" href="#pills-timeseries" role="tab" aria-controls="pills-timeseries" aria-selected="false">Time Series</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+
+      <!-- Crime Counter -->
+      <div class="tab-pane fade show active" id="pills-crimecounter" role="tabpanel" aria-labelledby="pills-crimecounter-tab">
+        <!-- Block Header -->
+        <h2>Crime Counter</h2>
+        <?php echo reportHeader($latVal, $longVal); ?>
+        <?php echo crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2); ?>
       </div>
 
-      <br>
+      <!-- Something Else -->
+      <div class="tab-pane fade" id="pills-p2" role="tabpanel" aria-labelledby="pills-p2-tab">
+        <!-- Block Header -->
+        <h2>Something Else</h2>
+        <?php echo reportHeader($latVal, $longVal); ?>
+      </div>
 
-      <!-- Block Header -->
-      <h2>Crime Counter</h2>
+      <!-- Time Series Chart -->
+      <div class="tab-pane fade" id="pills-timeseries" role="tabpanel" aria-labelledby="pills-timeseries-tab">
+        <!-- Block Header -->
+        <h2>Time Series Chart</h2>
+        <?php echo reportHeader($latVal, $longVal); ?>
 
-        <!-- Table -->
-        <table class='table col-md-6'>
-          <tbody>
-            <tr>
-              <td><b>Location:</b></td>
-              <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
-            </tr>
-            <tr>
-              <td><b>Generated:</b></td>
-              <td><?php echo date("d/m/y") ?></td>
-            </tr>
-          </tbody>
-        </table>
-        <?php
-        echo crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2); // Crime Count
-    }
+        <canvas id="lineChart"></canvas>
 
-    if ($mode == 1) {
-      ?>
-        <h2>Time Series</h2>
-        <table class='table col-md-6'>
-          <tbody>
-            <tr>
-              <td><b>Location:</b></td>
-              <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
-            </tr>
-            <tr>
-              <td><b>Generated:</b></td>
-              <td><?php echo date("d/m/y") ?></td>
-            </tr>
-          </tbody>
-        </table>
-        <?php
-        echo timeSeries($mysqli, $latVal, $longVal, $radVal1); // Time Series
-    }
+    		<script type="text/javascript">
+    			// Get array from PHP
+    			var myData = <?php echo json_encode($data); ?>;
 
-    if ($mode == 2) {
-      ?>
-        <h2>Time Series 2</h2>
-        <table class='table col-md-6'>
-          <tbody>
-            <tr>
-              <td><b>Location:</b></td>
-              <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
-            </tr>
-            <tr>
-              <td><b>Generated:</b></td>
-              <td><?php echo date("d/m/y") ?></td>
-            </tr>
-          </tbody>
-        </table>
-        <?php
-        include 'js_playground.php'; //'lib/timeseries2.php';
-    }
-    ?>
+    			console.log(myData);
+
+    			var ctxL = document.getElementById("lineChart").getContext('2d');
+    			var lineChart = new Chart(ctxL, data);
+    		</script>
+      </div>
+    </div>
 </div>
     <!-- Footer -->
     <?php include 'partials/_footer.php' ?>
