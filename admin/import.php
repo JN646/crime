@@ -76,17 +76,17 @@ if($_SESSION["admin"] !== 1){
 
           <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">2015</a>
+              <a class="nav-link" id="y2015-tab" data-toggle="tab" href="#y2015" role="tab" aria-controls="y2015" aria-selected="false">2015</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">2016</a>
+              <a class="nav-link" id="y2016-tab" data-toggle="tab" href="#y2016" role="tab" aria-controls="y2016" aria-selected="false">2016</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">2017</a>
+              <a class="nav-link" id="y2017-tab" data-toggle="tab" href="#y2017" role="tab" aria-controls="y2017" aria-selected="false">2017</a>
             </li>
           </ul>
           <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="y2015" role="tabpanel" aria-labelledby="y2015-tab">
               <!-- 2015 -->
               <table class='table table-bordered'>
                 <thead>
@@ -134,7 +134,7 @@ if($_SESSION["admin"] !== 1){
                 </tbody>
               </table>
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-pane fade" id="y2016" role="tabpanel" aria-labelledby="y2016-tab">
               <!-- 2016 -->
               <table class='table table-bordered'>
                 <thead>
@@ -183,7 +183,7 @@ if($_SESSION["admin"] !== 1){
                 </tbody>
               </table>
             </div>
-            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="tab-pane fade" id="y2017" role="tabpanel" aria-labelledby="y2017-tab">
               <!-- 2017 -->
               <table class='table table-bordered'>
                 <thead>
