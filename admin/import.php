@@ -1,5 +1,5 @@
 <?php
-// Initialize the session
+// Initialise the session
 session_start();
 
 // Check if the user is logged in, if not then redirect to login page
@@ -12,20 +12,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 if($_SESSION["admin"] !== 1){
     header("location: ../users/login.php");
 }
-
-function isMissingIndicator() {
-  if (true) {
-    return "<i class='fas fa-exclamation' style='color: red'></i>";
-  }
-
-  if (false) {
-    return "<i class='fas fa-check' style='color: green'></i>";
-  }
-}
 ?>
-<!-- Header -->
-<?php include '../partials/_header.php' ?>
 <body>
+  <?php include '../partials/_header.php' ?>
 	<!-- Container -->
 	<div id='bodyContainer' class="fluid-container">
 		<div class="row">
@@ -39,6 +28,41 @@ function isMissingIndicator() {
 			<div class="row">
 				<div class="col-md-12">
 
+          <?php
+          // Arrays
+          $sql = "SELECT DISTINCT Month FROM data";
+          $result = mysqli_query($mysqli, $sql);
+
+          $mYears = array();
+
+          if (mysqli_num_rows($result) > 0) {
+              // output data of each row
+              while($row = mysqli_fetch_assoc($result)) {
+                $mYears[] = $row["Month"];
+              }
+          } else {
+              echo "No Month Data";
+          }
+
+          sort($mYears);
+
+          // Free Query
+          mysqli_free_result($result);
+
+          // Is the data missing?
+          function isMissingIndicator() {
+            // Data missing
+            if (true) {
+              return "<i class='fas fa-exclamation' style='color: red'></i>";
+            }
+
+            // Data found
+            if (false) {
+              return "<i class='fas fa-check' style='color: green'></i>";
+            }
+          }
+          ?>
+
 					<!-- Status Block -->
 					<?php if (isset($_SESSION['message'])): ?>
 							<?php
@@ -50,77 +74,167 @@ function isMissingIndicator() {
 					<h2>Import Manager</h2>
 					<p>This is the data import manager.</p>
 
-          <table class='table table-bordered'>
-            <thead>
-              <tr>
-                <th class='text-center'>Forces</th>
-                <?php
-                $mYears = array('2015-08',
-                '2015-09',
-                '2015-10',
-                '2015-11',
-                '2015-12',
-                '2016-01',
-                '2016-02',
-                '2016-03',
-                '2016-04',
-                '2016-05',
-                '2016-06',
-                '2016-07',
-                '2016-08',
-                '2016-09',
-                '2016-10',
-                '2016-11',
-                '2016-12',
-                '2017-01',
-                '2017-02',
-                '2017-03',
-                '2017-04',
-                '2017-05',
-                '2017-06',
-                '2017-07',
-                '2017-08',
-                '2017-09',
-                '2017-10',
-                '2017-11',
-                '2017-12');
-
-                for ($i=0; $i < count($mYears); $i++) {
-                  echo "<th class='text-center'>" . $mYears[$i] . "</th>";
-                }
-                ?>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              $sql = "SELECT * FROM data_constab";
-              $sqlR = mysqli_query($mysqli, $sql);
-
-              // If Error
-              if (!$sqlR) {
-                die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
-              }
-
-              if (mysqli_num_rows($sqlR) > 0) {
-                // output data of each row
-                while($row = mysqli_fetch_assoc($sqlR)) {
-                  ?>
-                <tr>
-                  <td><?php echo $row['constab_name'] ?></td>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">2015</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">2016</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">2017</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <!-- 2015 -->
+              <table class='table table-bordered'>
+                <thead>
+                  <tr>
+                    <th class='text-center'>Forces</th>
+                    <?php
+                    for ($i=0; $i < count($mYears); $i++) {
+                      if (strpos($mYears[$i], '2015') !== false) {
+                        echo "<th class='text-center'>" . $mYears[$i] . "</th>";
+                      }
+                    }
+                    ?>
+                  </tr>
+                </thead>
+                <tbody>
                   <?php
-                  for ($i=0; $i < count($mYears); $i++) {
-                    echo "<td class='text-center'>" . isMissingIndicator() . "</td>";
+                  $sql = "SELECT * FROM data_constab";
+                  $sqlR = mysqli_query($mysqli, $sql);
+
+                  // If Error
+                  if (!$sqlR) {
+                    die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+                  }
+
+                  if (mysqli_num_rows($sqlR) > 0) {
+                    // output data of each row
+                    while($row = mysqli_fetch_assoc($sqlR)) {
+                      ?>
+                    <tr>
+                      <td><?php echo $row['constab_name'] ?></td>
+                      <?php
+                      for ($i=0; $i < count($mYears); $i++) {
+                        if (strpos($mYears[$i], '2015') !== false) {
+                          echo "<td class='text-center'>" . isMissingIndicator() . "</td>";
+                        }
+                      }
+                      ?>
+                    </tr>
+                      <?php
+                    }
+                  } else {
+                      echo "0 results";
                   }
                   ?>
-                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              <!-- 2016 -->
+              <table class='table table-bordered'>
+                <thead>
+                  <tr>
+                    <th class='text-center'>Forces</th>
+                    <?php
+                    for ($i=0; $i < count($mYears); $i++) {
+                      if (strpos($mYears[$i], '2016') !== false) {
+                        echo "<th class='text-center'>" . $mYears[$i] . "</th>";
+                      }
+                    }
+                    ?>
+                  </tr>
+                </thead>
+                <tbody>
                   <?php
-                }
-              } else {
-                  echo "0 results";
-              }
-              ?>
-            </tbody>
-          </table>
+                  $sql = "SELECT * FROM data_constab";
+                  $sqlR = mysqli_query($mysqli, $sql);
+
+                  // If Error
+                  if (!$sqlR) {
+                    die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+                  }
+
+                  if (mysqli_num_rows($sqlR) > 0) {
+                    // output data of each row
+                    while($row = mysqli_fetch_assoc($sqlR)) {
+                      ?>
+                    <tr>
+                      <td><?php echo $row['constab_name'] ?></td>
+                      <?php
+                      // Get the correct year.
+                      for ($i=0; $i < count($mYears); $i++) {
+                        if (strpos($mYears[$i], '2016') !== false) {
+                          echo "<td class='text-center'>" . isMissingIndicator() . "</td>";
+                        }
+                      }
+                      ?>
+                    </tr>
+                      <?php
+                    }
+                  } else {
+                      echo "0 results";
+                  }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+              <!-- 2017 -->
+              <table class='table table-bordered'>
+                <thead>
+                  <tr>
+                    <th class='text-center'>Forces</th>
+                    <?php
+                    // Get the correct year.
+                    for ($i=0; $i < count($mYears); $i++) {
+                      if (strpos($mYears[$i], '2017') !== false) {
+                        echo "<th class='text-center'>" . $mYears[$i] . "</th>";
+                      }
+                    }
+                    ?>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  $sql = "SELECT * FROM data_constab";
+                  $sqlR = mysqli_query($mysqli, $sql);
+
+                  // If Error
+                  if (!$sqlR) {
+                    die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
+                  }
+
+                  if (mysqli_num_rows($sqlR) > 0) {
+                    // output data of each row
+                    while($row = mysqli_fetch_assoc($sqlR)) {
+                      ?>
+                    <tr>
+                      <td><?php echo $row['constab_name'] ?></td>
+                      <?php
+                      // Get the correct year.
+                      for ($i=0; $i < count($mYears); $i++) {
+                        if (strpos($mYears[$i], '2017') !== false) {
+                          echo "<td class='text-center'>" . isMissingIndicator() . "</td>";
+                        }
+                      }
+                      ?>
+                    </tr>
+                      <?php
+                    }
+                  } else {
+                      echo "0 results";
+                  }
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
 				</div>
 			</div>
 		</div>

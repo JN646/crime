@@ -23,6 +23,9 @@
   <ul class="nav flex-column">
     <li class="nav-item"><a class="nav-link" href='' data-toggle="modal" data-target=".server-info-modal"><i class="fas fa-server"></i> Server Info</a></li>
   </ul>
+  <ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link" href='import.php'><i class="fas fa-database"></i> Data Importer</a></li>
+  </ul>
 </div>
 <br>
 
