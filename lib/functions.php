@@ -54,32 +54,29 @@ function callStat($mysqli, $stat) {
 	return $rows[0];
 }
 
-
-
-
 //############## GET TIME SERIES #############################################
 
 function getTimeSeriesData($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 {
-	$bID = 3390; // !!! - TEMP OVERRIDE - !!!
+	$bID = 2941; // !!! - TEMP OVERRIDE - !!!
 	echo "Box ID Override: ".$bID."<br>(change in code to something that works for you)<br><br>";
-	
+
 	// Error Check Start and End
 	if(!is_null($mStart) && !is_null($mEnd) && $mStart>=$mEnd) {
 		//could just swap them around if not equal?
 		echo "Start date cannot be after or the same as end date<br>";
 		return 0;
 	}
-	
+
 	// Get Crime Types from table.
 	$CTR = mysqli_query($mysqli, "SELECT `crime_type` FROM `data_crimes`");
 	$crime_types = array();
 	while($row = mysqli_fetch_assoc($CTR)) {
 		$crime_types[] = $row['crime_type'];
 	}
-	
+
 	$out = new ChartData();
-	
+
 	// Add 1 to Requests
 	$addQ = "UPDATE `box` SET `requests` = `requests` + 1 WHERE `id` = $bID";
 	$addR = mysqli_query($mysqli, $addQ);
@@ -93,10 +90,10 @@ function getTimeSeriesData($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 		$TSQ = $TSQ." AND `bm_month` <= $mEnd";
 	}
 	$TSQ = $TSQ." ORDER BY `bm_month` ASC";
-	
+
 	// Return Time Series Query
 	$TSR = mysqli_query($mysqli, $TSQ);
-	
+
 	// Fetch results into ChartData class
 	$xLabels = array();
 	$sets = array();
@@ -112,7 +109,7 @@ function getTimeSeriesData($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 			$out->addDataset($counts, $type);
 		}
 	}
-	
+
 	return $out->getData();
 }
 
