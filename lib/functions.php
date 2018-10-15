@@ -57,7 +57,7 @@ function callStat($mysqli, $stat) {
 
 //############## GET TIME SERIES #############################################
 
-function getTimeSeries($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
+function getTimeSeriesData($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 {
 	// Error Check Start and End
 	if(!is_null($mStart) && !is_null($mEnd) && $mStart>=$mEnd) {
