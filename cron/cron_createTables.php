@@ -9,6 +9,7 @@ cronCreateBoxMonth($mysqli);
 cronCreateUsers($mysqli);
 cronReportLog($mysqli);
 cronCreateConstabList($mysqli);
+cronCreateCrimeTypeList($mysqli);
 
 //############## Create Stat Table #############################################
 function cronCreateStatTable($mysqli)
@@ -33,6 +34,8 @@ function cronCreateStatTable($mysqli)
         }
     }
 }
+
+
 
 //############## Create Report Log #############################################
 function cronReportLog($mysqli)
@@ -220,6 +223,28 @@ function cronCreateConstabList($mysqli)
         (39, 'West Yorkshire Police'),
         (40, 'Wiltshire Police')";
         $result = mysqli_query($mysqli, $query);
+    }
+}
+
+//############## Create Crime Type List ##################################################
+function cronCreateCrimeTypeList($mysqli)
+{
+    // SELECT All
+    $query = "SELECT `id` FROM `data_crimes`";
+    $result = mysqli_query($mysqli, $query);
+	
+    if (empty($result)) {
+        // Create table if doesn't exist.
+        $query = "CREATE TABLE IF NOT EXISTS `data_crimes` (
+          `id` int(11) PRIMARY KEY NOT NULL,
+          `crime_type` varchar(255) DEFAULT NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+        $result = mysqli_query($mysqli, $query);
+		
+        // If Error
+        if (!$result) {
+            die('<p class="SQLError">SQL ERROR: Create Crime Type List ' . mysqli_error($mysqli) . '</p>');
+        }
     }
 }
 
