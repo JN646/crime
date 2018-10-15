@@ -133,7 +133,7 @@ if ($radVal2 <= $radVal1) {
           </tbody>
         </table>
         <?php
-        include 'lib/timeseries2.php';
+        include 'js_playground.php'; //'lib/timeseries2.php';
     }
     ?>
 </div>
