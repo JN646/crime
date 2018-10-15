@@ -28,7 +28,10 @@ if($_SESSION["admin"] !== 1){
     <div class="col-md-10">
       <div class="row">
         <div class="col-md-12">
-          <h2>Admin</h2>
+          <!-- Page Header -->
+          <div class="page-header">
+              <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our admin site.</h1>
+          </div>
           <p>This is the admin area of the site. Currently not functioning and not serving a purpose.</p>
         </div>
       </div>
