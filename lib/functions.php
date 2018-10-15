@@ -53,6 +53,69 @@ function callStat($mysqli, $stat) {
 }
 
 
+
+
+//############## GET TIME SERIES #############################################
+
+function getTimeSeries($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
+{
+	// Error Check Start and End
+	if(!is_null($mStart) && !is_null($mEnd) && $mStart>=$mEnd) {
+		//could just swap them around if not equal?
+		echo "Start date cannot be after or the same as end date<br>";
+		return 0;
+	}
+	
+	// Returns the boxmonths for a given box ID, and +1 to requests
+	$out = [ 'labels'=>[], 'datasets'=>[
+			'label'=>[
+				//this array can be passed to the function as a variable to select what is returned
+				"Anti-social behaviour",
+				"Burglary",
+				"Other theft",
+				"Public order",
+				"Violence and sexual offences",
+				"Vehicle crime",
+				"Criminal damage and arson",
+				"Other crime",
+				"Robbery",
+				"Bicycle theft",
+				"Drugs",
+				"Shoplifting",
+				"Theft from the person"
+			], 'data'=>[]
+		]
+	];
+
+	// Add 1 to Requests
+	$addQ = "UPDATE `box` SET `requests` = `requests` + 1 WHERE `id` = $bID";
+	$addR = mysqli_query($mysqli, $addQ);
+
+	// Build a Smart Query
+	$TSQ = "SELECT * FROM `box_month` WHERE `bm_boxid` = $bID";
+	if(!is_null($mStart)) {
+		$TSQ = $TSQ." AND `bm_month` > $mStart";
+	}
+	if(!is_null($mEnd)) {
+		$TSQ = $TSQ." AND `bm_month` <= $mEnd";
+	}
+	
+	// Return Time Series
+	$TSR = mysqli_query($mysqli, $TSQ);
+	
+	while($row = mysqli_fetch_assoc($TSR)) {
+		$out['labels'][] = $row['bm_month'];
+		//echo $row['bm_month']."<br>";
+		foreach(array_keys($row) as $name) {
+			$out['datasets']['data'][$name][] = $row[$name];
+		}
+	}
+	
+	return $out;
+}
+
+
+
 //############## SPHERICAL GEOMETRY #############################################
 
 function computeOffset($from, $distance, $heading) {
@@ -102,3 +165,7 @@ function intAsDate($int) {
 	$year = floor($int/12)+$epoch;
 	return $year."-".$month;
 }
+
+
+
+
