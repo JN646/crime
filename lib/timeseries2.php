@@ -1,6 +1,5 @@
 <?php
 	require_once '../config/config.php';
-	require_once '../lib/functions.php';
 	
 	// ($mysqli, [box-id], [month-start], [month-end])
 	//$data = getTimeSeries($mysqli, 3391);
@@ -28,9 +27,9 @@
 		}
 		$nearest = array_keys($distance, min($distance))[0];
 		
-		$data = getTimeSeriesData($mysqli, $nearest);
+		//$data = getTimeSeriesData($mysqli, $nearest);
 		
-		return $data;
+		//return $data;
 	}
 	
 ?>
