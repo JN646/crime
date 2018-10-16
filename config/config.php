@@ -20,12 +20,13 @@ define("WEB", "http://192.168.1.72:80/crime/"); //website URL
 $environment = LOCAL; //change to WEB if you're live
 
 
-// Constants - IN METERS
+// Constants
+// in SI units (meters)
 $boxHop = 8000; //ideal size is 8-10km.
 $boxSize = 10000; //10km
 $EARTH_RADIUS = 6371000;
-$IMMEDIATE_RAD = 200;
-$LOCAL_RAD = 1000;
+$IMMEDIATE_RAD = 500;
+$LOCAL_RAD = 2000;
 $IMMEDIATE_AREA = M_PI*$IMMEDIATE_RAD*$IMMEDIATE_RAD;
 $LOCAL_AREA = M_PI*$LOCAL_RAD*$LOCAL_RAD;
 

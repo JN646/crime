@@ -21,12 +21,12 @@
 			$this->labels = $l;
 		}
 		
-		function addDataset($d, $l = NULL) {
+		function addDataset($d, $l = NULL, $c = 'rgba(0,0,0,0.1)') {
 			// Check the data is a single dimensional array?
 			if(is_null($l)) {
 				$l = '';
 			}
-			$this->datasets[] = ["label"=>$l, "data"=>$d];
+			$this->datasets[] = ["label"=>$l, "data"=>$d, "backgroundColor"=>$c];
 		}
 		
 		function updateData() {

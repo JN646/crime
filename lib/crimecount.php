@@ -244,6 +244,39 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
         writeLog($mysqli, $latVal, $longVal, $radVal1, $radVal2);
       }
     }
+    
+    //############## Get Colours for Bars ###############################################
+    
+    function getColours($order) {
+    	// Define Colours
+    	$alpha = '0.3';
+    	$colours = [
+    		'Anti-social behaviour'=>'rgba(200,50,50, '.$alpha.')',
+			'Bicycle theft'=>'rgba(50,50,200, '.$alpha.')',
+			'Burglary'=>'rgba(50,50,50, '.$alpha.')',
+			'Criminal damage and arson'=>'rgba(255,150,150, '.$alpha.')',
+			'Drugs'=>'rgba(50,200,50, '.$alpha.')',
+			'Other crime'=>'rgba(0,0,0, '.$alpha.')',
+			'Other theft'=>'rgba(100,100,100, '.$alpha.')',
+			'Possession of weapons'=>'rgba(0,0,0, '.$alpha.')',
+			'Public order'=>'rgba(0,0,0, '.$alpha.')',
+			'Robbery'=>'rgba(0,0,0, '.$alpha.')',
+			'Shoplifting'=>'rgba(0,0,0, '.$alpha.')',
+			'Theft from the person'=>'rgba(0,0,0, '.$alpha.')',
+			'Vehicle crime'=>'rgba(0,0,0, '.$alpha.')',
+			'Violence and sexual offences'=>'rgba(0,0,0, '.$alpha.')'
+    	];
+    	
+    	$orderedColours = array();
+    	foreach($order as $crime) {
+    		$orderedColours[] = $colours[$crime];
+    	}
+    	return $orderedColours;
+    }
+    
+    
+    
+    
 
     // Generate Table of Data
     $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $IMMEDIATE_RAD, $LOCAL_RAD);
@@ -251,10 +284,13 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     // Generate Visual Table
     //renderTable($table); //shouldn't this render be in output.php? doesn't work any more anyway
 	
+	// Generate Ordered Colour Array
+	$colours = getColours($table['Crime Type']);
+	
 	$d = new ChartData();
 	$d->setType('bar');
 	$d->setLabels($table['Crime Type']);
-	$d->addDataset($table['Risk'], 'Risk');
+	$d->addDataset($table['Risk'], 'Risk', $colours);
 	$d->legend = false;
 	$d->toolTips = false;
 	
