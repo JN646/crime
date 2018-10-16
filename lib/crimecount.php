@@ -9,8 +9,9 @@ include_once 'classes.php';
 
 
 //############## CRIME COUNTER #################################################
-function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
+function crimeCounter($latVal, $longVal, $radVal1, $radVal2)
 {
+	global $mysqli;
     if ($TimeSeries_ExecTimer == TRUE) {
       if ($CrimeCounter_ExecTimer) {
         $time_start = microtime(true); // Start Timer

@@ -14,6 +14,9 @@
 		public $toolTips = false;
 		public $autoSkipX = false;
 		
+		public $xAxisLabel = NULL;
+		public $yAxisLabel = NULL;
+		
 		function addDataset($d, $l = NULL, $c = 'rgba(0,0,0,0.1)') {
 			// Check the data is a single dimensional array?
 			if(is_null($l)) {
@@ -46,7 +49,8 @@
 							'stacked'=>false,
 							'beginAtZero'=>true,
 							'scaleLabel'=>[
- 								'labelString'=>'X AXIS LABEL' //doesn't seem to work
+ 								'labelString'=>$this->xAxisLabel,
+ 								'display'=>!is_null($this->xAxisLabel)
 							],
 							'ticks'=>[
 								'stepSize'=>1,
@@ -55,7 +59,17 @@
 							]
 						]],
 						'yAxis'=>[[
-							
+							'stacked'=>false,
+							'beginAtZero'=>true,
+							'scaleLabel'=>[
+ 								'labelString'=>"foo",//$this->yAxisLabel,
+ 								'display'=>true//!is_null($this->yAxisLabel)
+ 							],
+							'ticks'=>[
+								'stepSize'=>1,
+								'min'=>0,
+								'autoSkip'=>$this->autoSkipX
+							]
 						]]
 					]
 				]
