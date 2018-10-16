@@ -245,6 +245,24 @@ function cronCreateCrimeTypeList($mysqli)
         if (!$result) {
             die('<p class="SQLError">SQL ERROR: Create Crime Type List ' . mysqli_error($mysqli) . '</p>');
         }
+        
+        // Insert Data.
+        $query = "INSERT INTO `data_crimes` (`id`, `crime_type`) VALUES
+        (1, 'Anti-social behaviour'),
+		(2, 'Bicycle theft'),
+		(3, 'Burglary'),
+		(4, 'Criminal damage and arson'),
+		(5, 'Drugs'),
+		(6, 'Other crime'),
+		(7, 'Other theft'),
+		(8, 'Possession of weapons'),
+		(9, 'Public order'),
+		(10, 'Robbery'),
+		(11, 'Shoplifting'),
+		(12, 'Theft from the person'),
+		(13, 'Vehicle crime'),
+		(14, 'Violence and sexual offences')";
+        $result = mysqli_query($mysqli, $query);
     }
 }
 

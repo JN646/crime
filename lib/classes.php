@@ -19,7 +19,7 @@
 			if(is_null($l)) {
 				$l = '';
 			}
-			$this->datasets[] = ["label"=>$l, "data"=>$d, "backgroundColor"=>$c];
+			$this->datasets[] = ["label"=>$l, "data"=>$d, "backgroundColor"=>$c, "borderColor"=>$c, 'fill'=>$this->type=='line'?false:true];
 		}
 		
 		function updateData() {
@@ -30,6 +30,11 @@
 					'datasets'=>$this->datasets
 				],
 				'options'=>[
+					'elements'=>[
+						'point'=>[
+							'radius'=>0
+						]
+					],
 					'legend'=>[
 						'display'=>$this->legend
 					],
@@ -46,7 +51,7 @@
 							'ticks'=>[
 								'stepSize'=>1,
 								'min'=>0,
-								'autoSkip'=>$this->autoSkipX //this is important
+								'autoSkip'=>$this->autoSkipX
 							]
 						]],
 						'yAxis'=>[[
@@ -58,6 +63,10 @@
 		}
 		
 		function getData() {
+			// If no datasets
+			if(!count($this->datasets)) {
+				return NULL;
+			}
 			$this->updateData();
 			return $this->$data;
 		}

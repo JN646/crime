@@ -76,8 +76,13 @@ if ($radVal2 <= $radVal1) {
       <div class="tab-pane fade show active" id="pills-crimecounter" role="tabpanel" aria-labelledby="pills-crimecounter-tab">
         <!-- Block Header -->
         <h2>Crime Counter</h2>
-        <?php echo reportHeader($latVal, $longVal); ?>
-        <?php $crimeCountData = crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2); ?>
+        <?php
+        	echo reportHeader($latVal, $longVal);
+			$crimeCountData = crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2);
+        	if(is_null($crimeCountData)) {
+        		echo "ChartData class has no datasets assigned, therefore returned NULL.";
+        	}
+        ?>
         <canvas id="crimeCountChart"></canvas>
 
     		<script type="text/javascript">
@@ -104,6 +109,9 @@ if ($radVal2 <= $radVal1) {
         <?php
         	echo reportHeader($latVal, $longVal);
         	$timeSeriesData = timeSeriesRequest($latVal, $longVal);
+        	if(is_null($timeSeriesData)) {
+        		echo "ChartData class has no datasets assigned, therefore returned NULL.";
+        	}
         ?>
 
         <canvas id="timeSeriesChart"></canvas>

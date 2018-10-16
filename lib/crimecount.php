@@ -43,17 +43,25 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
 
     function sqlCrimeArea($mysqli, $latVal, $longVal, $radius, $latLow, $latHigh, $longLow, $longHigh)
     {
-		// Pythag can be re-implemented more accurately (although still not mathematically correct) using ellipse version:
-		// https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
+    	// Use a rounded shape? Otherwise, it's square.
+		$useEllipse = true;
+		
         $sql = "SELECT COUNT(*) Count, `Crime_Type`
         FROM `data`
         WHERE `Latitude` > $latLow
         	AND `Latitude` < $latHigh
         	AND `Longitude` > $longLow
-        	AND `Longitude` < $longHigh
-        	/* !!!  AND SQRT(POW(`Latitude`-'$latVal', 2)+POW(`Longitude`-'$longVal', 2))<'$radius'  !!! */
-        GROUP BY `Crime_Type`
-        ORDER BY `Count` DESC";
+        	AND `Longitude` < $longHigh";
+		
+		if($useEllipse) {
+			// Calc Average lat/long Radius
+			$rLat = (abs($latVal-$latLow)+abs($latVal-$latHigh))/2;
+			$rLong = (abs($longVal-$longLow)+abs($longVal-$longHigh))/2;
+			$sql = $sql." AND (POW(`Latitude`-'$latVal', 2)*($rLong*$rLong)) + (POW(`Longitude`-'$longVal',2)*($rLat*$rLat)) < ($rLat*$rLat)*($rLong*$rLong)";
+		}
+		
+		// Append grouping and ordering
+		$sql = $sql." GROUP BY `Crime_Type` ORDER BY `Count` DESC";
 		
         // Run Query
         $resultCount = mysqli_query($mysqli, $sql);
