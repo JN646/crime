@@ -143,92 +143,9 @@ function crimeCounter($latVal, $longVal, $radVal1, $radVal2)
 		
         return $result; // Return Calculation
     }
-
-    //############## RENDER TABLE ##############################################
-    function renderTable($table) {
-
-        // Init Running Total Values
-        $runningCountL = $runningCountI = 0; ?>
-      <table id="myTable2" class='table table-bordered'>
-        <thead>
-          <tr>
-            <th id="headerCrime" class='text-center text-bold crimeCol' onclick="sortTable(0)">Crime</th>
-            <th id="headerImmediate" class='text-center text-bold immediateCol' onclick="sortTable(1)">Immediate</th>
-            <th id="headerLocal" class='text-center text-bold localCol' onclick="sortTable(2)">Local</th>
-            <th id="headerRisk" class='text-center text-bold riskCol' onclick="sortTable(3)">Risk</th>
-            <th id="headerRiskGraphic" class='text-center text-bold riskGraphicCol' onclick="sortTable(4)">Risk Graphic</th>
-          </tr>
-        </thead>
-        <tbody>
-      <?php for ($i=0; $i < count($table); $i++) { ?>
-        <tr>
-          <td class='crimeCol'><?php echo $table[$i][0] ?></td>
-          <td class='text-center immediateCol'>
-            <?php
-            // IMMEDIATE
-            // Check to see if zero.
-            if ($table[$i][1] == 0) {
-                echo "-"; // Add a Dash
-            } else {
-                // Set number format.
-                echo number_format($table[$i][1]);
-
-                // Contribute to running count.
-                $runningCountI = $runningCountI + $table[$i][1];
-            } ?>
-         </td>
-          <td class='text-center localCol'><?php echo number_format($table[$i][2]) ?></td>
-          <td class='text-center riskCol <?php echo colourRisk($table[$i][3]) ?>'><?php echo $table[$i][3] ?></td>
-          <td class='text-center riskGraphicCol'><div id='riskslider'><input class="form-control-range" type="range" min="-4" max="4" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
-        </tr>
-        <?php
-        // Contribute to running count.
-        $runningCountL = $runningCountL + $table[$i][2];
-        } ?>
-        </tbody>
-      </table>
-      <table class='table'>
-        <thead>
-          <tr>
-            <th class='outputText text-center text-bold'></th>
-            <th class='outputText text-center text-bold'>Immediate</th>
-            <th class='outputText text-center text-bold'>Local</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class='outputText text-bold'>Total Reported Crimes</td>
-            <td class='outputText text-center text-bold'><?php echo number_format($runningCountI) ?></td>
-            <td class='outputText text-center text-bold'><?php echo number_format($runningCountL) ?></td>
-          </tr>
-        </tbody>
-      </table>
-      <?php
-    }
-
-    //############## COLOUR RISK ###############################################
-    function colourRisk($risk) {
-        // Threshold Value
-        $thresh = 1.0;
-        $colour = "";
-
-        // Red
-        if ($risk > $thresh) {
-            $colour = "alert-danger"; // Red
-        }
-
-        // Green
-        if ($risk < $thresh) {
-            $colour = "alert-success"; // Green
-        }
-
-        // Grey
-        if ($risk == 0) {
-            $colour = "alert-active"; // Grey
-        }
-
-        return $colour;
-    }
+	
+	
+	
 	
 	global $IMMEDIATE_RAD;
 	global $LOCAL_RAD;
@@ -255,12 +172,9 @@ function crimeCounter($latVal, $longVal, $radVal1, $radVal2)
     }
     
     
-
+	
     // Generate Table of Data
     $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $IMMEDIATE_RAD, $LOCAL_RAD);
-
-    // Generate Visual Table
-    //renderTable($table); //shouldn't this render be in output.php? doesn't work any more anyway
 	
 	// Generate Ordered Colour Array
 	$colours = getChartColours($table['Crime Type']);
