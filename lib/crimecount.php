@@ -41,15 +41,15 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal)
     {
         //immediate area
-        $sql_immediate = "SELECT COUNT(id), COUNT(Longitude), COUNT(Latitude), Crime_Type, COUNT(Month)
-        FROM data
-        WHERE Longitude > $longLow
-        	AND Longitude < $longHigh
-        	AND Latitude > $latLow
-        	AND Latitude < $latHigh
-        	AND SQRT(POW(Latitude-'$latVal', 2)+POW(Longitude-'$longVal', 2))<'$radVal'
-        GROUP BY Crime_Type
-        ORDER BY COUNT(id) DESC";
+        $sql_immediate = "SELECT COUNT(*) Count, `Crime_Type`
+        FROM `data`
+        WHERE `Longitude` > $longLow
+        	AND `Longitude` < $longHigh
+        	AND `Latitude` > $latLow
+        	AND `Latitude` < $latHigh
+        	AND SQRT(POW(`Latitude`-'$latVal', 2)+POW(`Longitude`-'$longVal', 2))<'$radVal'
+        GROUP BY `Crime_Type`
+        ORDER BY `Count` DESC";
 
         // Run Query
         $resultCount_Immediate = mysqli_query($mysqli, $sql_immediate);
@@ -72,7 +72,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
             $j = 0; //table index
             while ($row = mysqli_fetch_assoc($resultCount_Local)) {
                 // Set Variables to Rows.
-                $crimeID = $row["COUNT(id)"];
+                $crimeID = $row["Count"];
                 $crimeType = $row["Crime_Type"];
                 // $crimeDate = $row["Month"];
 
@@ -86,7 +86,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
                 $row1 = mysqli_fetch_assoc($resultCount_Immediate);
                 for ($i=0; $i < count($resultCount_Immediate); $i++) {
                     if ($row1["Crime_Type"] == $table[$j][0]) {
-                        $table[$j][1] = $row1["COUNT(id)"];
+                        $table[$j][1] = $row1["Count"];
                     }
                 }
                 // Calculate Risk

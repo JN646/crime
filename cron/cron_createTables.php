@@ -237,7 +237,7 @@ function cronCreateCrimeTypeList($mysqli)
         // Create table if doesn't exist.
         $query = "CREATE TABLE IF NOT EXISTS `data_crimes` (
           `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-          `crime_type` varchar(255) DEFAULT NULL
+          `crime_type` varchar(255) NOT NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
         $result = mysqli_query($mysqli, $query);
 

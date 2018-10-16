@@ -94,7 +94,6 @@ if ($radVal2 <= $radVal1) {
         <?php
         	echo reportHeader($latVal, $longVal);
         	$timeSeriesData = timeSeriesRequest($latVal, $longVal);
-        	// var_dump($timeSeriesData);
         ?>
 
         <canvas id="timeSeriesChart"></canvas>

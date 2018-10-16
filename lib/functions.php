@@ -58,9 +58,6 @@ function callStat($mysqli, $stat) {
 
 function getTimeSeriesData($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 {
-	$bID = 2941; // !!! - TEMP OVERRIDE - !!!
-	echo "Box ID Override: ".$bID."<br>(change in code to something that works for you)<br><br>";
-
 	// Error Check Start and End
 	if(!is_null($mStart) && !is_null($mEnd) && $mStart>=$mEnd) {
 		//could just swap them around if not equal?
@@ -113,6 +110,32 @@ function getTimeSeriesData($mysqli, $bID, $mStart = NULL, $mEnd = NULL)
 	return $out->getData();
 }
 
+
+
+//############## GET NEAREST BOX #############################################
+function getBoxByLoc($mysqli, $lat, $long) {
+	// Find Some Nearby Boxes
+	$t = 0.2; //threshold in radians
+	$boxesQ = "SELECT * FROM `box`
+		WHERE `longitude` > ($long-$t)
+       	AND `longitude` < ($long+$t)
+       	AND `latitude` > ($lat-$t)
+       	AND `latitude` < ($lat+$t)";
+	$boxesR = mysqli_query($mysqli, $boxesQ);
+	
+	if(!mysqli_fetch_assoc($boxesR)) {
+		echo "Error: No nearby regions (boxes) found. Please make your way towards the UK (barr Soctland).<br>";
+		return NULL;
+	}
+	
+	// Calculate Nearest From Nearby Boxes
+	$distance = [];
+	while($row = mysqli_fetch_assoc($boxesR)) {
+		$distance[$row['id']] = computeArcDistance($lat, $long, $row['latitude'], $row['longitude']);
+	}
+	$nearestBox = array_keys($distance, min($distance))[0];
+	return $nearestBox;
+}
 
 
 //############## SPHERICAL GEOMETRY #############################################
@@ -168,17 +191,18 @@ function intAsDate($int) {
 
 //############## REPORT HEADER #################################################
 function reportHeader($latVal, $longVal) {
+  $link = "https://www.google.com/maps/@".$latVal.",".$longVal.",15z";
   ?>
   <!-- Table -->
   <table class='table col-md-6'>
     <tbody>
       <tr>
         <td><b>Location:</b></td>
-        <td><?php echo $latVal ?>, <?php echo $longVal ?></td>
+        <td><a href="<?php echo $link ?>" target="_blank"><?php echo round($latVal, 4) ?>, <?php echo round($longVal, 4) ?></a></td>
       </tr>
       <tr>
         <td><b>Generated:</b></td>
-        <td><?php echo date("d/m/y") ?></td>
+        <td><?php echo date("Y-m-d H:i:s") ?></td>
       </tr>
     </tbody>
   </table>
