@@ -3,7 +3,10 @@
 session_start();
 
 // Get Database Config
+include_once '../config/config.php';
 include_once 'functions.php';
+include_once 'classes.php';
+
 
 //############## CRIME COUNTER #################################################
 function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
@@ -38,101 +41,97 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
       }
     }
 
-    function sqlCrimeArea($mysqli, $longLow, $longHigh, $latLow, $latHigh, $latVal, $longVal, $radVal)
+    function sqlCrimeArea($mysqli, $latVal, $longVal, $radius, $latLow, $latHigh, $longLow, $longHigh)
     {
-        //immediate area
-        $sql_immediate = "SELECT COUNT(*) Count, `Crime_Type`
+		// Pythag can be re-implemented more accurately (although still not mathematically correct) using ellipse version:
+		// https://math.stackexchange.com/questions/76457/check-if-a-point-is-within-an-ellipse
+        $sql = "SELECT COUNT(*) Count, `Crime_Type`
         FROM `data`
-        WHERE `Longitude` > $longLow
-        	AND `Longitude` < $longHigh
-        	AND `Latitude` > $latLow
+        WHERE `Latitude` > $latLow
         	AND `Latitude` < $latHigh
-        	AND SQRT(POW(`Latitude`-'$latVal', 2)+POW(`Longitude`-'$longVal', 2))<'$radVal'
+        	AND `Longitude` > $longLow
+        	AND `Longitude` < $longHigh
+        	/* !!!  AND SQRT(POW(`Latitude`-'$latVal', 2)+POW(`Longitude`-'$longVal', 2))<'$radius'  !!! */
         GROUP BY `Crime_Type`
         ORDER BY `Count` DESC";
-
+		
         // Run Query
-        $resultCount_Immediate = mysqli_query($mysqli, $sql_immediate);
-
+        $resultCount = mysqli_query($mysqli, $sql);
+		
         // If Error
-        if (!$resultCount_Immediate) {
+        if (!$resultCount) {
             die('<p class="SQLError">Could not run query: ' . mysqli_error($mysqli) . '</p>');
         }
-
-        return $resultCount_Immediate;
+		
+		// It may be possible here to infer whether no returns means 0 or NULL.
+		// Perhaps by using st-dev and seeing if it can reliably tell us if 0 falls within a range.
+		
+        return $resultCount;
     }
 
     //############## PRE CALC TABLE ############################################
     function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
     {
         $nRows = mysqli_num_rows($resultCount_Local);
-        $table = array(array(),array(),array(),array());
+        $table = array('Crime Type'=>array(),'Immediate Area'=>array(),'Local Area'=>array(),'Risk'=>array());
         // Fetch Results
-        if ($nRows) {
-            $j = 0; //table index
-            while ($row = mysqli_fetch_assoc($resultCount_Local)) {
-                // Set Variables to Rows.
-                $crimeID = $row["Count"];
-                $crimeType = $row["Crime_Type"];
-                // $crimeDate = $row["Month"];
-
+        if($nRows) {
+            while($localRow = mysqli_fetch_assoc($resultCount_Local)) {
                 // Set Variables
-              $table[$j][0] = $crimeType;   //crime type
-              $table[$j][1] = 0;            //immediate count
-              $table[$j][2] = $crimeID;     //local count
-              $table[$j][3] = "N/A";        //risk
-
-              // Get Immediate Count
-                $row1 = mysqli_fetch_assoc($resultCount_Immediate);
-                for ($i=0; $i < count($resultCount_Immediate); $i++) {
-                    if ($row1["Crime_Type"] == $table[$j][0]) {
-                        $table[$j][1] = $row1["Count"];
-                    }
-                }
-                // Calculate Risk
-                $table[$j][3] = calcRisk($table[$j][1], $table[$j][2], $radVal1, $radVal2);
-                $j++;
-            }
+				$table['Crime Type'][] = $localRow["Crime_Type"]; //crime type
+				$crimeIndex = array_search($localRow['Crime_Type'], $table['Crime Type']);
+				$table['Local Area'][$crimeIndex] = $localRow["Count"]; //local count
+			}
+			
+			// Match immediate counts to corresponding indecies
+			while($immediateRow = mysqli_fetch_assoc($resultCount_Immediate)) {
+				$table['Immediate Area'][array_search($immediateRow['Crime_Type'], $table['Crime Type'])] = $immediateRow['Count'];
+			}
+			
+			foreach($table['Crime Type'] as $index => $crime) {
+				$table['Risk'][$index] = calcRisk($table['Immediate Area'][$index], $table['Local Area'][$index], $radVal1, $radVal2);
+			}
+			
         } else {
             // No Results
-            echo "<p id='noResults'>No Results.</p>";
+            echo "<p id='noResults'>No Results. function preCalcTable()</p>";
         }
         return $table; // Return the table.
     }
 
     //############## CALC RISK #################################################
-    function calcRisk($n1, $n2, $radius1, $radius2)
+    function calcRisk($iCount, $lCount, $iRadius, $lRadius2)
     {
-    	//Scale coefficient (before limiting)
-    	$scale = 0.2;
-    	//soft limit between -1 & 1
-    	$limit = True;
-    	//number of decimal points (0 for no round)
+    	// Soft limit between -1 & 1 (also controls scaling)
+    	$limit = False;
+    	// Scale coefficient (before limiting)
+    	$Scale = 0.2;
+    	// Number of decimal points (0 for no round)
     	$round = 2;
-
+		
         // Get Area
-        $area1 = PI()*$radius1*$radius1;
-        $area2 = PI()*$radius2*$radius2;
-
+        $iArea = M_PI*$iRadius*$iRadius;
+        $lArea = M_PI*$lRadius2*$lRadius2;
+		
         // Get Radius
-        $crimeP1 = $n1/$area1; //p (rho) is used to notate density in physics; crimeP means crime density.
-        $crimeP2 = $n2/$area2;
-
+        $iCrimeP = $iCount/$iArea; //p (rho) is used to notate density in physics; crimeP means crime density.
+        $lCrimeP = $lCount/$lArea;
+		
         // If no data.
-        if (!$n1) {
+        if (!$iCount) {
             // N/A
-            $result = "<span class='naSign'> - </span>";
+            $result = "<span class='naSign'> NULL </span>";
         } else {
             // Get Risk
-            $result = log($crimeP1/$crimeP2, 2) * $scale;
+            $result = log($iCrimeP/$lCrimeP, 2);
             if($limit) {
-            	$result = tanh($result); //tanh() oft-limits between -1. & 1.
+            	$result = tanh($result * $scale);
             }
             if($round != 0) {
             	$result = round($result, $round);
             }
         }
-
+		
         return $result; // Return Calculation
     }
 
@@ -171,7 +170,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
          </td>
           <td class='text-center localCol'><?php echo number_format($table[$i][2]) ?></td>
           <td class='text-center riskCol <?php echo colourRisk($table[$i][3]) ?>'><?php echo $table[$i][3] ?></td>
-          <td class='text-center riskGraphicCol'><div id='riskslider'><input class="form-control-range" type="range" min="-1" max="1" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
+          <td class='text-center riskGraphicCol'><div id='riskslider'><input class="form-control-range" type="range" min="-4" max="4" step="0.01" disabled value="<?php echo $table[$i][3] ?>" class="slider" id="myRange"></div></td>
         </tr>
         <?php
         // Contribute to running count.
@@ -221,21 +220,23 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
 
         return $colour;
     }
-
-    // Immediate
-    $latLow1    = $latVal - $radVal1;
-    $latHigh1   = $latVal + $radVal1;
-    $longLow1   = $longVal - $radVal1;
-    $longHigh1  = $longVal + $radVal1;
-    // Local
-    $latLow2    = $latVal - $radVal2;
-    $latHigh2   = $latVal + $radVal2;
-    $longLow2   = $longVal - $radVal2;
-    $longHigh2  = $longVal + $radVal2;
-
+	
+	global $IMMEDIATE_RAD;
+	global $LOCAL_RAD;
+	$loc = ['lat'=>$latVal, 'lng'=>$longVal];
+	$latLow1	= computeOffset($loc, $IMMEDIATE_RAD, 180)['lat'];
+    $latHigh1   = computeOffset($loc, $IMMEDIATE_RAD, 0)['lat'];
+    $longLow1   = computeOffset($loc, $IMMEDIATE_RAD, 270)['lng'];
+    $longHigh1  = computeOffset($loc, $IMMEDIATE_RAD, 90)['lng'];
+    
+	$latLow2	= computeOffset($loc, $LOCAL_RAD, 180)['lat'];
+    $latHigh2   = computeOffset($loc, $LOCAL_RAD, 0)['lat'];
+    $longLow2   = computeOffset($loc, $LOCAL_RAD, 270)['lng'];
+    $longHigh2  = computeOffset($loc, $LOCAL_RAD, 90)['lng'];
+	
     // Run Queries
-    $resultCount_Immediate  = sqlCrimeArea($mysqli, $longLow1, $longHigh1, $latLow1, $latHigh1, $latVal, $longVal, $radVal1);
-    $resultCount_Local      = sqlCrimeArea($mysqli, $longLow2, $longHigh2, $latLow2, $latHigh2, $latVal, $longVal, $radVal2);
+    $resultCount_Immediate  = sqlCrimeArea($mysqli, $latVal, $longVal, $IMMEDIATE_RAD, $latLow1, $latHigh1, $longLow1, $longHigh1);
+    $resultCount_Local      = sqlCrimeArea($mysqli, $latVal, $longVal, $LOCAL_RAD, $latLow2, $latHigh2, $longLow2, $longHigh2);
 
     // Write to Log only if user is logged in.
     if ($require_logon_to_search == TRUE) {
@@ -245,11 +246,18 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
     }
 
     // Generate Table of Data
-    $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2);
+    $table = preCalcTable($resultCount_Immediate, $resultCount_Local, $IMMEDIATE_RAD, $LOCAL_RAD);
 
     // Generate Visual Table
-    renderTable($table);
-
+    //renderTable($table); //shouldn't this render be in output.php? doesn't work any more anyway
+	
+	$d = new ChartData();
+	$d->setType('bar');
+	$d->setLabels($table['Crime Type']);
+	$d->addDataset($table['Risk'], 'Risk');
+	$d->legend = false;
+	$d->toolTips = false;
+	
     // Display Script End time
     if ($CrimeCounter_ExecTimer) {
       $time_end = microtime(true);
@@ -259,5 +267,7 @@ function crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2)
 
       echo '<b>Total Execution Time:</b> ' . number_format($execution_time, 4) . ' Seconds';
     }
+    
+    return $d->getData();
 }
  ?>

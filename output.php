@@ -60,14 +60,14 @@ if ($radVal2 <= $radVal1) {
         <a class="nav-link active" id="pills-crimecounter-tab" data-toggle="pill" href="#pills-crimecounter" role="tab" aria-controls="pills-crimecount" aria-selected="true">Crime Counter</a>
       </li>
 
-      <!-- Something Else -->
-      <li class="nav-item">
-        <a class="nav-link" id="pills-p2-tab" data-toggle="pill" href="#pills-p2" role="tab" aria-controls="pills-p2" aria-selected="false">Pane 2</a>
-      </li>
-
       <!-- Time Series Chart -->
       <li class="nav-item">
         <a class="nav-link" id="pills-timeseries-tab" data-toggle="pill" href="#pills-timeseries" role="tab" aria-controls="pills-timeseries" aria-selected="false">Time Series</a>
+      </li>
+      
+      <!-- Something Else -->
+      <li class="nav-item">
+        <a class="nav-link" id="pills-p2-tab" data-toggle="pill" href="#pills-p2" role="tab" aria-controls="pills-p2" aria-selected="false">Pane 2</a>
       </li>
     </ul>
     <div class="tab-content" id="pills-tabContent">
@@ -77,7 +77,17 @@ if ($radVal2 <= $radVal1) {
         <!-- Block Header -->
         <h2>Crime Counter</h2>
         <?php echo reportHeader($latVal, $longVal); ?>
-        <?php echo crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2); ?>
+        <?php $crimeCountData = crimeCounter($mysqli, $latVal, $longVal, $radVal1, $radVal2); ?>
+        <canvas id="crimeCountChart"></canvas>
+
+    		<script type="text/javascript">
+    			// Get array from PHP
+    			var ccData = <?php echo json_encode($crimeCountData); ?>;
+    			console.log(ccData);
+
+    			var ctx = document.getElementById("crimeCountChart").getContext('2d');
+    			var ccChart = new Chart(ctx, ccData);
+    		</script>
       </div>
 
       <!-- Something Else -->

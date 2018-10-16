@@ -21,9 +21,13 @@ $environment = LOCAL; //change to WEB if you're live
 
 
 // Constants - IN METERS
-$boxHop = 8000; //ideal size is 8-10km. Made larger for fast debugging
+$boxHop = 8000; //ideal size is 8-10km.
 $boxSize = 10000; //10km
-$earthR = 6371000;
+$EARTH_RADIUS = 6371000;
+$IMMEDIATE_RAD = 200;
+$LOCAL_RAD = 1000;
+$IMMEDIATE_AREA = M_PI*$IMMEDIATE_RAD*$IMMEDIATE_RAD;
+$LOCAL_AREA = M_PI*$LOCAL_RAD*$LOCAL_RAD;
 
 // Global Settings
 $require_logon_to_search = TRUE;

@@ -1,5 +1,6 @@
 <?php
 include_once("classes.php");
+include_once '../config/config.php';
 
 //############## FUNCTION FILE #################################################
 //############## Version Number ################################################
@@ -141,6 +142,7 @@ function getBoxByLoc($mysqli, $lat, $long) {
 //############## SPHERICAL GEOMETRY #############################################
 
 function computeOffset($from, $distance, $heading) {
+	global $EARTH_RADIUS;
 	$distance /= 6371000; //MathUtil::EARTH_RADIUS; //calculates fraction of unit circle. Can we call this constant from somewhere?
 	$heading = deg2rad($heading);
 	// http://williams.best.vwh.net/avform.htm#LL
@@ -157,6 +159,7 @@ function computeOffset($from, $distance, $heading) {
 }
 
 function computeArcDistance($latitude1, $longitude1, $latitude2, $longitude2) {
+	global $EARTH_RADIUS;
 	$earth_radius = 6371000;
 
 	$dLat = deg2rad($latitude2 - $latitude1);

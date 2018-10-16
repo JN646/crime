@@ -1,5 +1,4 @@
 <?php
-	include_once("functions.php");
 	
 	// Put custom classes in here
 	
@@ -11,6 +10,16 @@
 		private $type = "line";
 		private $labels; //for the x axis
 		private $datasets; //an array of some [ [label, [numbers, ...]], ... ]
+		public $legend = true;
+		public $toolTips = false;
+		
+		function setType($t) {
+			$this->type = $t;
+		}
+		
+		function setLabels($l) {
+			$this->labels = $l;
+		}
 		
 		function addDataset($d, $l = NULL) {
 			// Check the data is a single dimensional array?
@@ -20,16 +29,39 @@
 			$this->datasets[] = ["label"=>$l, "data"=>$d];
 		}
 		
-		function setLabels($l) {
-			$this->labels = $l;
-		}
-		
-		function setType($t) {
-			$this->type = $t;
-		}
-		
 		function updateData() {
-			$this->$data = ['type'=>$this->type, 'data'=>['labels'=>$this->labels, 'datasets'=>$this->datasets]];
+			$this->$data = [
+				'type'=>$this->type,
+				'data'=>[
+					'labels'=>$this->labels,
+					'datasets'=>$this->datasets
+				],
+				'options'=>[
+					'legend'=>[
+						'display'=>$this->legend
+					],
+					'tooltips'=>[
+						'enabled'=>$this->toolTips
+					],
+					'scales'=>[
+						'xAxes'=>[[
+							'stacked'=>false,
+							'beginAtZero'=>true,
+							'scaleLabel'=>[
+ 								'labelString'=>'X AXIS LABEL' //doesn't seem to work
+							],
+							'ticks'=>[
+								'stepSize'=>1,
+								'min'=>0,
+								'autoSkip'=>false //this is important
+							]
+						]],
+						'yAxis'=>[[
+							
+						]]
+					]
+				]
+			];
 		}
 		
 		function getData() {
