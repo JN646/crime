@@ -7,19 +7,12 @@
 	class ChartData
 	{
 		private $data; //master variable to return for JS
-		private $type = "line";
-		private $labels; //for the x axis
+		public $type = "line";
+		public $labels; //for the x axis
 		private $datasets; //an array of some [ [label, [numbers, ...]], ... ]
 		public $legend = true;
 		public $toolTips = false;
-		
-		function setType($t) {
-			$this->type = $t;
-		}
-		
-		function setLabels($l) {
-			$this->labels = $l;
-		}
+		public $autoSkipX = false;
 		
 		function addDataset($d, $l = NULL, $c = 'rgba(0,0,0,0.1)') {
 			// Check the data is a single dimensional array?
@@ -53,7 +46,7 @@
 							'ticks'=>[
 								'stepSize'=>1,
 								'min'=>0,
-								'autoSkip'=>false //this is important
+								'autoSkip'=>$this->autoSkipX //this is important
 							]
 						]],
 						'yAxis'=>[[
