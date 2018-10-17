@@ -14,14 +14,14 @@ if($_SESSION["admin"] !== 1){
 }
 ?>
 <body>
-  <?php include '../partials/_header.php' ?>
+  <?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_header.php' ?>
 	<!-- Container -->
 	<div id='bodyContainer' class="fluid-container">
 		<div class="row col-md-12">
 		<div class="col-md-2">
 			<div class='col-md-12'>
 				<!-- Side Bar -->
-				<?php include '../partials/_admin_sidebar.php' ?>
+				<?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_admin_sidebar.php' ?>
 			</div>
 		</div>
 		<div class="col-md-10">
@@ -32,9 +32,9 @@ if($_SESSION["admin"] !== 1){
           // Arrays
           $sql = "SELECT DISTINCT Month FROM data";
           $result = mysqli_query($mysqli, $sql);
-
           $mYears = array();
 
+          // Add months to
           if (mysqli_num_rows($result) > 0) {
               // output data of each row
               while($row = mysqli_fetch_assoc($result)) {
@@ -44,13 +44,13 @@ if($_SESSION["admin"] !== 1){
               echo "No Month Data";
           }
 
-          sort($mYears);
+          sort($mYears); // Sort the date array.
 
           // Free Query
           mysqli_free_result($result);
 
           // Is the data missing?
-          function isMissingIndicator() {
+          function isMissingIndicator($mysqli) {
             // Data missing
             if (true) {
               return "<i class='fas fa-exclamation' style='color: red'></i>";
@@ -169,7 +169,7 @@ if($_SESSION["admin"] !== 1){
                       // Get the correct year.
                       for ($i=0; $i < count($mYears); $i++) {
                         if (strpos($mYears[$i], '2016') !== false) {
-                          echo "<td class='text-center'>" . isMissingIndicator() . "</td>";
+                          echo "<td class='text-center'>" . isMissingIndicator($mysqli) . "</td>";
                         }
                       }
                       ?>
@@ -241,6 +241,6 @@ if($_SESSION["admin"] !== 1){
 	</div>
 </div>
 	<!-- Footer -->
-	<?php include '../partials/_footer.php' ?>
+	<?php $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_footer.php' ?>
 </body>
 </html>
