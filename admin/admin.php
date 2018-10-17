@@ -18,31 +18,35 @@ if($_SESSION["admin"] !== 1){
 
   <!-- Container -->
   <div id='bodyContainer' class="fluid-container">
-    <div class="row">
-    <div class="col-md-2">
-      <div class='col-md-12'>
-        <!-- Side Bar -->
-        <?php include '../partials/_admin_sidebar.php' ?>
+    <div class="row col-md-12">
+
+      <!-- Sidebar -->
+      <div class="col-md-2">
+        <div class='col-md-12'>
+          <!-- Side Bar -->
+          <?php include '../partials/_admin_sidebar.php' ?>
+        </div>
       </div>
-    </div>
-    <div class="col-md-10">
-      <div class="row">
-        <div class="col-md-12">
-          <!-- Page Header -->
-          <div class="page-header">
-              <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our admin site.</h1>
+
+      <!-- Body Wrapper -->
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our admin site.</h1>
+            </div>
+            <p>This is the admin area of the site. Currently not functioning and not serving a purpose.</p>
           </div>
-          <p>This is the admin area of the site. Currently not functioning and not serving a purpose.</p>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <hr>
+            <!-- Stats -->
+            <?php include '../partials/_stats.php' ?>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <hr>
-          <!-- Stats -->
-          <?php include '../partials/_stats.php' ?>
-        </div>
-      </div>
-    </div>
     </div>
   </div>
   <!-- Footer -->

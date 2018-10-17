@@ -17,7 +17,7 @@ if($_SESSION["admin"] !== 1){
   <?php include '../partials/_header.php' ?>
 	<!-- Container -->
 	<div id='bodyContainer' class="fluid-container">
-		<div class="row">
+		<div class="row col-md-12">
 		<div class="col-md-2">
 			<div class='col-md-12'>
 				<!-- Side Bar -->

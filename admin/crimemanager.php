@@ -38,7 +38,7 @@ include('lib/crimeserver.php');
 <body>
 	<!-- Container -->
 	<div id='bodyContainer' class="fluid-container">
-		<div class="row">
+		<div class="row col-md-12">
 		<div class="col-md-2">
 			<div class='col-md-12'>
 				<!-- Side Bar -->
