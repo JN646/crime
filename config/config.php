@@ -53,6 +53,10 @@ $CRIME_COLOURS = [
 // Global Settings
 $require_logon_to_search = TRUE;
 
+// Menu Items
+$menu_usermanage = TRUE;
+$crime_usermanage = TRUE;
+
 // Time Series
 $TimeSeries_ExecTimer == TRUE; //should these be using "=="?
 
