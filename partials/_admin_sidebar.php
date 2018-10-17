@@ -93,7 +93,7 @@
         ?>
           <table class='table table-bordered' align="center">
             <tr>
-              <th class='text-center'>Name</th>
+              <th width=20% class='text-center'>Name</th>
               <th class='text-center'>Value</th>
             </tr>
           <?php

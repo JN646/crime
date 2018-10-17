@@ -4,7 +4,7 @@ session_start();
  ?>
 
   <!-- Header Form -->
-<?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_header.php' ?>
+<?php include_once $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_header.php' ?>
     <!-- Container -->
     <div id='bodyContainer' class="container">
       <div class="col-md-12">
@@ -14,6 +14,6 @@ session_start();
     </div>
 
       <!-- Footer -->
-      <?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_footer.php' ?>
+      <?php include_once $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_footer.php' ?>
   </body>
 </html>

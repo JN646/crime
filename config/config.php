@@ -55,7 +55,7 @@ $require_logon_to_search = TRUE;
 
 // Menu Items
 $menu_usermanage = TRUE;
-$crime_usermanage = TRUE;
+$menu_crimemanage = TRUE;
 
 // Time Series
 $TimeSeries_ExecTimer = TRUE;
