@@ -58,8 +58,8 @@ $menu_usermanage = TRUE;
 $crime_usermanage = TRUE;
 
 // Time Series
-$TimeSeries_ExecTimer == TRUE; //should these be using "=="?
+$TimeSeries_ExecTimer = TRUE;
 
 // Crime Counter
-$CrimeCounter_ExecTimer == TRUE;
+$CrimeCounter_ExecTimer = TRUE;
 ?>
