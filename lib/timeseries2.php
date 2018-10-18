@@ -53,22 +53,39 @@
 			}
 		}
 		$out->labels = $xLabels;
+		
+		// Get counts
 		foreach($sets as $type => $counts) {
 			if(in_array($type, $crime_types)) { // This filters out crime_types not in data_crimes
+				$counts = convertToPC($counts); //convert to percent (delta-percent over time)
 				$out->addDataset($counts, $type, getChartColours($type));
 			}
 		}
 
 		return $out->getData();
 	}
-
+	
+	// Converts a number array into a percent change from index to index
+	function convertToPC($counts) {
+		$out = array();
+		foreach($counts as $key=>$count) {
+			$pc = NULL;
+			if(!is_null($counts[$key]) && !is_null($counts[$key-1])) {
+				$pc = (($counts[$key]-$counts[$key-1])/$counts[$key-1])*100;
+			}
+			$out[$key] = $pc;
+		}
+		return $out;
+	}
+	
+	
 	// ################# MAIN ############################################
 
 	// A request from a device to get timeseries information
 	function timeSeriesRequest($lat, $long) {
 		global $mysqli;
 
-		$nearestBox = getBoxByLoc($mysqli, $lat, $long);
+		$nearestBox = getBoxByLoc($lat, $long);
 
 		// Get the time series data
 		$data = getTimeSeriesData($mysqli, $nearestBox);

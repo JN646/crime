@@ -78,7 +78,7 @@ if ($radVal2 <= $radVal1) {
         <h2>Crime Counter</h2>
         <?php
         	echo reportHeader($latVal, $longVal);
-			$crimeCountData = crimeCounter($latVal, $longVal, $radVal1, $radVal2);
+			$crimeCountData = crimeCounter($latVal, $longVal);
         	if(is_null($crimeCountData)) {
         		echo "ChartData class has no datasets assigned, therefore returned NULL.";
         	}

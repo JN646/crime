@@ -78,7 +78,8 @@ function getChartColours($crimes) {
 }
 
 //############## GET NEAREST BOX #############################################
-function getBoxByLoc($mysqli, $lat, $long) {
+function getBoxByLoc($lat, $long) {
+	global $mysqli;
 	// Find Some Nearby Boxes
 	$t = 0.2; //threshold in radians
 	$boxesQ = "SELECT * FROM `box`
@@ -165,11 +166,15 @@ function reportHeader($latVal, $longVal) {
     <tbody>
       <tr>
         <td><b>Location:</b></td>
-        <td><a href="<?php echo $link ?>" target="_blank"><?php echo round($latVal, 4) ?>, <?php echo round($longVal, 4) ?></a></td>
+        <td><a href="<?php echo $link ?>" target="_blank"><?php echo round($latVal, 4) ?>, <?php echo round($longVal, 4); ?></a></td>
       </tr>
       <tr>
         <td><b>Generated:</b></td>
-        <td><?php echo date("Y-m-d H:i:s") ?></td>
+        <td><?php echo date("Y-m-d H:i:s"); ?></td>
+      </tr>
+      <tr>
+      	<td><b>Box #:</b></td>
+      	<td><?php echo getBoxByLoc($latVal, $longVal); ?></td>
       </tr>
     </tbody>
   </table>

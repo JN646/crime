@@ -9,14 +9,14 @@ include_once 'classes.php';
 
 
 //############## CRIME COUNTER #################################################
-function crimeCounter($latVal, $longVal, $radVal1, $radVal2)
+function crimeCounter($latVal, $longVal)
 {
 	global $mysqli;
     if ($TimeSeries_ExecTimer == TRUE) {
       if ($CrimeCounter_ExecTimer) {
         $time_start = microtime(true); // Start Timer
       }
-
+	
     }
 
     function writeLog($mysqli, $latVal, $longVal, $radVal1, $radVal2) {
@@ -79,7 +79,7 @@ function crimeCounter($latVal, $longVal, $radVal1, $radVal2)
     }
 
     //############## PRE CALC TABLE ############################################
-    function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal1, $radVal2)
+    function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal_Immediate, $radVal_Local)
     {
         $nRows = mysqli_num_rows($resultCount_Local);
         $table = array('Crime Type'=>array(),'Immediate Area'=>array(),'Local Area'=>array(),'Risk'=>array());
@@ -98,54 +98,40 @@ function crimeCounter($latVal, $longVal, $radVal1, $radVal2)
 			}
 			
 			foreach($table['Crime Type'] as $index => $crime) {
-				$table['Risk'][$index] = calcRisk($table['Immediate Area'][$index], $table['Local Area'][$index], $radVal1, $radVal2);
+				$table['Risk'][$index] = calcRisk($table['Immediate Area'][$index], $table['Local Area'][$index], $radVal_Immediate, $radVal_Local);
 			}
-			
-        } else {
-            // No Results
-            echo "<p id='noResults'>No Results. function preCalcTable()</p>";
-        }
+		}
         return $table; // Return the table.
     }
 
     //############## CALC RISK #################################################
-    function calcRisk($iCount, $lCount, $iRadius, $lRadius2)
+    function calcRisk($iCount, $lCount, $iRadius, $lRadius)
     {
-    	// Soft limit between -1 & 1 (also controls scaling)
-    	$limit = False;
-    	// Scale coefficient (before limiting)
-    	$Scale = 0.2;
-    	// Number of decimal points (0 for no round)
-    	$round = 2;
-		
         // Get Area
         $iArea = M_PI*$iRadius*$iRadius;
-        $lArea = M_PI*$lRadius2*$lRadius2;
+        $lArea = M_PI*$lRadius*$lRadius;
 		
         // Get Radius
         $iCrimeP = $iCount/$iArea; //p (rho) is used to notate density in physics; crimeP means crime density.
         $lCrimeP = $lCount/$lArea;
 		
         // If no data.
-        if (!$iCount) {
+        if(is_null($iCount) or is_null($lCount)) {
             // N/A
-            $result = "<span class='naSign'> NULL </span>";
+            $risk = NULL;
         } else {
             // Get Risk
-            $result = log($iCrimeP/$lCrimeP, 2);
-            if($limit) {
-            	$result = tanh($result * $scale);
-            }
-            if($round != 0) {
-            	$result = round($result, $round);
-            }
+            $risk = log($iCrimeP/$lCrimeP, 2);
         }
-		
-        return $result; // Return Calculation
+		//echo $iCount." ".$lCount.": ".$risk."<br>";
+        return $risk; // Return Calculation
     }
 	
 	
 	
+	
+	
+	// ########### MAIN ################################################
 	
 	global $IMMEDIATE_RAD;
 	global $LOCAL_RAD;

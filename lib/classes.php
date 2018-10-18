@@ -35,7 +35,7 @@
 				'options'=>[
 					'elements'=>[
 						'point'=>[
-							'radius'=>0
+							'radius'=>-1
 						]
 					],
 					'legend'=>[
