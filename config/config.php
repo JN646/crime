@@ -11,7 +11,7 @@ $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
  // If Connection Fail
 if ($mysqli->connect_error) {
-    die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
+		die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
 }
 
 // Global Variables.
@@ -34,20 +34,20 @@ $LOCAL_AREA = M_PI*$LOCAL_RAD*$LOCAL_RAD;
 // Define Crime Colours
 $ALPHA = '0.3';
 $CRIME_COLOURS = [
-    'Anti-social behaviour'=>'rgba(200, 50, 50, '.$ALPHA.')',
-	'Bicycle theft'=>'rgba(50, 50, 200, '.$ALPHA.')',
-	'Burglary'=>'rgba(50, 50, 50, '.$ALPHA.')',
-	'Criminal damage and arson'=>'rgba(255,150,150, '.$ALPHA.')',
-	'Drugs'=>'rgba(50, 200, 50, '.$ALPHA.')',
-	'Other crime'=>'rgba(0, 0, 0, '.$ALPHA.')',
-	'Other theft'=>'rgba(100, 100, 100, '.$ALPHA.')',
-	'Possession of weapons'=>'rgba(0, 0, 0, '.$ALPHA.')',
-	'Public order'=>'rgba(0, 0, 0, '.$ALPHA.')',
-	'Robbery'=>'rgba(0, 0, 0, '.$ALPHA.')',
-	'Shoplifting'=>'rgba(0, 0, 0, '.$ALPHA.')',
-	'Theft from the person'=>'rgba(0, 0, 0, '.$ALPHA.')',
-	'Vehicle crime'=>'rgba(0, 0, 0, '.$ALPHA.')',
-	'Violence and sexual offences'=>'rgba(0, 0, 0, '.$ALPHA.')'
+		'Anti-social behaviour'=>'rgba(200, 50, 50, '.$ALPHA.')',
+		'Bicycle theft'=>'rgba(50, 50, 200, '.$ALPHA.')',
+		'Burglary'=>'rgba(50, 50, 50, '.$ALPHA.')',
+		'Criminal damage and arson'=>'rgba(255,150,150, '.$ALPHA.')',
+		'Drugs'=>'rgba(50, 200, 50, '.$ALPHA.')',
+		'Other crime'=>'rgba(0, 0, 0, '.$ALPHA.')',
+		'Other theft'=>'rgba(100, 100, 100, '.$ALPHA.')',
+		'Possession of weapons'=>'rgba(0, 0, 0, '.$ALPHA.')',
+		'Public order'=>'rgba(0, 0, 0, '.$ALPHA.')',
+		'Robbery'=>'rgba(0, 0, 0, '.$ALPHA.')',
+		'Shoplifting'=>'rgba(0, 0, 0, '.$ALPHA.')',
+		'Theft from the person'=>'rgba(0, 0, 0, '.$ALPHA.')',
+		'Vehicle crime'=>'rgba(0, 0, 0, '.$ALPHA.')',
+		'Violence and sexual offences'=>'rgba(0, 0, 0, '.$ALPHA.')'
 ];
 
 // Global Settings
