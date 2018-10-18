@@ -17,7 +17,7 @@ session_start();
       // Check if the user is logged in, if not then redirect to login page
       if ($require_logon_to_search == FALSE) {
         if(isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == true){
-            include 'partials/_form.php';
+            include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_form.php';
         } else {
           ?>
           <div class="alert alert-info">
@@ -26,7 +26,7 @@ session_start();
           <?php
         }
       } else {
-        include 'partials/_form.php';
+        include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_form.php';
       }
       ?>
 
@@ -38,11 +38,11 @@ session_start();
       <hr>
 
       <!-- Stats Partial -->
-      <?php include 'partials/_stats.php' ?>
+      <?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_stats.php' ?>
 
     </div>
 
       <!-- Footer -->
-      <?php include 'partials/_footer.php' ?>
+      <?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_footer.php' ?>
   </body>
 </html>
