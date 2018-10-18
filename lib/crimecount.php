@@ -128,7 +128,6 @@ function crimeCounter($latVal, $longVal)
         return $risk; // Return Calculation
     }
 
-
 	// ########### MAIN ##########################################################
 	global $IMMEDIATE_RAD;
 	global $LOCAL_RAD;

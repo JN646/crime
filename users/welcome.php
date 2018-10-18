@@ -35,6 +35,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
         <hr>
 
+        <?php if ($welcome_savingEnabled == TRUE) {
+          // code...
+        } ?>
         <div class="row">
           <div class="col-md-12 border">
             <h2>Bookmarked</h2>
@@ -228,6 +231,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
               /****** end build pagination links ******/
               echo "</ul></nav>";
               ?>
+
+            <?php } ?>
               </tbody>
             </table>
           </div>

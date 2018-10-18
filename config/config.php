@@ -52,6 +52,7 @@ $CRIME_COLOURS = [
 
 // Global Settings
 $require_logon_to_search = TRUE;
+$welcome_savingEnabled = TRUE;
 
 // Menu Items
 $menu_usermanage = TRUE;
