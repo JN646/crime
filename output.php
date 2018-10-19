@@ -5,6 +5,7 @@
 <!-- Include Reporting Options -->
 <?php include 'lib/crimecount.php'; ?>
 <?php include 'lib/timeseries2.php'; ?>
+<?php include 'lib/Compare.php'; ?>
 
 <?php
 //############## SERVER FILE ###################################################
@@ -65,9 +66,14 @@ if ($radVal2 <= $radVal1) {
         <a class="nav-link" id="pills-timeseries-tab" data-toggle="pill" href="#pills-timeseries" role="tab" aria-controls="pills-timeseries" aria-selected="false">Time Series</a>
       </li>
       
+      <!-- Compare Areas -->
+      <li class="nav-item">
+        <a class="nav-link" id="pills-compare-tab" data-toggle="pill" href="#pills-compare" role="tab" aria-controls="pills-compare" aria-selected="false">Compare</a>
+      </li>
+      
       <!-- Something Else -->
       <li class="nav-item">
-        <a class="nav-link" id="pills-p2-tab" data-toggle="pill" href="#pills-p2" role="tab" aria-controls="pills-p2" aria-selected="false">Pane 2</a>
+        <a class="nav-link" id="pills-p2-tab" data-toggle="pill" href="#pills-p2" role="tab" aria-controls="pills-p2" aria-selected="false">Panel 4</a>
       </li>
     </ul>
     <div class="tab-content" id="pills-tabContent">
@@ -95,13 +101,6 @@ if ($radVal2 <= $radVal1) {
     		</script>
       </div>
 
-      <!-- Something Else -->
-      <div class="tab-pane fade" id="pills-p2" role="tabpanel" aria-labelledby="pills-p2-tab">
-        <!-- Block Header -->
-        <h2>Something Else</h2>
-        <?php echo reportHeader($latVal, $longVal); ?>
-      </div>
-
       <!-- Time Series Chart -->
       <div class="tab-pane fade" id="pills-timeseries" role="tabpanel" aria-labelledby="pills-timeseries-tab">
         <!-- Block Header -->
@@ -113,9 +112,7 @@ if ($radVal2 <= $radVal1) {
         		echo "ChartData class has no datasets assigned, therefore returned NULL.";
         	}
         ?>
-
         <canvas id="timeSeriesChart"></canvas>
-
     		<script type="text/javascript">
     			// Get array from PHP
     			var TSData = <?php echo json_encode($timeSeriesData); ?>;
@@ -124,6 +121,37 @@ if ($radVal2 <= $radVal1) {
     			var ctx = document.getElementById("timeSeriesChart").getContext('2d');
     			var tsChart = new Chart(ctx, TSData);
     		</script>
+      </div>
+      
+      
+      
+      <!-- Compare Area -->
+      <div class="tab-pane fade" id="pills-compare" role="tabpanel" aria-labelledby="pills-compare-tab">
+        <!-- Block Header -->
+        <h2>Go Compare</h2>
+        <?php
+        	echo reportHeader($latVal, $longVal);
+        	$compareData = compareRequest($latVal, $longVal, 52.13, -0.46); // variables currently set as static here
+        	echo "This comparison is with a static lat/long of: 52.13, -0.46<br>";
+        ?>
+        <canvas id="compareChart"></canvas>
+    		<script type="text/javascript">
+    			// Get array from PHP
+    			var cData = <?php echo json_encode($compareData); ?>;
+    			console.log(cData);
+
+    			var ctx = document.getElementById("compareChart").getContext('2d');
+    			var cChart = new Chart(ctx, cData);
+    		</script>
+      </div>
+      
+      
+      
+      <!-- Something Else -->
+      <div class="tab-pane fade" id="pills-p2" role="tabpanel" aria-labelledby="pills-p2-tab">
+        <!-- Block Header -->
+        <h2>Something Else</h2>
+        <?php echo reportHeader($latVal, $longVal); ?>
       </div>
     </div>
 </div>
