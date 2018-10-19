@@ -14,7 +14,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 ?>
 
 <!-- Header -->
-<?php include '../partials/_header.php' ?>
+<?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_header.php' ?>
 <body>
 	<div id="bodyContainer" class="container">
 		<div class='col-md-12'>
@@ -242,5 +242,5 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 	</div>
 </body>
 <!-- Footer -->
-<?php include '../partials/_footer.php' ?>
+<?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_footer.php' ?>
 </html>

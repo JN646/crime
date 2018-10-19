@@ -14,7 +14,7 @@ if($_SESSION["admin"] !== 1){
 }
 ?>
 
-<?php include '../partials/_header.php' ?>
+<?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_header.php' ?>
 
 	<!-- Container -->
 	<div id='bodyContainer' class="fluid-container">
@@ -24,7 +24,7 @@ if($_SESSION["admin"] !== 1){
 			<div class="col-md-2">
 				<div class='col-md-12'>
 					<!-- Side Bar -->
-					<?php include '../partials/_admin_sidebar.php' ?>
+					<?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_admin_sidebar.php' ?>
 				</div>
 			</div>
 
@@ -43,13 +43,13 @@ if($_SESSION["admin"] !== 1){
 					<div class="col-md-12">
 						<hr>
 						<!-- Stats -->
-						<?php include '../partials/_stats.php' ?>
+						<?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_stats.php' ?>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- Footer -->
-	<?php include '../partials/_footer.php' ?>
+	<?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_footer.php' ?>
 </body>
 </html>
