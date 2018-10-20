@@ -34,20 +34,20 @@ $LOCAL_AREA = M_PI*$LOCAL_RAD*$LOCAL_RAD;
 // Define Crime Colours
 $ALPHA = '0.3';
 $CRIME_COLOURS = [
-		'Anti-social behaviour'=>'rgba(200, 50, 50, '.$ALPHA.')',
-		'Bicycle theft'=>'rgba(50, 50, 200, '.$ALPHA.')',
-		'Burglary'=>'rgba(50, 50, 50, '.$ALPHA.')',
-		'Criminal damage and arson'=>'rgba(255,150,150, '.$ALPHA.')',
-		'Drugs'=>'rgba(50, 200, 50, '.$ALPHA.')',
-		'Other crime'=>'rgba(0, 0, 0, '.$ALPHA.')',
-		'Other theft'=>'rgba(100, 100, 100, '.$ALPHA.')',
-		'Possession of weapons'=>'rgba(0, 0, 0, '.$ALPHA.')',
-		'Public order'=>'rgba(0, 0, 0, '.$ALPHA.')',
-		'Robbery'=>'rgba(0, 0, 0, '.$ALPHA.')',
-		'Shoplifting'=>'rgba(0, 0, 0, '.$ALPHA.')',
-		'Theft from the person'=>'rgba(0, 0, 0, '.$ALPHA.')',
-		'Vehicle crime'=>'rgba(0, 0, 0, '.$ALPHA.')',
-		'Violence and sexual offences'=>'rgba(0, 0, 0, '.$ALPHA.')'
+		'Anti-social behaviour'=>'rgba(220,20,60, '.$ALPHA.')',
+		'Bicycle theft'=>'rgba(255,140,0, '.$ALPHA.')',
+		'Burglary'=>'rgba(255,215,0, '.$ALPHA.')',
+		'Criminal damage and arson'=>'rgba(154,205,50, '.$ALPHA.')',
+		'Drugs'=>'rgba(175,238,238, '.$ALPHA.')',
+		'Other crime'=>'rgba(65,105,225, '.$ALPHA.')',
+		'Other theft'=>'rgba(138,43,226, '.$ALPHA.')',
+		'Possession of weapons'=>'rgba(186,85,211, '.$ALPHA.')',
+		'Public order'=>'rgba(165,42,42, '.$ALPHA.')',
+		'Robbery'=>'rgba(107,142,35, '.$ALPHA.')',
+		'Shoplifting'=>'rgba(30,144,255, '.$ALPHA.')',
+		'Theft from the person'=>'rgba(72,61,139, '.$ALPHA.')',
+		'Vehicle crime'=>'rgba(199,21,133, '.$ALPHA.')',
+		'Violence and sexual offences'=>'rgba(0,0,128, '.$ALPHA.')'
 ];
 
 // Global Settings

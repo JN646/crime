@@ -94,7 +94,6 @@ if ($radVal2 <= $radVal1) {
 				<script type="text/javascript">
 					// Get array from PHP
 					var ccData = <?php echo json_encode($crimeCountData); ?>;
-					console.log(ccData);
 
 					var ctx = document.getElementById("crimeCountChart").getContext('2d');
 					var ccChart = new Chart(ctx, ccData);
@@ -121,7 +120,6 @@ if ($radVal2 <= $radVal1) {
 				<script type="text/javascript">
 					// Get array from PHP
 					var TSData = <?php echo json_encode($timeSeriesData); ?>;
-					console.log(TSData);
 
 					var ctx = document.getElementById("timeSeriesChart").getContext('2d');
 					var tsChart = new Chart(ctx, TSData);
@@ -144,7 +142,6 @@ if ($radVal2 <= $radVal1) {
 				<script type="text/javascript">
 					// Get array from PHP
 					var cData = <?php echo json_encode($compareData); ?>;
-					console.log(cData);
 
 					var ctx = document.getElementById("compareChart").getContext('2d');
 					var cChart = new Chart(ctx, cData);

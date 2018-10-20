@@ -1,8 +1,8 @@
 <?php
-	
+
 	// Put custom classes in here
-	
-	
+
+
 	// For making chart.js data objects
 	class ChartData
 	{
@@ -13,10 +13,10 @@
 		public $legend = true;
 		public $toolTips = false;
 		public $autoSkipX = false;
-		
+
 		public $xAxisLabel = NULL;
 		public $yAxisLabel = NULL;
-		
+
 		function addDataset($d, $l = NULL, $c = 'rgba(0,0,0,0.1)') {
 			// Check the data is a single dimensional array?
 			if(is_null($l)) {
@@ -24,7 +24,7 @@
 			}
 			$this->datasets[] = ["label"=>$l, "data"=>$d, "backgroundColor"=>$c, "borderColor"=>$c, 'fill'=>$this->type=='line'?false:true];
 		}
-		
+
 		function updateData() {
 			$this->$data = [
 				'type'=>$this->type,
@@ -75,7 +75,7 @@
 				]
 			];
 		}
-		
+
 		function getData() {
 			// If no datasets
 			if(!count($this->datasets)) {
@@ -84,17 +84,17 @@
 			$this->updateData();
 			return $this->$data;
 		}
-		
+
 		function screenDump() {
 			$this->updateData();
 			echo "TYPE: ".$this->$data['type']."<br>";
-			
+
 			echo "LABELS: ";
 			foreach($this->$data['data']['labels'] as $l) {
 				echo $l." ";
 			}
 			echo "<br>";
-			
+
 			echo "DATA: <br>";
 			foreach($this->$data['data']['datasets'] as $d) {
 				echo "-  ".$d['label'].": ";

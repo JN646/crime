@@ -1,5 +1,5 @@
 <?php
-include_once("classes.php");
+include_once 'classes.php';
 include_once '../config/config.php';
 
 //############## FUNCTION FILE #################################################
@@ -32,24 +32,19 @@ class ApplicationVersion
 $radVal1 = $radVal2 = $n = $mode = 0;
 $JSONEnable = "TRUE";
 
-
-
-
-
-//############## CRIME COUNT ####################################################
-
+//############## CRIME COUNT ###################################################
 function sqlCrimeArea($mysqli, $latVal, $longVal, $radius, $latLow, $latHigh, $longLow, $longHigh)
 {
 	// Use a rounded shape? Otherwise, it's square.
 	$useEllipse = true;
-	
+
 	$sql = "SELECT COUNT(*) Count, `Crime_Type`
 		FROM `data`
 		WHERE `Latitude` > $latLow
 			AND `Latitude` < $latHigh
 			AND `Longitude` > $longLow
 			AND `Longitude` < $longHigh";
-		
+
 		if($useEllipse) {
 			// Calc Average lat/long Radius
 			$rLat = (abs($latVal-$latLow)+abs($latVal-$latHigh))/2;
@@ -74,7 +69,7 @@ function sqlCrimeArea($mysqli, $latVal, $longVal, $radius, $latLow, $latHigh, $l
 	return $resultCount;
 }
 
-//############## PRE CALC TABLE ############################################
+//############## PRE CALC TABLE ################################################
 function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal_Immediate, $radVal_Local)
 {
 	$nRows = mysqli_num_rows($resultCount_Local);
@@ -100,7 +95,7 @@ function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal_Immedi
 	return $table; // Return the table.
 }
 
-//############## CALC RISK #################################################
+//############## CALC RISK #####################################################
 function calcRisk($iCount, $lCount, $iRadius, $lRadius)
 {
 	// Get Area
@@ -125,7 +120,7 @@ function calcRisk($iCount, $lCount, $iRadius, $lRadius)
 
 
 
-//############## CALL STATS #########################################################
+//############## CALL STATS ####################################################
 
 function callStat($mysqli, $stat) {
 	// SELECT All
@@ -148,45 +143,42 @@ function callStat($mysqli, $stat) {
 	return $rows[0];
 }
 
-
-
-//############## Get Colours for Charts ###############################################
-   
+//############## Get Colours for Charts ########################################
 function getChartColours($crimes) {
-   	// Fetch Global Array
-   	global $CRIME_COLOURS;
-   	
-   	// If not array, make it so
-	if(!is_array($crimes)) {
-		$crimes = [$crimes];
-	}
-   	
-   	$orderedColours = array();
-   	foreach($crimes as $key => $crime) {
-   		// Should search to see if key exists first?
-   		$orderedColours[] = $CRIME_COLOURS[$crime];
-   	}
-   	
-   	return $orderedColours;
+		// Fetch Global Array
+		global $CRIME_COLOURS;
+
+		// If not array, make it so
+		if(!is_array($crimes)) {
+			$crimes = [$crimes];
+		}
+
+		$orderedColours = array();
+		foreach($crimes as $key => $crime) {
+			// Should search to see if key exists first?
+			$orderedColours[] = $CRIME_COLOURS[$crime];
+		}
+
+		return $orderedColours;
 }
 
-//############## GET NEAREST BOX #############################################
+//############## GET NEAREST BOX ###############################################
 function getBoxByLoc($lat, $long) {
 	global $mysqli;
 	// Find Some Nearby Boxes
 	$t = 0.2; //threshold in radians
 	$boxesQ = "SELECT * FROM `box`
 		WHERE `longitude` > ($long-$t)
-	   	AND `longitude` < ($long+$t)
-	   	AND `latitude` > ($lat-$t)
-	   	AND `latitude` < ($lat+$t)";
+			AND `longitude` < ($long+$t)
+			AND `latitude` > ($lat-$t)
+			AND `latitude` < ($lat+$t)";
 	$boxesR = mysqli_query($mysqli, $boxesQ);
-	
+
 	if(!mysqli_fetch_assoc($boxesR)) {
 		echo "Error: No nearby regions (boxes) found. Please make your way towards the UK (barr Soctland).<br>";
 		return NULL;
 	}
-	
+
 	// Calculate Nearest From Nearby Boxes
 	$distance = [];
 	while($row = mysqli_fetch_assoc($boxesR)) {
@@ -196,9 +188,7 @@ function getBoxByLoc($lat, $long) {
 	return $nearestBox;
 }
 
-
-//############## SPHERICAL GEOMETRY #############################################
-
+//############## SPHERICAL GEOMETRY ############################################
 function computeOffset($from, $distance, $heading) {
 	global $EARTH_RADIUS;
 	$distance /= 6371000; //MathUtil::EARTH_RADIUS; //calculates fraction of unit circle. Can we call this constant from somewhere?
@@ -230,9 +220,7 @@ function computeArcDistance($latitude1, $longitude1, $latitude2, $longitude2) {
 	return $d;
 }
 
-
 //############## CONVERT MONTHS ################################################
-
 function dateAsInt($date) {
 	$ym = explode("-", $date); //year|month array
 	$epoch = 2015; //year 0
@@ -249,27 +237,26 @@ function intAsDate($int) {
 	return $year."-".$month;
 }
 
-
 //############## REPORT HEADER #################################################
 function reportHeader($latVal, $longVal) {
-  $link = "https://www.google.com/maps/@".$latVal.",".$longVal.",15z";
-  ?>
-  <!-- Table -->
-  <table class='table col-md-6'>
+	$link = "https://www.google.com/maps/@".$latVal.",".$longVal.",15z";
+	?>
+	<!-- Table -->
+	<table class='table col-md-6'>
 	<tbody>
-	  <tr>
+		<tr>
 		<td><b>Location:</b></td>
 		<td><a href="<?php echo $link ?>" target="_blank"><?php echo round($latVal, 4) ?>, <?php echo round($longVal, 4); ?></a></td>
-	  </tr>
-	  <tr>
+		</tr>
+		<tr>
 		<td><b>Generated:</b></td>
 		<td><?php echo date("Y-m-d H:i:s"); ?></td>
-	  </tr>
-	  <tr>
-	  	<td><b>Box #:</b></td>
-	  	<td><?php echo getBoxByLoc($latVal, $longVal); ?></td>
-	  </tr>
+		</tr>
+		<tr>
+			<td><b>Box #:</b></td>
+			<td><?php echo getBoxByLoc($latVal, $longVal); ?></td>
+		</tr>
 	</tbody>
-  </table>
-  <?php
+	</table>
+	<?php
 }
