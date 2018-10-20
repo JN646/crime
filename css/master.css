@@ -75,6 +75,10 @@ body {
   color: #1DA1F2;
 }
 
+#socialGithub a {
+  color: #333333;
+}
+
 /* Table */
 /* Vertical Headers */
 .verticalTH {

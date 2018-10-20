@@ -6,6 +6,7 @@
         <ul>
           <li id='socialFacebook'><a href='#'><i class="fab fa-facebook fa-2x"></i></a></li>
           <li id='socialTwitter'><a href='#'><i class="fab fa-twitter fa-2x"></i></a></li>
+          <li id='socialGithub'><a href='https://github.com/JN646/crime/tree/development'><i class="fab fa-github fa-2x"></i></a></li>
         </ul>
       </div>
     </div>

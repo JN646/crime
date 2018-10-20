@@ -22,6 +22,7 @@
 			if(is_null($l)) {
 				$l = '';
 			}
+
 			$this->datasets[] = ["label"=>$l, "data"=>$d, "backgroundColor"=>$c, "borderColor"=>$c, 'fill'=>$this->type=='line'?false:true];
 		}
 
