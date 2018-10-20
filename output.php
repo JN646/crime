@@ -14,8 +14,8 @@
 if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"]) || !empty($_POST["month"])) {
 		$latVal = trim((float)$_POST["lat"]);
 		$longVal = trim((float)$_POST["long"]);
-		$radVal1 = trim((float)$_POST["rad1"]);
-		$radVal2 = trim((float)$_POST["rad2"]);
+		// $radVal1 = trim((float)$_POST["rad1"]);
+		// $radVal2 = trim((float)$_POST["rad2"]);
 		$mode = $_POST["mode"];
 } else {
 		die("Error Missing Values Found.");
@@ -46,9 +46,9 @@ if ((-180.00 <= $longVal) && ($longVal <= 180.00)) {
 }
 
 // Check that Radius values are in the right range.
-if ($radVal2 <= $radVal1) {
-		die("Local area is smaller than your Immediate area.");
-}
+// if ($radVal2 <= $radVal1) {
+// 		die("Local area is smaller than your Immediate area.");
+// }
  ?>
 	<!-- Container -->
 	<div id='bodyContainer' class="container">

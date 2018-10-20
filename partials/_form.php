@@ -21,16 +21,16 @@
   </div>
 
   <!-- Immediate Area -->
-  <div class='col form-group'>
+  <!-- <div class='col form-group'>
     <label for="rad1">Immediate</label>
     <input id='radius' class="form-control" onkeydown="checkEmpty()" size='3' type="number" step="0.0000001" name="rad1" value="0.005">
-  </div>
+  </div> -->
 
   <!-- Local Area -->
-  <div class='col form-group'>
+  <!-- <div class='col form-group'>
     <label for="rad2">Local</label>
     <input id='radius2' class="form-control" onkeydown="checkEmpty()" size='3' type="number" step="0.0000001" name="rad2" value="0.02">
-  </div>
+  </div> -->
 
   <!-- Search Button -->
   <div class='col form-group'>
