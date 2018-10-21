@@ -35,14 +35,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="<?php echo $environment; ?>users/login.php">Login</a>
+              <a class="dropdown-item" href="<?php echo $environment; ?>users/login.php">Login/Logout</a>
               <a class="dropdown-item" href="<?php echo $environment; ?>users/welcome.php">Welcome</a>
               <a class="dropdown-item" href="<?php echo $environment; ?>admin/admin.php">Admin</a>
             </div>
           </li>
         </ul>
       </div>
-      <form class="form-inline my-2 my-lg-0" action="output.php" method="post">
+      <form class="form-inline my-2 my-lg-0" action="output.php?lat=52&long=-3" method="post">
         <button id="btnQuickGPS" class="form-control btn btn-link" type="submit" name="btnQuickGPS"><i class="fas fa-location-arrow"></i></button>
       </form>
     </div>
