@@ -28,6 +28,11 @@ body {
   padding-bottom: 20px;
 }
 
+/* Navbar */
+#btnQuickGPS a {
+  color: white;
+}
+
 /* Data Entry Form */
 .dataForm {
   padding: 15px;

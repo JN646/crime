@@ -22,6 +22,21 @@ function showPosition(position) {
   longBoxVal.value = position.coords.longitude;
 }
 
+// Get location
+function getLocationGPS() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPositionGPS, showError);
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+// Put information in lat/Long boxes.
+function showPositionGPS(position) {
+  latBoxVal.value = position.coords.latitude;
+  longBoxVal.value = position.coords.longitude;
+}
+
 // Handle Errors
 function showError(error) {
   switch (error.code) {

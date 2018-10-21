@@ -42,6 +42,9 @@
           </li>
         </ul>
       </div>
+      <form class="form-inline my-2 my-lg-0" action="output.php" method="post">
+        <button id="btnQuickGPS" class="form-control btn btn-link" type="submit" name="btnQuickGPS"><i class="fas fa-location-arrow"></i></button>
+      </form>
     </div>
 </nav>
 

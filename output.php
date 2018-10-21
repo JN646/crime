@@ -1,46 +1,54 @@
 <!-- Header Form -->
-<?php include 'partials/_header.php'; ?>
+<?php include_once 'partials/_header.php'; ?>
 <script src="<?php echo $environment; ?>js/Chart.min.js" charset="utf-8"></script>
 
 <!-- Include Reporting Options -->
-<?php include 'lib/crimecount.php'; ?>
-<?php include 'lib/timeseries2.php'; ?>
-<?php include 'lib/Compare.php'; ?>
+<?php include_once 'lib/crimecount.php'; ?>
+<?php include_once 'lib/timeseries2.php'; ?>
+<?php include_once 'lib/Compare.php'; ?>
 
 <?php
 //############## SERVER FILE ###################################################
 //############## CHECK VALUES ##################################################
-// Missing Value Check
-if (!empty($_POST["long"]) || !empty($_POST["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"]) || !empty($_POST["month"])) {
-		$latVal = trim((float)$_POST["lat"]);
-		$longVal = trim((float)$_POST["long"]);
-		$mode = $_POST["mode"];
-} else {
-		die("Error Missing Values Found.");
+if(isset($_POST['btnQuickGPS'])) {
+	echo "Quick GPS Button";
+
+	$latVal = $_GET["lat"];
+	$longVal = $_GET["long"];
 }
 
-// Check that Lat/Long values are in the right range.
-if ((-90.00 <= $latVal) && ($latVal <= 90.00)) {
-		// Needs Condensing
-		if ((-49.00 <= $latVal) && ($latVal <= 60.00)) {
-				// Needs Condensing
-		} else {
-				die("Only UK Supported.");
-		}
-} else {
-		die("Latitude needs to be between -90 and 90 degrees.");
-}
+if(isset($_GET['btnSearch'])) {
+	// Missing Value Check
+	if (!empty($_GET["long"]) || !empty($_GET["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"]) || !empty($_POST["month"])) {
+			$latVal = trim((float)$_GET["lat"]);
+			$longVal = trim((float)$_GET["long"]);
+	} else {
+			die("Error Missing Values Found.");
+	}
 
-// Check that Lat/Long values are in the right range.
-if ((-180.00 <= $longVal) && ($longVal <= 180.00)) {
-		// Needs Condensing
-		if ((-11.00 <= $longVal) && ($longVal <= 1.00)) {
-				// Needs Condensing
-		} else {
-				die("Only Supperted in the UK.");
-		}
-} else {
-		die("Longitude needs to be between -180 and 180 degrees.");
+	// Check that Lat/Long values are in the right range.
+	if ((-90.00 <= $latVal) && ($latVal <= 90.00)) {
+			// Needs Condensing
+			if ((-49.00 <= $latVal) && ($latVal <= 60.00)) {
+					// Needs Condensing
+			} else {
+					die("Only UK Supported.");
+			}
+	} else {
+			die("Latitude needs to be between -90 and 90 degrees.");
+	}
+
+	// Check that Lat/Long values are in the right range.
+	if ((-180.00 <= $longVal) && ($longVal <= 180.00)) {
+			// Needs Condensing
+			if ((-11.00 <= $longVal) && ($longVal <= 1.00)) {
+					// Needs Condensing
+			} else {
+					die("Only Supperted in the UK.");
+			}
+	} else {
+			die("Longitude needs to be between -180 and 180 degrees.");
+	}
 }
  ?>
 
