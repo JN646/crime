@@ -10,6 +10,7 @@ cronCreateUsers($mysqli);
 cronReportLog($mysqli);
 cronCreateConstabList($mysqli);
 cronCreateCrimeTypeList($mysqli);
+cronCreateSettingsTable($mysqli);
 
 //############## Create Stat Table #############################################
 function cronCreateStatTable($mysqli)
@@ -34,8 +35,6 @@ function cronCreateStatTable($mysqli)
         }
     }
 }
-
-
 
 //############## Create Report Log #############################################
 function cronReportLog($mysqli)
@@ -245,24 +244,47 @@ function cronCreateCrimeTypeList($mysqli)
         if (!$result) {
             die('<p class="SQLError">SQL ERROR: Create Crime Type List ' . mysqli_error($mysqli) . '</p>');
         }
-        
+
         // Insert Data.
         $query = "INSERT INTO `data_crimes` (`id`, `crime_type`) VALUES
         (1, 'Anti-social behaviour'),
-		(2, 'Bicycle theft'),
-		(3, 'Burglary'),
-		(4, 'Criminal damage and arson'),
-		(5, 'Drugs'),
-		(6, 'Other crime'),
-		(7, 'Other theft'),
-		(8, 'Possession of weapons'),
-		(9, 'Public order'),
-		(10, 'Robbery'),
-		(11, 'Shoplifting'),
-		(12, 'Theft from the person'),
-		(13, 'Vehicle crime'),
-		(14, 'Violence and sexual offences')";
+    		(2, 'Bicycle theft'),
+    		(3, 'Burglary'),
+    		(4, 'Criminal damage and arson'),
+    		(5, 'Drugs'),
+    		(6, 'Other crime'),
+    		(7, 'Other theft'),
+    		(8, 'Possession of weapons'),
+    		(9, 'Public order'),
+    		(10, 'Robbery'),
+    		(11, 'Shoplifting'),
+    		(12, 'Theft from the person'),
+    		(13, 'Vehicle crime'),
+    		(14, 'Violence and sexual offences')";
         $result = mysqli_query($mysqli, $query);
+    }
+}
+
+//############## Create Settings Table #############################################
+function cronCreateSettingsTable($mysqli)
+{
+    // SELECT All
+    $query = "SELECT id FROM settings";
+    $result = mysqli_query($mysqli, $query);
+
+    if (empty($result)) {
+        // Create table if doesn't exist.
+        $query = "CREATE TABLE IF NOT EXISTS `settings` (
+          `setting_id` int(11) NOT NULL COMMENT 'Setting ID number',
+          `setting_name` varchar(255) DEFAULT NULL COMMENT 'Name of the setting',
+          `setting_value` varchar(255) DEFAULT NULL COMMENT 'Value of the setting.'
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Stores global settings in the system.'";
+        $result = mysqli_query($mysqli, $query);
+
+        // If Error
+        if (!$result) {
+            die('<p class="SQLError">Could not create stat table: ' . mysqli_error($mysqli) . '</p>');
+        }
     }
 }
 

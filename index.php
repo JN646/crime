@@ -5,6 +5,10 @@ session_start();
 
   <!-- Header Form -->
 <?php include_once $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_header.php' ?>
+
+<!-- Preflight -->
+<?php include_once $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_header.php' ?>
+
     <!-- Container -->
     <div id='bodyContainer' class="container">
 
