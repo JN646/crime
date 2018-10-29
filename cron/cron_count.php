@@ -28,30 +28,30 @@ runQuery($mysqli, "'statsLastUpdate'", "SELECT NOW()");
 
 function runQuery($mysqli, $name, $query) //for generic queries returning one value (like COUNT(), MIN(), MAX(), etc)
 {
-    $result = mysqli_query($mysqli, $query);
-    $rows = mysqli_fetch_row($result);
-    mysqli_free_result($result); // Free Query
-	
-    // Return Value, format for SQL string
-    $output = '"'.$rows[0].'"';
-    
-    // Find out if it already exists by matching $name
-    $sqlStatExists = mysqli_query($mysqli, "SELECT COUNT(*) FROM stats WHERE stat = $name");
-    $exists = mysqli_fetch_row($sqlStatExists)[0];
-    
-    $writeCrimeCount; //initialise variable
-    if($exists) { // Update
-    	$sqlCrimeCount = "UPDATE stats SET count=$output, last_run=NOW() WHERE stat = $name";
-    } else { // Insert
-		$sqlCrimeCount = "INSERT INTO stats (stat, count) VALUES ($name, $output)";
-    }
-    
-    $writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
-    if (!$writeCrimeCount) {
-		die('<p class="SQLError">Could not run query '.($exists?"UPDATE ":"INSERT ").$name.': ' . mysqli_error($mysqli) . '</p>');
-	}
-    
-    mysqli_free_result($writeCrimeCount); // Free Query
+		$result = mysqli_query($mysqli, $query);
+		$rows = mysqli_fetch_row($result);
+		mysqli_free_result($result); // Free Query
+
+		// Return Value, format for SQL string
+		$output = '"'.$rows[0].'"';
+
+		// Find out if it already exists by matching $name
+		$sqlStatExists = mysqli_query($mysqli, "SELECT COUNT(*) FROM stats WHERE stat = $name");
+		$exists = mysqli_fetch_row($sqlStatExists)[0];
+
+		$writeCrimeCount; //initialise variable
+		if($exists) { // Update
+			$sqlCrimeCount = "UPDATE stats SET count=$output, last_run=NOW() WHERE stat = $name";
+		} else { // Insert
+			$sqlCrimeCount = "INSERT INTO stats (stat, count) VALUES ($name, $output)";
+		}
+
+		$writeCrimeCount = mysqli_query($mysqli, $sqlCrimeCount);
+		if (!$writeCrimeCount) {
+				die('<p class="SQLError">Could not run query '.($exists?"UPDATE ":"INSERT ").$name.': ' . mysqli_error($mysqli) . '</p>');
+		}
+
+		mysqli_free_result($writeCrimeCount); // Free Query
 }
 
 // Header and Return

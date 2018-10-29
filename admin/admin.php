@@ -32,6 +32,7 @@ if($_SESSION["admin"] !== 1){
 			<div class="col-md-10">
 				<div class="row">
 					<div class="col-md-12">
+						
 						<!-- Page Header -->
 						<div class="page-header">
 								<h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our admin site.</h1>
@@ -39,11 +40,17 @@ if($_SESSION["admin"] !== 1){
 						<p>This is the admin area of the site. Currently not functioning and not serving a purpose.</p>
 					</div>
 				</div>
+
+				<!-- Stat Body -->
 				<div class="row">
 					<div class="col-md-12">
 						<hr>
 						<!-- Stats -->
-						<?php include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_stats.php' ?>
+						<?php
+						if ($enableStats == TRUE) {
+							include $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_stats.php'
+						}
+						?>
 					</div>
 				</div>
 			</div>

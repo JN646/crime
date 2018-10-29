@@ -14,11 +14,17 @@
       <input id='longBox' class="form-control" onkeydown="checkEmpty()" size='8' type="number" step="0.0000001" name="long" value="-0.4688611">
     </div>
 
-    <!-- Get GPS Locations -->
-    <div class='col form-group'>
-      <label for="gps">&nbsp</label>
-      <button class="form-control btn btn-primary" type="button" onclick="getLocation()" name="gps"><i class="fas fa-location-arrow"></i> GPS</button>
-    </div>
+    <?php
+    if ($gpsSearch == TRUE) {
+    ?>
+      <!-- Get GPS Locations -->
+      <div class='col form-group'>
+        <label for="gps">&nbsp</label>
+        <button class="form-control btn btn-primary" type="button" onclick="getLocation()" name="gps"><i class="fas fa-location-arrow"></i> GPS</button>
+      </div>
+    <?php
+    }
+    ?>
 
     <!-- Search Button -->
     <div class='col form-group'>

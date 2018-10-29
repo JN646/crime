@@ -19,7 +19,6 @@ define("LOCAL", "http://localhost/crime/"); //local URL
 define("WEB", "http://192.168.1.72:80/crime/"); //website URL
 $environment = LOCAL; //change to WEB if you're live
 
-
 // Constants
 // in SI units (meters)
 $boxHop = 8000; //ideal size is 8-10km.
@@ -31,7 +30,6 @@ $IMMEDIATE_AREA = M_PI*$IMMEDIATE_RAD*$IMMEDIATE_RAD;
 $LOCAL_AREA = M_PI*$LOCAL_RAD*$LOCAL_RAD;
 $radVal1 = 0.005;
 $radVal2 = 0.02;
-
 
 // Define Crime Colours
 $ALPHA = '0.3';
@@ -55,6 +53,10 @@ $CRIME_COLOURS = [
 // Global Settings
 $require_logon_to_search = TRUE;
 $welcome_savingEnabled = TRUE;
+$preflight = FALSE;
+$gpsSearch = TRUE;
+$createTableLink = TRUE;
+$enableStats = TRUE;
 
 // Menu Items
 $menu_usermanage = TRUE;
