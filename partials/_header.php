@@ -8,6 +8,7 @@
     <!-- Function File -->
     <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/crime/config/config.php");?>
     <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/crime/lib/functions.php");?>
+    <?php require_once($_SERVER["DOCUMENT_ROOT"] . "/crime/partials/_modal.php");?>
 
     <!-- Stylesheets -->
 	  <link rel="stylesheet" href="<?php echo $environment; ?>css/bootstrap.min.css">

@@ -6,11 +6,12 @@ session_start();
   <!-- Header Form -->
 <?php include_once $_SERVER["DOCUMENT_ROOT"] . '/crime/partials/_header.php' ?>
 
-<!-- Preflight -->
-<?php include_once $_SERVER["DOCUMENT_ROOT"] . '/crime/lib/preflight.php' ?>
 
 <!-- Container -->
 <div id='bodyContainer' class="container">
+
+  <!-- Preflight -->
+  <?php include_once $_SERVER["DOCUMENT_ROOT"] . '/crime/lib/preflight.php' ?>
 
   <!-- Intro -->
   <h2>Welcome</h2>
