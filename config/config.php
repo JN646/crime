@@ -53,7 +53,7 @@ $CRIME_COLOURS = [
 // Global Settings
 $require_logon_to_search = TRUE;
 $welcome_savingEnabled = TRUE;
-$preflight = FALSE;
+$preflight = TRUE;
 $gpsSearch = TRUE;
 $createTableLink = TRUE;
 $enableStats = TRUE;

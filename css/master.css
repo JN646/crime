@@ -50,6 +50,10 @@ body {
 }
 
 /* Stats */
+#resultStats {
+  min-height: 400px;
+}
+
 .statBox {
   margin-bottom: 10px;
 }
