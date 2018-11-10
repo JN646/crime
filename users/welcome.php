@@ -231,8 +231,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 							/****** end build pagination links ******/
 							echo "</ul></nav>";
 							?>
-
-						<?php } ?>
 							</tbody>
 						</table>
 					</div>

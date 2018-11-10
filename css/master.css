@@ -28,9 +28,22 @@ body {
   padding-bottom: 20px;
 }
 
+div#loginContainer {
+    margin: 0 auto;
+}
+
 /* Navbar */
 #btnQuickGPS a {
   color: white;
+}
+
+i.fas.fa-location-arrow {
+    color: white;
+}
+
+i.fas.fa-location-arrow:hover {
+    color: rgba(255,255,255,.5);
+    transition: 0.5s all;
 }
 
 /* Data Entry Form */
@@ -124,4 +137,9 @@ body {
 
 .CrimeUp {
   background-color: red;
+}
+
+/* Form */
+form#inputForm {
+  text-align: center;
 }

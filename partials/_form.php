@@ -3,13 +3,13 @@
   <p id='notificationSearch' class='alert alert-danger' style='display: none;'>All fields must have a value.</p>
   <div class='row'>
     <!-- Latitude -->
-    <div class='col form-group'>
+    <div class='col-md-4 form-group'>
       <label for="lat">Latitude</label>
       <input id='latBox' class="form-control" onkeydown="checkEmpty()" size='8' type="number" step="0.0000001" name="lat" value="52.1367078">
     </div>
 
     <!-- Longitude -->
-    <div class='col form-group'>
+    <div class='col-md-4 form-group'>
       <label for="long">Longitude</label>
       <input id='longBox' class="form-control" onkeydown="checkEmpty()" size='8' type="number" step="0.0000001" name="long" value="-0.4688611">
     </div>
