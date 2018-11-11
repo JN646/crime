@@ -1,6 +1,6 @@
 <?php
-include_once 'classes.php';
-include_once '../config/config.php';
+include_once($_SERVER["DOCUMENT_ROOT"] . "/crime/lib/classes.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/crime/config/config.php");
 
 //############## FUNCTION FILE #################################################
 //############## Version Number ################################################
@@ -118,10 +118,7 @@ function calcRisk($iCount, $lCount, $iRadius, $lRadius)
 	return $risk; // Return Calculation
 }
 
-
-
 //############## CALL STATS ####################################################
-
 function callStat($mysqli, $stat) {
 	// SELECT All
 	$query = "SELECT count FROM stats WHERE stat = $stat";
