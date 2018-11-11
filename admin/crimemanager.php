@@ -141,7 +141,7 @@ include('lib/crimeserver.php');
 						<table class='table table-bordered table-sm'>
 							<?php
 							// find out how many rows are in the table
-							$sql = "SELECT COUNT(*) FROM data";
+							$sql = "SELECT COUNT(*) FROM data WHERE Latitude != '0.0'";
 							$result = mysqli_query($mysqli, $sql) or trigger_error("SQL", E_USER_ERROR);
 							$r = mysqli_fetch_row($result);
 							$numrows = $r[0];

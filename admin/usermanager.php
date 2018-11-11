@@ -1,32 +1,32 @@
 <?php
-// Initialize the session
+// Initialise the session
 session_start();
 
 // Check if the user is logged in, if not then redirect to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: ../users/login.php");
-    exit;
+  header("location: ../users/login.php");
+  exit;
 }
 
 // Check if the user is an admin.
 if($_SESSION["admin"] !== 1){
-    header("location: ../users/login.php");
+  header("location: ../users/login.php");
 }
 
 // User Server
 include('lib/userserver.php');
-    if (isset($_GET['edit'])) {
-        $id = $_GET['edit'];
-        $update = true;
-        $record = mysqli_query($mysqli, "SELECT * FROM users WHERE id=$id");
+  if (isset($_GET['edit'])) {
+    $id = $_GET['edit'];
+    $update = true;
+    $record = mysqli_query($mysqli, "SELECT * FROM users WHERE id=$id");
 
-        if (count($record) == 1) {
-            $n = mysqli_fetch_array($record);
-            $username = $n['username'];
-            $password = $n['password'];
-            $email = $n['email'];
-        }
+    if (count($record) == 1) {
+      $n = mysqli_fetch_array($record);
+      $username = $n['username'];
+      $password = $n['password'];
+      $email = $n['email'];
     }
+  }
 ?>
 
 <?php $results = mysqli_query($mysqli, "SELECT * FROM users"); ?>
@@ -76,22 +76,22 @@ include('lib/userserver.php');
                 <!-- Password -->
                 <div class="col-md-4 form-group">
                   <label class=''>Password</label>
-                  <input class='form-control' type="text" name="password" value="<?php echo $password; ?>">
+                  <input class='form-control' type="password" name="password" value="<?php echo $password; ?>">
                 </div>
 
                 <!-- Email -->
                 <div class="col-md-4 form-group">
                   <label class=''>Email</label>
-                  <input class='form-control' type="text" name="email" value="<?php echo $email; ?>">
+                  <input class='form-control' type="text" id='email' name="email" value="<?php echo $email; ?>">
                 </div>
               </div>
 
 							<!-- Function Buttons -->
 							<div class="form-group">
 								<?php if ($update == true): ?>
-									<button class="btn btn-success" type="submit" name="update">Update</button>
+									<button class="btn btn-success" type="submit" name="update" id='validate'>Update</button>
 								<?php else: ?>
-									<button class="btn btn-success" type="submit" name="save">Save</button>
+									<button class="btn btn-success" type="submit" name="save" id='validate'>Save</button>
 								<?php endif ?>
 							</div>
 
@@ -145,10 +145,9 @@ include('lib/userserver.php');
 
                 // the offset of the list, based on current page
                 $offset = ($currentpage - 1) * $rowsperpage;
-                ?>
 
-                <?php while ($row = mysqli_fetch_array($results)) {
-                          ?>
+                while ($row = mysqli_fetch_array($results)) {
+                ?>
                   <tr>
                     <td><?php echo $row['username']; ?></td>
                     <td class='text-center'><i class="fas fa-key" title="<?php echo $row['password']; ?>"></i></td>
@@ -161,51 +160,51 @@ include('lib/userserver.php');
                     </td>
                   </tr>
                 <?php
-                      }
+                }
 
-                      /******  build the pagination links ******/
-                      echo '<nav aria-label="Page navigation"><ul class="pagination pagination-sm justify-content-center">';
-                      // range of num links to show
-                      $range = 3;
+                /******  build the pagination links ******/
+                echo '<nav aria-label="Page navigation"><ul class="pagination pagination-sm justify-content-center">';
+                // range of num links to show
+                $range = 3;
 
-                      // if not on page 1, don't show back links
-                      if ($currentpage > 1) {
-                         // show << link to go back to page 1
-                         echo " <li class='page-item'><a class='page-link' href='{$_SERVER['PHP_SELF']}?currentpage=1'><<</a></li> ";
-                         // get previous page num
-                         $prevpage = $currentpage - 1;
-                         // show < link to go back to 1 page
-                         echo " <li class='page-item'><a class='page-link' href='{$_SERVER['PHP_SELF']}?currentpage=$prevpage'><</a></li> ";
-                      } // end if
+                // if not on page 1, don't show back links
+                if ($currentpage > 1) {
+                   // show << link to go back to page 1
+                   echo " <li class='page-item'><a class='page-link' href='{$_SERVER['PHP_SELF']}?currentpage=1'><<</a></li> ";
+                   // get previous page num
+                   $prevpage = $currentpage - 1;
+                   // show < link to go back to 1 page
+                   echo " <li class='page-item'><a class='page-link' href='{$_SERVER['PHP_SELF']}?currentpage=$prevpage'><</a></li> ";
+                } // end if
 
-                      // loop to show links to range of pages around current page
-                      for ($x = ($currentpage - $range); $x < (($currentpage + $range) + 1); $x++) {
-                         // if it's a valid page number...
-                         if (($x > 0) && ($x <= $totalpages)) {
-                            // if we're on current page...
-                            if ($x == $currentpage) {
-                               // 'highlight' it but don't make a link
-                               echo " <li class='page-item active'><span class='page-link'> $x </span></li> ";
-                            // if not current page...
-                            } else {
-                               // make it a link
-                               echo " <li class='page-item'><a class='page-link' href='{$_SERVER['PHP_SELF']}?currentpage=$x'>$x</a></li> ";
-                            } // end else
-                         } // end if
-                      } // end for
+                // loop to show links to range of pages around current page
+                for ($x = ($currentpage - $range); $x < (($currentpage + $range) + 1); $x++) {
+                   // if it's a valid page number...
+                   if (($x > 0) && ($x <= $totalpages)) {
+                      // if we're on current page...
+                      if ($x == $currentpage) {
+                         // 'highlight' it but don't make a link
+                         echo " <li class='page-item active'><span class='page-link'> $x </span></li> ";
+                      // if not current page...
+                      } else {
+                         // make it a link
+                         echo " <li class='page-item'><a class='page-link' href='{$_SERVER['PHP_SELF']}?currentpage=$x'>$x</a></li> ";
+                      } // end else
+                   } // end if
+                } // end for
 
-                      // if not on last page, show forward and last page links
-                      if ($currentpage != $totalpages) {
-                         // get next page
-                         $nextpage = $currentpage + 1;
-                          // echo forward link for next page
-                         echo " <li class='page-item'><a class='page-link' href='{$_SERVER['PHP_SELF']}?currentpage=$nextpage'>></a></li> ";
-                         // echo forward link for lastpage
-                         echo " <li class='page-item'><a class='page-link' href='{$_SERVER['PHP_SELF']}?currentpage=$totalpages'>>></a></li> ";
-                      } // end if
-                      /****** end build pagination links ******/
-                      echo "</ul></nav>";
-                      ?>
+                // if not on last page, show forward and last page links
+                if ($currentpage != $totalpages) {
+                   // get next page
+                   $nextpage = $currentpage + 1;
+                    // echo forward link for next page
+                   echo " <li class='page-item'><a class='page-link' href='{$_SERVER['PHP_SELF']}?currentpage=$nextpage'>></a></li> ";
+                   // echo forward link for lastpage
+                   echo " <li class='page-item'><a class='page-link' href='{$_SERVER['PHP_SELF']}?currentpage=$totalpages'>>></a></li> ";
+                } // end if
+                /****** end build pagination links ******/
+                echo "</ul></nav>";
+                ?>
               </tbody>
             </table>
           </div>
@@ -213,6 +212,31 @@ include('lib/userserver.php');
 			</div>
 		</div>
 	</div>
+
+  <script type="text/javascript">
+    function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+    }
+
+    function validate() {
+    var $result = $("#result");
+    var email = $("#email").val();
+    $result.text("");
+
+    if (validateEmail(email)) {
+      $result.text(email + " is valid :)");
+      $result.css("color", "green");
+    } else {
+      $result.text(email + " is not valid :(");
+      $result.css("color", "red");
+    }
+    return false;
+    }
+
+    $("#validate").bind("click", validate);
+  </script>
+
 	<!-- Footer -->
 	<?php include '../partials/_footer.php' ?>
 </body>

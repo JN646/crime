@@ -116,3 +116,29 @@ function sortTable(n) {
     }
   }
 }
+
+// Check if form values are empty.
+if (document.getElementById('inputForm')) {
+  // Basic Validation.
+  var notification = document.getElementById('notificationSearch');
+  var btnSearch = document.getElementById('btnSearch');
+  var inputLat = document.getElementById('latBox');
+  var inputLong = document.getElementById('longBox');
+  var inputRadius = document.getElementById('radius');
+  var inputRadius2 = document.getElementById('radius2');
+}
+
+// Check if empty.
+function checkEmpty() {
+  if (inputLat.value == "" || inputLong.value == "" || inputRadius.value == "" || inputRadius2.value == "") {
+    // Hide button.
+    btnSearch.style.display = "none";
+    // Show error message.
+    notificationSearch.style.display = "";
+  } else {
+    // Show button.
+    btnSearch.style.display = "";
+    // Hide error message.
+    notificationSearch.style.display = "none";
+  }
+}
