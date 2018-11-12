@@ -1,4 +1,4 @@
-package com.example.joshginn.crimeapplication
+package com.example.joshginn.crimeapp
 
 import org.junit.Test
 
