@@ -9,7 +9,7 @@ class ApplicationVersion
 	// Define version numbering
 	const MAJOR = 0;
 	const MINOR = 0;
-	const PATCH = 0;
+	const PATCH = 1;
 
 	public static function get()
 	{
@@ -98,24 +98,29 @@ function preCalcTable($resultCount_Immediate, $resultCount_Local, $radVal_Immedi
 //############## CALC RISK #####################################################
 function calcRisk($iCount, $lCount, $iRadius, $lRadius)
 {
-	// Get Area
-	$iArea = M_PI*$iRadius*$iRadius;
-	$lArea = M_PI*$lRadius*$lRadius;
+	if ($iRadius > 0.0 && $lRadius > 0.0) {
+		// Get Area
+		$iArea = M_PI*$iRadius*$iRadius;
+		$lArea = M_PI*$lRadius*$lRadius;
 
-	// Get Radius
-	$iCrimeP = $iCount/$iArea; //p (rho) is used to notate density in physics; crimeP means crime density.
-	$lCrimeP = $lCount/$lArea;
+		// Get Radius
+		$iCrimeP = $iCount/$iArea; //p (rho) is used to notate density in physics; crimeP means crime density.
+		$lCrimeP = $lCount/$lArea;
 
-	// If no data.
-	if(is_null($iCount) or is_null($lCount)) {
-		// N/A
-		$risk = NULL;
+		// If no data.
+		if(is_null($iCount) or is_null($lCount)) {
+			// N/A
+			$risk = NULL;
+		} else {
+			// Get Risk
+			$risk = log($iCrimeP/$lCrimeP, 2);
+		}
+		//echo $iCount." ".$lCount.": ".$risk."<br>";
+		return $risk; // Return Calculation
 	} else {
-		// Get Risk
-		$risk = log($iCrimeP/$lCrimeP, 2);
+		// Return error on failure.
+		return FALSE;
 	}
-	//echo $iCount." ".$lCount.": ".$risk."<br>";
-	return $risk; // Return Calculation
 }
 
 //############## CALL STATS ####################################################
@@ -187,6 +192,7 @@ function getBoxByLoc($lat, $long) {
 
 //############## SPHERICAL GEOMETRY ############################################
 function computeOffset($from, $distance, $heading) {
+
 	global $EARTH_RADIUS;
 	$distance /= 6371000; //MathUtil::EARTH_RADIUS; //calculates fraction of unit circle. Can we call this constant from somewhere?
 	$heading = deg2rad($heading);

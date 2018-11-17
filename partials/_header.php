@@ -31,10 +31,16 @@
           <li class="nav-item active">
             <a class="nav-link" href="<?php echo $environment; ?>index.php">Home <span class="sr-only">(current)</span></a>
           </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSupport" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Support</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownSupport">
+              <a class="dropdown-item" href="<?php echo $environment; ?>pages/crime_prevention.php">Crime Prevention</a>
+            </div>
+          </li>
         </ul>
         <ul class="navbar-nav navbar-right">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i></a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="<?php echo $environment; ?>users/login.php">Login/Logout</a>
               <a class="dropdown-item" href="<?php echo $environment; ?>users/welcome.php">Welcome</a>

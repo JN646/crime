@@ -9,9 +9,9 @@ define('DB_NAME', 'crimes');
 // Get Connection
 $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
- // If Connection Fail
+// If Connection Fail
 if ($mysqli->connect_error) {
-		die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
+	die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
 }
 
 // Global Variables.
@@ -65,6 +65,7 @@ $menu_crimemanage = TRUE;
 // Exec Timer
 $TimeSeries_ExecTimer = TRUE;
 $CrimeCounter_ExecTimer = TRUE;
+$exectime_compare = TRUE;
 
 // Apps
 $app_enabled = TRUE;

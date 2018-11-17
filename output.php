@@ -16,44 +16,46 @@ if(isset($_POST['btnQuickGPS'])) {
 	$latVal = $_GET["lat"];
 	$longVal = $_GET["long"];
 }
-
-if(isset($_GET['btnSearch'])) {
-	// Missing Value Check
-	if (!empty($_GET["long"]) || !empty($_GET["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"]) || !empty($_POST["month"])) {
-			$latVal = trim((float)$_GET["lat"]);
-			$longVal = trim((float)$_GET["long"]);
-	} else {
-			die("Error Missing Values Found.");
-	}
-
-	// Check that Lat/Long values are in the right range.
-	if ((-90.00 <= $latVal) && ($latVal <= 90.00)) {
-			// Needs Condensing
-			if ((-49.00 <= $latVal) && ($latVal <= 60.00)) {
-					// Needs Condensing
-			} else {
-					die("Only UK Supported.");
-			}
-	} else {
-			die("Latitude needs to be between -90 and 90 degrees.");
-	}
-
-	// Check that Lat/Long values are in the right range.
-	if ((-180.00 <= $longVal) && ($longVal <= 180.00)) {
-			// Needs Condensing
-			if ((-11.00 <= $longVal) && ($longVal <= 1.00)) {
-					// Needs Condensing
-			} else {
-					die("Only Supperted in the UK.");
-			}
-	} else {
-			die("Longitude needs to be between -180 and 180 degrees.");
-	}
-}
- ?>
+?>
 
 	<!-- Container -->
 	<div id='bodyContainer' class="container">
+
+		<?php
+			if(isset($_GET['btnSearch'])) {
+				// Missing Value Check
+				if (!empty($_GET["long"]) || !empty($_GET["lat"]) || !empty($_POST["rad1"]) || !empty($_POST["rad2"]) || !empty($_POST["month"])) {
+						$latVal = trim((float)$_GET["lat"]);
+						$longVal = trim((float)$_GET["long"]);
+				} else {
+						die("Error Missing Values Found.");
+				}
+
+				// Check that Lat/Long values are in the right range.
+				if ((-90.00 <= $latVal) && ($latVal <= 90.00)) {
+						// Needs Condensing
+						if ((-49.00 <= $latVal) && ($latVal <= 60.00)) {
+								// Needs Condensing
+						} else {
+								die("Only UK Supported.");
+						}
+				} else {
+						die("Latitude needs to be between -90 and 90 degrees.");
+				}
+
+				// Check that Lat/Long values are in the right range.
+				if ((-180.00 <= $longVal) && ($longVal <= 180.00)) {
+						// Needs Condensing
+						if ((-11.00 <= $longVal) && ($longVal <= 1.00)) {
+								// Needs Condensing
+						} else {
+								die("Only Supperted in the UK.");
+						}
+				} else {
+						die("Longitude needs to be between -180 and 180 degrees.");
+				}
+			}
+		?>
 
 		<?php if ($app_enabled == TRUE): ?>
 			<!-- Nav Pills -->
@@ -112,6 +114,7 @@ if(isset($_GET['btnSearch'])) {
 					<div class="tab-pane fade show active" id="pills-crimecounter" role="tabpanel" aria-labelledby="pills-crimecounter-tab">
 						<!-- Block Header -->
 						<h2>Crime Counter</h2>
+						<p>The chart below shows your current risk level of each specific crime group based on the location you have provided. The higher the risk factor the higher the probability of being exposed to crime.</p>
 						<?php
 							echo reportHeader($latVal, $longVal);
 							$crimeCountData = crimeCounter($latVal, $longVal);
@@ -125,8 +128,13 @@ if(isset($_GET['btnSearch'])) {
 							// Get array from PHP
 							var ccData = <?php echo json_encode($crimeCountData); ?>;
 
-							var ctx = document.getElementById("crimeCountChart").getContext('2d');
-							var ccChart = new Chart(ctx, ccData);
+							// Draw Chart
+							if (document.getElementById("crimeCountChart")) {
+								var ctx = document.getElementById("crimeCountChart").getContext('2d');
+								var ccChart = new Chart(ctx, ccData);
+							} else {
+								console.log('ERROR: crimeCountChart not found.');
+							}
 						</script>
 					</div>
 				<?php
@@ -140,6 +148,7 @@ if(isset($_GET['btnSearch'])) {
 					<div class="tab-pane fade" id="pills-timeseries" role="tabpanel" aria-labelledby="pills-timeseries-tab">
 						<!-- Block Header -->
 						<h2>Time Series Chart</h2>
+						<p>The chart below shows how the levels of specific crime times have changed over time.</p>
 						<?php
 							// Report Header
 							echo reportHeader($latVal, $longVal);
@@ -157,8 +166,13 @@ if(isset($_GET['btnSearch'])) {
 							// Get array from PHP
 							var TSData = <?php echo json_encode($timeSeriesData); ?>;
 
-							var ctx = document.getElementById("timeSeriesChart").getContext('2d');
-							var tsChart = new Chart(ctx, TSData);
+							// Draw Chart
+							if (document.getElementById("crimeCountChart")) {
+								var ctx = document.getElementById("timeSeriesChart").getContext('2d');
+								var tsChart = new Chart(ctx, TSData);
+							} else {
+								console.log('ERROR: crimeCountChart not found.');
+							}
 						</script>
 					</div>
 				<?php
@@ -172,6 +186,7 @@ if(isset($_GET['btnSearch'])) {
 					<div class="tab-pane fade" id="pills-compare" role="tabpanel" aria-labelledby="pills-compare-tab">
 						<!-- Block Header -->
 						<h2>Go Compare</h2>
+						<p>This chart shows how crime in your area compares to another location.</p>
 						<?php
 							// Report Header
 							echo reportHeader($latVal, $longVal);
