@@ -55,110 +55,161 @@ if(isset($_GET['btnSearch'])) {
 	<!-- Container -->
 	<div id='bodyContainer' class="container">
 
-		<!-- Nav Pills -->
-		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+		<?php if ($app_enabled == TRUE): ?>
+			<!-- Nav Pills -->
+			<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 
-			<!-- Crime Counter -->
-			<li class="nav-item">
-				<a class="nav-link active" id="pills-crimecounter-tab" data-toggle="pill" href="#pills-crimecounter" role="tab" aria-controls="pills-crimecount" aria-selected="true">Crime Counter</a>
-			</li>
-
-			<!-- Time Series Chart -->
-			<li class="nav-item">
-				<a class="nav-link" id="pills-timeseries-tab" data-toggle="pill" href="#pills-timeseries" role="tab" aria-controls="pills-timeseries" aria-selected="false">Time Series</a>
-			</li>
-
-			<!-- Compare Areas -->
-			<li class="nav-item">
-				<a class="nav-link" id="pills-compare-tab" data-toggle="pill" href="#pills-compare" role="tab" aria-controls="pills-compare" aria-selected="false">Compare</a>
-			</li>
-
-			<!-- Something Else -->
-			<li class="nav-item">
-				<a class="nav-link" id="pills-p2-tab" data-toggle="pill" href="#pills-p2" role="tab" aria-controls="pills-p2" aria-selected="false">Panel 4</a>
-			</li>
-		</ul>
-		<div class="tab-content" id="pills-tabContent">
-
-			<!-- Crime Counter -->
-			<div class="tab-pane fade show active" id="pills-crimecounter" role="tabpanel" aria-labelledby="pills-crimecounter-tab">
-				<!-- Block Header -->
-				<h2>Crime Counter</h2>
+				<!-- Crime Counter -->
 				<?php
-					echo reportHeader($latVal, $longVal);
-					$crimeCountData = crimeCounter($latVal, $longVal);
-					if(is_null($crimeCountData)) {
-						echo "ChartData class has no datasets assigned, therefore returned NULL.";
-					}
+				if ($app_crimecounter == TRUE) {
 				?>
-				<canvas id="crimeCountChart"></canvas>
-
-				<script type="text/javascript">
-					// Get array from PHP
-					var ccData = <?php echo json_encode($crimeCountData); ?>;
-
-					var ctx = document.getElementById("crimeCountChart").getContext('2d');
-					var ccChart = new Chart(ctx, ccData);
-				</script>
-			</div>
-
-			<!-- Time Series Chart -->
-			<div class="tab-pane fade" id="pills-timeseries" role="tabpanel" aria-labelledby="pills-timeseries-tab">
-				<!-- Block Header -->
-				<h2>Time Series Chart</h2>
+					<li class="nav-item">
+						<a class="nav-link active" id="pills-crimecounter-tab" data-toggle="pill" href="#pills-crimecounter" role="tab" aria-controls="pills-crimecount" aria-selected="true">Crime Counter</a>
+					</li>
 				<?php
-					// Report Header
-					echo reportHeader($latVal, $longVal);
-
-					// Get Time Series
-					$timeSeriesData = timeSeriesRequest($latVal, $longVal);
-
-					// If NULL
-					if(is_null($timeSeriesData)) {
-						echo "ChartData class has no datasets assigned, therefore returned NULL.";
-					}
+				}
 				?>
-				<canvas id="timeSeriesChart"></canvas>
-				<script type="text/javascript">
-					// Get array from PHP
-					var TSData = <?php echo json_encode($timeSeriesData); ?>;
 
-					var ctx = document.getElementById("timeSeriesChart").getContext('2d');
-					var tsChart = new Chart(ctx, TSData);
-				</script>
-			</div>
-
-			<!-- Compare Area -->
-			<div class="tab-pane fade" id="pills-compare" role="tabpanel" aria-labelledby="pills-compare-tab">
-				<!-- Block Header -->
-				<h2>Go Compare</h2>
+				<!-- Time Series Chart -->
 				<?php
-					// Report Header
-					echo reportHeader($latVal, $longVal);
-
-					// Get Compare
-					$compareData = compareRequest($latVal, $longVal, 52.13, -0.46); // variables currently set as static here
-					echo "This comparison is with a static lat/long of: 52.13, -0.46<br>";
+				if ($app_timeseries == TRUE) {
 				?>
-				<canvas id="compareChart"></canvas>
-				<script type="text/javascript">
-					// Get array from PHP
-					var cData = <?php echo json_encode($compareData); ?>;
+					<li class="nav-item">
+						<a class="nav-link" id="pills-timeseries-tab" data-toggle="pill" href="#pills-timeseries" role="tab" aria-controls="pills-timeseries" aria-selected="false">Time Series</a>
+					</li>
+				<?php
+				}
+				?>
 
-					var ctx = document.getElementById("compareChart").getContext('2d');
-					var cChart = new Chart(ctx, cData);
-				</script>
-			</div>
+				<!-- Compare Areas -->
+				<?php
+				if ($app_compare == TRUE) {
+				?>
+					<li class="nav-item">
+						<a class="nav-link" id="pills-compare-tab" data-toggle="pill" href="#pills-compare" role="tab" aria-controls="pills-compare" aria-selected="false">Compare</a>
+					</li>
+				<?php
+				}
+				?>
 
-			<!-- Something Else -->
-			<div class="tab-pane fade" id="pills-p2" role="tabpanel" aria-labelledby="pills-p2-tab">
-				<!-- Block Header -->
-				<h2>Something Else</h2>
-				<?php echo reportHeader($latVal, $longVal); ?>
+				<!-- Something Else -->
+				<?php
+				if ($app_something == TRUE) {
+				?>
+					<li class="nav-item">
+						<a class="nav-link" id="pills-p2-tab" data-toggle="pill" href="#pills-p2" role="tab" aria-controls="pills-p2" aria-selected="false">Panel 4</a>
+					</li>
+				<?php
+				}
+				?>
+			</ul>
+			<div class="tab-content" id="pills-tabContent">
+
+				<!-- Crime Counter -->
+				<?php
+				if ($app_crimecounter == TRUE) {
+				?>
+					<div class="tab-pane fade show active" id="pills-crimecounter" role="tabpanel" aria-labelledby="pills-crimecounter-tab">
+						<!-- Block Header -->
+						<h2>Crime Counter</h2>
+						<?php
+							echo reportHeader($latVal, $longVal);
+							$crimeCountData = crimeCounter($latVal, $longVal);
+							if(is_null($crimeCountData)) {
+								echo "ChartData class has no datasets assigned, therefore returned NULL.";
+							}
+						?>
+						<canvas id="crimeCountChart"></canvas>
+
+						<script type="text/javascript">
+							// Get array from PHP
+							var ccData = <?php echo json_encode($crimeCountData); ?>;
+
+							var ctx = document.getElementById("crimeCountChart").getContext('2d');
+							var ccChart = new Chart(ctx, ccData);
+						</script>
+					</div>
+				<?php
+				}
+				?>
+
+				<!-- Time Series Chart -->
+				<?php
+				if ($app_timeseries == TRUE) {
+				?>
+					<div class="tab-pane fade" id="pills-timeseries" role="tabpanel" aria-labelledby="pills-timeseries-tab">
+						<!-- Block Header -->
+						<h2>Time Series Chart</h2>
+						<?php
+							// Report Header
+							echo reportHeader($latVal, $longVal);
+
+							// Get Time Series
+							$timeSeriesData = timeSeriesRequest($latVal, $longVal);
+
+							// If NULL
+							if(is_null($timeSeriesData)) {
+								echo "ChartData class has no datasets assigned, therefore returned NULL.";
+							}
+						?>
+						<canvas id="timeSeriesChart"></canvas>
+						<script type="text/javascript">
+							// Get array from PHP
+							var TSData = <?php echo json_encode($timeSeriesData); ?>;
+
+							var ctx = document.getElementById("timeSeriesChart").getContext('2d');
+							var tsChart = new Chart(ctx, TSData);
+						</script>
+					</div>
+				<?php
+				}
+				?>
+
+				<!-- Compare Area -->
+				<?php
+				if ($app_compare == TRUE) {
+				?>
+					<div class="tab-pane fade" id="pills-compare" role="tabpanel" aria-labelledby="pills-compare-tab">
+						<!-- Block Header -->
+						<h2>Go Compare</h2>
+						<?php
+							// Report Header
+							echo reportHeader($latVal, $longVal);
+
+							// Get Compare
+							$compareData = compareRequest($latVal, $longVal, 52.13, -0.46); // variables currently set as static here
+							echo "This comparison is with a static lat/long of: 52.13, -0.46<br>";
+						?>
+						<canvas id="compareChart"></canvas>
+						<script type="text/javascript">
+							// Get array from PHP
+							var cData = <?php echo json_encode($compareData); ?>;
+
+							var ctx = document.getElementById("compareChart").getContext('2d');
+							var cChart = new Chart(ctx, cData);
+						</script>
+					</div>
+				<?php
+				}
+				?>
+
+				<!-- Something Else -->
+				<?php
+				if ($app_something == TRUE) {
+				?>
+					<div class="tab-pane fade" id="pills-p2" role="tabpanel" aria-labelledby="pills-p2-tab">
+						<!-- Block Header -->
+						<h2>Something Else</h2>
+						<?php echo reportHeader($latVal, $longVal); ?>
+					</div>
+				<?php
+				}
+				?>
 			</div>
-		</div>
-</div>
-		<!-- Footer -->
-		<?php include 'partials/_footer.php' ?>
+		<?php endif; ?>
+
+	</div>
+	<!-- Footer -->
+	<?php include 'partials/_footer.php' ?>
 </body>
 </html>

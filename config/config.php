@@ -62,9 +62,14 @@ $enableStats = TRUE;
 $menu_usermanage = TRUE;
 $menu_crimemanage = TRUE;
 
-// Time Series
+// Exec Timer
 $TimeSeries_ExecTimer = TRUE;
-
-// Crime Counter
 $CrimeCounter_ExecTimer = TRUE;
+
+// Apps
+$app_enabled = TRUE;
+$app_crimecounter = TRUE;
+$app_timeseries = TRUE;
+$app_compare = TRUE;
+$app_something = FALSE;
 ?>

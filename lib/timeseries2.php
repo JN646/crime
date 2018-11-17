@@ -53,7 +53,7 @@
 			}
 		}
 		$out->labels = $xLabels;
-		
+
 		// Get counts
 		foreach($sets as $type => $counts) {
 			if(in_array($type, $crime_types)) { // This filters out crime_types not in data_crimes
@@ -64,7 +64,7 @@
 
 		return $out->getData();
 	}
-	
+
 	// Converts a number array into a percent change from index to index
 	function convertToPC($counts) {
 		$out = array();
@@ -77,10 +77,9 @@
 		}
 		return $out;
 	}
-	
-	
-	// ################# MAIN ############################################
 
+
+	// ################# MAIN ############################################
 	// A request from a device to get timeseries information
 	function timeSeriesRequest($lat, $long) {
 		global $mysqli;
@@ -90,7 +89,7 @@
 		// Get the time series data
 		$data = getTimeSeriesData($mysqli, $nearestBox);
 
+		// Return data
 		return $data;
 	}
-
 ?>

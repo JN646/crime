@@ -43,8 +43,6 @@ function crimeCounter($latVal, $longVal)
 	  }
 	}
 
-	
-
 	// ########### MAIN ##########################################################
 	global $IMMEDIATE_RAD;
 	global $LOCAL_RAD;
@@ -62,7 +60,7 @@ function crimeCounter($latVal, $longVal)
 	// Run Queries
 	$resultCount_Immediate  = sqlCrimeArea($mysqli, $latVal, $longVal, $IMMEDIATE_RAD, $latLow1, $latHigh1, $longLow1, $longHigh1);
 	$resultCount_Local	  = sqlCrimeArea($mysqli, $latVal, $longVal, $LOCAL_RAD, $latLow2, $latHigh2, $longLow2, $longHigh2);
-	
+
 	// Write to Log only if user is logged in.
 	if ($require_logon_to_search == TRUE) {
 		if(isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] == true){
@@ -86,10 +84,10 @@ function crimeCounter($latVal, $longVal)
 	// Display Script End time
 	if ($CrimeCounter_ExecTimer) {
 		$time_end = microtime(true);
-		
+
 		//dividing with 60 will give the execution time in minutes other wise seconds
 		$execution_time = ($time_end - $time_start);
-		
+
 		echo '<b>Total Execution Time:</b> ' . number_format($execution_time, 4) . ' Seconds';
 	}
 

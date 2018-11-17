@@ -240,20 +240,16 @@ function reportHeader($latVal, $longVal) {
 	?>
 	<!-- Table -->
 	<table class='table col-md-6'>
-	<tbody>
-		<tr>
-		<td><b>Location:</b></td>
-		<td><a href="<?php echo $link ?>" target="_blank"><?php echo round($latVal, 4) ?>, <?php echo round($longVal, 4); ?></a></td>
-		</tr>
-		<tr>
-		<td><b>Generated:</b></td>
-		<td><?php echo date("Y-m-d H:i:s"); ?></td>
-		</tr>
-		<tr>
-			<td><b>Box #:</b></td>
-			<td><?php echo getBoxByLoc($latVal, $longVal); ?></td>
-		</tr>
-	</tbody>
+		<tbody>
+			<tr>
+				<td><b>Location:</b></td>
+				<td><a href="<?php echo $link ?>" target="_blank" title="Box #: <?php echo getBoxByLoc($latVal, $longVal); ?>"><?php echo round($latVal, 4) ?>, <?php echo round($longVal, 4); ?></a></td>
+			</tr>
+			<tr>
+				<td><b>Generated:</b></td>
+				<td><?php echo date("Y-m-d H:i:s"); ?></td>
+			</tr>
+		</tbody>
 	</table>
 	<?php
 }
