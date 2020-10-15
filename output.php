@@ -158,7 +158,7 @@ if(isset($_POST['btnQuickGPS'])) {
 
 							// If NULL
 							if(is_null($timeSeriesData)) {
-								echo "ChartData class has no datasets assigned, therefore returned NULL.";
+								echo "<p class='alert alert-danger text-center'>ChartData class has no datasets assigned, therefore returned NULL.</p>";
 							}
 						?>
 						<canvas id="timeSeriesChart"></canvas>
